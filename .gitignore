@@ -1,0 +1,16 @@
+# ---- 操作系统/编辑器杂物 ----
+Thumbs.db
+ehthumbs.db
+desktop.ini
+.DS_Store
+*.log
+
+# ---- 编辑器 / IDE ----
+.vscode/*
+!.vscode/settings.json
+.idea/
+*.swp
+
+# ---- 临时文件 ----
+*.tmp
+~$*

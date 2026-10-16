@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 0 课 · AI 是新时代的工具，关键看谁在用 | 人人 AI 通识课</title>
+<link rel="stylesheet" href="../assets/css/base.css">
+</head>
+<body class="lesson" data-page="lesson" data-lesson="00">
+
+<header class="topbar">
+  <a class="brand" href="../index.html"><span class="aibot"></span><span>人人 AI 通识课</span></a>
+  <div class="tools">
+    <button class="tool-btn" id="font-toggle" title="调整字号">A</button>
+    <button class="tool-btn" id="theme-toggle" title="深色模式">🌙</button>
+  </div>
+</header>
+
+<div class="courseline">
+  <div class="progress"><i class="js-course-progress"></i></div>
+  <span class="count js-course-count">全课进度 0 / 21</span>
+</div>
+
+<main class="container lesson-wrap">
+
+  <!-- 课程头 -->
+  <header class="lesson-hero reveal">
+    <p class="chip-row">
+      <span class="chip hot">🚀 导学课</span>
+      <span class="chip">⏱ 约 10 分钟</span>
+      <span class="chip">🎮 1 个互动</span>
+      <span class="chip">🧠 1 个小测验</span>
+    </p>
+    <h1>AI 是新时代的工具，<br>关键看谁在用</h1>
+    <p class="lesson-lead">这一课不打鸡血、不吓唬人，只聊清楚一件事：AI 到底是什么量级的东西，以及你为什么应该现在就动手用它。</p>
+  </header>
+
+  <!-- ① 场景导入 -->
+  <section class="scene reveal">
+    <div class="robot">
+      <span class="aibot"></span>
+      <span class="robot-name">小艾</span>
+    </div>
+    <div class="bubble">
+      <p>先问你一句：<b>「电」刚普及时，有人说它会毁掉夜晚的宁静；互联网刚出现时，有人说网上全是骗子。</b></p>
+      <p>后来呢？你懂的。今天轮到 AI 站在这个位置上了——恐惧先到，红利后到。</p>
+    </div>
+  </section>
+
+  <!-- ② 核心讲解 -->
+  <section class="block reveal">
+    <h2 class="step"><span>01</span>核心讲解</h2>
+
+    <div class="card hl">
+      <h3>💡 每个时代，都有让大人紧张的「新玩意儿」</h3>
+      <p>电灯、汽车、互联网、智能手机……刚出现时都被质疑过。但规律总是相似：<b class="hl-text">工具本身不淘汰人，落后的是没跟上工具的那批用法</b>。</p>
+      <p>AI 不是魔法，也不是洪水猛兽，它和电、互联网、智能手机是同一量级的东西——<b>一个会重新分配机会的新工具</b>。</p>
+    </div>
+
+    <div class="card accent">
+      <h3>⚖️ 工具从不「站队」，关键看使用者</h3>
+      <p>同一部手机：有人刷一整天短视频，有人用它学一门外语、接一单设计活、开了个小店。</p>
+      <p>工具是一样的，差别全在人：<b class="hl-text">所有的工具都需要使用者，就看我们如何用，谁擅长用。</b></p>
+    </div>
+
+    <div class="card sun">
+      <h3>🔍 AI 是「能力放大器」，不是「答案机器」</h3>
+      <p>你有一个 60 分的点子，AI 能帮你把它推到 80 分的成品；你有好奇心，它就有问必答。</p>
+      <p>但注意：<b>它放大的是你自己的想象力，不会替你长出想象力。</b>会提问的人得到好答案，有想象力的人做出好作品。</p>
+    </div>
+
+    <div class="card">
+      <h3>🚀 所以我们的建议很直接：动手去用</h3>
+      <p>这门课每一节的结尾，都有一个「今天试一件事」——不讲大道理，就是要你亲手做一件小事。</p>
+      <p>别等「准备好了」再用 AI：<b>上手，就是最好的准备。</b></p>
+    </div>
+  </section>
+
+  <!-- ③ 互动 -->
+  <section class="block reveal">
+    <h2 class="step"><span>02</span>动手玩一玩</h2>
+    <div class="game-card" id="level-test"></div>
+    <p class="game-tip">不管测出来是哪个段位，这都不是考试——搞清楚自己从哪儿出发，才知道接下来要补哪一课。</p>
+  </section>
+
+  <!-- ④ 小测验 -->
+  <section class="block reveal">
+    <h2 class="step"><span>03</span>小测验</h2>
+    <div class="quiz">
+      <div class="q">
+        <p class="q-text">1. 新工具出现时，历史上最先到来的是什么？</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 全民红利，人人受益</button>
+          <button class="opt" data-correct="true">B. 恐惧和质疑</button>
+          <button class="opt" data-correct="false">C. 免费的午餐</button>
+        </div>
+        <p class="explain" hidden>解析：电、互联网、智能手机都被质疑过，后来都成了生活必需品。规律是：恐惧先到，红利后到——先动手的人先受益。</p>
+      </div>
+      <div class="q">
+        <p class="q-text">2. 同一部手机，在不同人手里结果完全不同。这说明什么？</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 手机质量有高有低</button>
+          <button class="opt" data-correct="true">B. 关键在使用工具的人怎么用它</button>
+          <button class="opt" data-correct="false">C. 运气决定一切</button>
+        </div>
+        <p class="explain" hidden>解析：工具不站队，谁擅长用、谁先动手，谁先拿到红利。AI 也是如此。</p>
+      </div>
+      <div class="q">
+        <p class="q-text">3. 判断对错：「等 AI 再成熟一点，我再学也不迟。」</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 对，稳妥为上</button>
+          <button class="opt" data-correct="true">B. 错，红利用属于先上手的人</button>
+        </div>
+        <p class="explain" hidden>解析：工具一直在进化，等「成熟」永远等不到头。边学边用、用中再学，是这门课唯一的姿势。</p>
+      </div>
+      <p class="quiz-score" hidden></p>
+    </div>
+  </section>
+
+  <!-- ⑤ 金句 -->
+  <section class="block reveal">
+    <h2 class="step"><span>04</span>一句话记住这节课</h2>
+    <div class="quote-card">
+      <p>新时代的工具，动手去用——<br>工具都一样，就看谁更擅长用。</p>
+      <p class="quote-sub">AI 放大的是你的想象力，而不是替你长出想象力。</p>
+    </div>
+  </section>
+
+  <!-- ⑥ 今天试一件事 -->
+  <section class="block reveal">
+    <h2 class="step"><span>05</span>今天试一件事</h2>
+    <ul class="actions">
+      <li><span class="box"></span><span class="txt">打开 DeepSeek（deepseek.com），发一句：「你好，用一句话介绍一下你自己」</span></li>
+      <li><span class="box"></span><span class="txt">让 AI 帮你做一件小事：起个网名 / 想今晚吃什么 / 写一句朋友圈</span></li>
+      <li><span class="box"></span><span class="txt">把「AI 是工具，不是魔法」这个观点讲给一个朋友听</span></li>
+    </ul>
+    <button id="btn-complete" class="btn btn-primary">✅ 完成本课打卡</button>
+  </section>
+
+  <!-- ⑦ 导航 -->
+  <nav class="lesson-nav reveal" id="lesson-nav"></nav>
+
+</main>
+
+<footer class="footer">
+  <p>《人人 AI 通识课》 · 新时代的工具，动手去用</p>
+</footer>
+
+<script src="../assets/js/course-data.js"></script>
+<script src="../assets/js/components.js"></script>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

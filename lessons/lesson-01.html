@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 1 课 · AI 其实就是个超级「猜词王」 | 人人 AI 通识课</title>
+<link rel="stylesheet" href="../assets/css/base.css">
+</head>
+<body class="lesson" data-page="lesson" data-lesson="01">
+
+<header class="topbar">
+  <a class="brand" href="../index.html"><span class="aibot"></span><span>人人 AI 通识课</span></a>
+  <div class="tools">
+    <button class="tool-btn" id="font-toggle" title="调整字号">A</button>
+    <button class="tool-btn" id="theme-toggle" title="深色模式">🌙</button>
+  </div>
+</header>
+
+<div class="courseline">
+  <div class="progress"><i class="js-course-progress"></i></div>
+  <span class="count js-course-count">全课进度 0 / 21</span>
+</div>
+
+<main class="container lesson-wrap">
+
+  <!-- 课程头 -->
+  <header class="lesson-hero reveal">
+    <p class="chip-row">
+      <span class="chip hot">🤔 模块一 · AI 到底是什么</span>
+      <span class="chip">⏱ 约 12 分钟</span>
+      <span class="chip">🎮 猜词挑战 ×5 轮</span>
+      <span class="chip">🧠 1 个小测验</span>
+    </p>
+    <h1>AI 其实就是个<br>超级「猜词王」</h1>
+    <p class="lesson-lead">你不用懂任何技术，就能明白 AI 为什么能什么都答得上来——因为它的看家本领，你每天打字都在用。</p>
+  </header>
+
+  <!-- ① 场景导入 -->
+  <section class="scene reveal">
+    <div class="robot">
+      <span class="aibot"></span>
+      <span class="robot-name">小艾</span>
+    </div>
+    <div class="bubble">
+      <p>打开手机，随便用输入法打「今天天气真」——看看它是不是自动跳出「好」或「不错」？</p>
+      <p>恭喜，你刚刚偷看了 AI 的核心机密：<b>猜下一个词</b>。今天我们就把它猜个明白。</p>
+    </div>
+  </section>
+
+  <!-- ② 核心讲解 -->
+  <section class="block reveal">
+    <h2 class="step"><span>01</span>核心讲解</h2>
+
+    <div class="card hl">
+      <h3>📱 说穿了，AI 就是放大十亿倍的输入法</h3>
+      <p>输入法为什么猜得准？因为你打字打多了，它「见过」无数人怎么接话。你说「今天天气真」，它见过太多次后面跟着「好」。</p>
+      <p>AI 用的是同一招，只是把「见过无数人打字」升级成了<b class="hl-text">读过几乎全网的文字</b>——书、新闻、论坛、百科……见过的句子多到没法想象。</p>
+    </div>
+
+    <div class="card accent">
+      <h3>🎯 它的看家本领：你给前半句，它猜后半句</h3>
+      <p>问 AI「怎么做番茄炒蛋」，它不是去柜子里翻答案，而是像一个读过无数菜谱的人，<b>顺着最可能的方式把话接下去</b>。</p>
+      <p>这种本事，正式的名字叫 <span class="term" data-tip="<b>大语言模型</b>：一个读过几乎全网文字、特别会接话的『语言大师』。它不查答案，而是按概率猜出最像样的答案。">大语言模型</span>——别记这个词，记住「猜词王」就行。</p>
+    </div>
+
+    <div class="card sun">
+      <h3>🌍 为什么它好像什么都懂？</h3>
+      <p>因为它「读」的东西太杂了：菜谱、论文、小说、说明书、聊天记录……你问什么，它都能想起相关的句子怎么接。</p>
+      <p><b>不是它天生聪明，是它见得实在太多。</b></p>
+    </div>
+
+    <div class="card">
+      <h3>😅 那它为什么会答错？</h3>
+      <p>因为「猜」就有猜错的时候。更麻烦的是：它为了让句子顺，<b>宁可编一个像样的答案，也不轻易说「我不知道」</b>。</p>
+      <p>所以你会看到它一本正经地胡说八道——这个毛病叫「幻觉」，后面的课我们会专门收拾它。</p>
+    </div>
+  </section>
+
+  <!-- ③ 互动 -->
+  <section class="block reveal">
+    <h2 class="step"><span>02</span>动手玩一玩</h2>
+    <div class="game-card" id="guess-game"></div>
+    <p class="game-tip">玩完你就懂了：AI 的「答案」其实是一串可能性，它只是挑概率最高的那个说给你听。</p>
+  </section>
+
+  <!-- ④ 小测验 -->
+  <section class="block reveal">
+    <h2 class="step"><span>03</span>小测验</h2>
+    <div class="quiz">
+      <div class="q">
+        <p class="q-text">1. AI 回答问题的本质，更接近下面哪个？</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 在巨大的资料库里逐条搜索</button>
+          <button class="opt" data-correct="true">B. 根据学过的海量例子「猜」出最可能的回答</button>
+          <button class="opt" data-correct="false">C. 每次偷偷上网现查现编</button>
+        </div>
+        <p class="explain" hidden>解析：AI 不是查数据库，它是在「猜」——只是见得多了，猜得特别准。</p>
+      </div>
+      <div class="q">
+        <p class="q-text">2. 为什么同一个问题问两遍，AI 可能给出不一样的答案？</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 它心情不好</button>
+          <button class="opt" data-correct="true">B. 它每次都在按概率「挑」一个说法，而不是背标准答案</button>
+          <button class="opt" data-correct="false">C. 它坏了，需要重装</button>
+        </div>
+        <p class="explain" hidden>解析：就像「今天天气真___」，接「好」还是接「不错」都合理。答案有浮动，是正常现象。</p>
+      </div>
+      <div class="q">
+        <p class="q-text">3. 判断对错：AI 说出的话都经过核实，可以放心直接引用。</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 对</button>
+          <button class="opt" data-correct="true">B. 错</button>
+        </div>
+        <p class="explain" hidden>解析：AI 追求的是「像真的」，不是「是真的」。重要的数字、日期、人名，用前自己再核一遍。</p>
+      </div>
+      <p class="quiz-score" hidden></p>
+    </div>
+  </section>
+
+  <!-- ⑤ 金句 -->
+  <section class="block reveal">
+    <h2 class="step"><span>04</span>一句话记住这节课</h2>
+    <div class="quote-card">
+      <p>AI 不是「查」答案，是「猜」答案；<br>它猜得准，是因为见得多。</p>
+      <p class="quote-sub">知道这一点，你就已经超过一半的 AI 用户了。</p>
+    </div>
+  </section>
+
+  <!-- ⑥ 今天试一件事 -->
+  <section class="block reveal">
+    <h2 class="step"><span>05</span>今天试一件事</h2>
+    <ul class="actions">
+      <li><span class="box"></span><span class="txt">用输入法打一句话，观察它怎么猜你下一个字</span></li>
+      <li><span class="box"></span><span class="txt">问 AI：「猜猜我下一句话想说什么？」然后逗逗它</span></li>
+      <li><span class="box"></span><span class="txt">故意写一句反常的话（比如「太阳从西边」），看 AI 怎么接</span></li>
+    </ul>
+    <button id="btn-complete" class="btn btn-primary">✅ 完成本课打卡</button>
+  </section>
+
+  <!-- ⑦ 导航 -->
+  <nav class="lesson-nav reveal" id="lesson-nav"></nav>
+
+</main>
+
+<footer class="footer">
+  <p>《人人 AI 通识课》 · 新时代的工具，动手去用</p>
+</footer>
+
+<script src="../assets/js/course-data.js"></script>
+<script src="../assets/js/components.js"></script>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

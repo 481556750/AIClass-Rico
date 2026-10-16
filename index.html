@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>人人 AI 通识课 · 新时代的工具，动手去用</title>
+<meta name="description" content="21 节互动网页课，让 12–50 岁的普通人听懂 AI、上手 AI、玩转 AI 创作。不写代码，双击就能学。">
+<link rel="stylesheet" href="assets/css/base.css">
+</head>
+<body data-page="home">
+
+<header class="topbar">
+  <a class="brand" href="index.html"><span class="aibot"></span><span>人人 AI 通识课</span></a>
+  <div class="tools">
+    <button class="tool-btn" id="font-toggle" title="调整字号">A</button>
+    <button class="tool-btn" id="theme-toggle" title="深色模式">🌙</button>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- Hero -->
+  <section class="hero reveal in">
+    <span class="aibot hello" style="width:92px;height:92px;margin:0 auto 12px"></span>
+    <h1>AI，是新时代的工具<br><em>动手去用</em>，就现在</h1>
+    <p class="hero-sub">
+      21 节互动小课 · 从「AI 到底是什么」到「用想象力做出作品」<br>
+      不写代码、不花钱、不注册账号 —— 双击就能学。
+    </p>
+    <div class="hero-cta">
+      <a id="btn-continue" class="btn btn-primary" href="lessons/lesson-00.html">▶ 立即开始</a>
+      <a class="btn btn-ghost" href="#map">先看看课程地图</a>
+    </div>
+    <div class="hero-stats">
+      <div><b id="stat-total">21</b><span>节互动课</span></div>
+      <div><b>5+1</b><span>个模块</span></div>
+      <div><b id="stat-progress">0%</b><span>我的进度</span></div>
+    </div>
+  </section>
+
+  <!-- 进度 -->
+  <section class="progress-strip reveal">
+    <div class="progress"><i id="home-progress"></i></div>
+    <p id="home-progress-text">还没有开始——从第 0 课出发，10 分钟就能有第一个收获 🚀</p>
+  </section>
+
+  <!-- 课程地图 -->
+  <section id="map" class="map reveal">
+    <h2 class="h2">🗺️ 课程地图</h2>
+    <p class="h2-sub">一路通关 6 个板块，最后一课领结业证书。灰色的是还没上线的课。</p>
+    <div id="course-map"></div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p>《人人 AI 通识课》 · 新时代的工具，动手去用</p>
+  <p class="tiny">学习进度保存在你自己的浏览器本地（换设备不会同步）· 断网也能看</p>
+</footer>
+
+<script src="assets/js/course-data.js"></script>
+<script src="assets/js/components.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>
