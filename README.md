@@ -3,6 +3,13 @@
 > **新时代的工具，动手去用。**
 > 一套面向 12–50 岁普通人的 AI 科普互动课：不写代码、不装软件、双击就能看。
 
+## 🔗 直接访问
+
+- **在线版（手机 / 电脑都能直接打开）**：<https://481556750.github.io/AIClass-Rico/>
+- **GitHub 仓库**：<https://github.com/481556750/AIClass-Rico>
+
+> 分享给朋友就用在线版链接；没网时仍然可以双击 `index.html` 本地打开。
+
 ## 这是什么
 
 21 节互动网页课，从「AI 到底是什么」讲到「用想象力做出作品」，每节课都有得玩、有得测、有得做。
@@ -41,10 +48,15 @@ AIClass/
 
 设计原则：**零依赖**（无框架、无 CDN、无构建工具）、纯静态、离线可用。
 
-## 部署到 GitHub Pages
+## 在线部署（已开启 ✅）
 
-仓库推到 GitHub 后，打开 `Settings → Pages`，Source 选 `Deploy from a branch`，分支选 `main`、目录选 `/ (root)`，保存。
-稍等一会儿就能用 `https://<你的用户名>.github.io/<仓库名>/` 访问，手机也能直接打开分享。
+已通过 GitHub Pages 部署，每次 `git push` 后 1–2 分钟自动更新（纯静态，无需任何构建）：
+
+| 项目 | 地址 |
+| --- | --- |
+| 在线预览 | <https://481556750.github.io/AIClass-Rico/> |
+| 仓库主页 | <https://github.com/481556750/AIClass-Rico> |
+| 配置位置 | `Settings → Pages → Deploy from a branch → main / (root)` |
 
 ## 制作进度
 
