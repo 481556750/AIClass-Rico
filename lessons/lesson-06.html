@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 6 课 · 提问的艺术：提示词万能公式 | 人人 AI 通识课</title>
+<link rel="stylesheet" href="../assets/css/base.css">
+</head>
+<body class="lesson" data-page="lesson" data-lesson="06">
+
+<header class="topbar">
+  <a class="brand" href="../index.html"><span class="aibot"></span><span>人人 AI 通识课</span></a>
+  <div class="tools">
+    <button class="tool-btn" id="font-toggle" title="调整字号">A</button>
+    <button class="tool-btn" id="theme-toggle" title="深色模式">🌙</button>
+  </div>
+</header>
+
+<div class="courseline">
+  <div class="progress"><i class="js-course-progress"></i></div>
+  <span class="count js-course-count">全课进度 0 / 21</span>
+</div>
+
+<main class="container lesson-wrap">
+
+  <!-- 课程头 -->
+  <header class="lesson-hero reveal">
+    <p class="chip-row">
+      <span class="chip hot">🔑 模块二 · 开始用 AI</span>
+      <span class="chip">⏱ 约 15 分钟</span>
+      <span class="chip">🧱 提示词积木</span>
+      <span class="chip">🧠 1 个小测验</span>
+    </p>
+    <h1>提问的艺术<br>提示词万能公式 ★</h1>
+    <p class="lesson-lead">上一课你敢开口了；这一课，让你问得值。同一个 AI，为什么别人用得好？差别就在「怎么问」。</p>
+  </header>
+
+  <!-- ① 场景导入 -->
+  <section class="scene reveal">
+    <div class="robot">
+      <span class="aibot"></span>
+      <span class="robot-name">小艾</span>
+    </div>
+    <div class="bubble">
+      <p><b>小雨：</b>我让 AI 帮我写论文摘要，它写得像百度百科，一句能用的都没有。</p>
+      <p><b>小雨：</b>我室友就多说了几句话，写出来直接能交。凭什么啊？</p>
+      <p><b>小艾：</b>差别不在 AI，在「怎么问」。你只说了「写个摘要」，它只能给你一个平均答案。</p>
+    </div>
+  </section>
+
+  <!-- ② 核心讲解 -->
+  <section class="block reveal">
+    <h2 class="step"><span>01</span>核心讲解</h2>
+
+    <div class="card hl">
+      <h3>🍜 「随便」是 AI 最怕的两个字</h3>
+      <p>你点外卖只写「随便来一份」，店家只能给你最普通的；你写「少辣、不要香菜、多加肉」，出来的就是你想要的。</p>
+      <p>AI 也一样：<b>信息越少，它越只能给「平均答案」</b>。</p>
+      <p>所以，答案不好用，先别急着怪它笨——多半是我们没说清楚。</p>
+    </div>
+
+    <div class="card accent">
+      <h3>🧱 万能公式：角色 + 任务 + 背景 + 要求 + 示例</h3>
+      <p><b>🎭 角色</b>：你是一位有 10 年经验的 HR，看过上万份简历。</p>
+      <p><b>📋 任务</b>：帮我写一段自我介绍。</p>
+      <p><b>🧩 背景</b>：我是应届生，应聘新媒体运营；做过校园公众号，从 0 做到 3000 粉。</p>
+      <p><b>📏 要求</b>：写成 3 段，每段不超过 2 行；语气自信但不吹牛；不要用「精通」这种词。</p>
+      <p><b>💡 示例</b>：开头可以像这样——「我把一个 300 人的号做到 3000 粉，靠的不是运气。」</p>
+      <p>不用五样全有。<b class="hl-text">任务 + 要求最好别省</b>，其他看情况加。</p>
+      <p>这段话有个正式名字：<span class="term" data-tip="<b>提示词（Prompt）</b>：你发给 AI 的那段话。它不是咒语，而是给 AI 的说明书——说清楚要什么、给谁、什么标准。">提示词</span>。</p>
+    </div>
+
+    <div class="card sun">
+      <h3>💬 三句「立刻变好」的追问</h3>
+      <p>「再具体一点，举 2 个例子。」</p>
+      <p>「换成给小学生讲的语气。」</p>
+      <p>「你先别写，先问我 3 个问题。」——最容易被忽略，但最好用。</p>
+      <p>第一版不理想很正常。<b>好答案都是聊出来的，不是一次问出来的。</b></p>
+    </div>
+
+    <div class="card">
+      <h3>📖 公式不是咒语，是说明书</h3>
+      <p>它回答的是「你写出来的问题」，不是你「脑子里想的问题」。</p>
+      <p>给谁看、要多长、什么风格、不要什么——能说就说。</p>
+      <p>越具体，越像你要的；越含糊，越像网上抄的。</p>
+    </div>
+  </section>
+
+  <!-- ③ 互动 -->
+  <section class="block reveal">
+    <h2 class="step"><span>02</span>动手玩一玩</h2>
+    <div class="game-card" id="prompt-lab"></div>
+    <p class="game-tip">同一句「帮我写一段自我介绍」，加上不同的积木，输出差别一眼就能看出来。</p>
+  </section>
+
+  <!-- ④ 小测验 -->
+  <section class="block reveal">
+    <h2 class="step"><span>03</span>小测验</h2>
+    <div class="quiz">
+      <div class="q">
+        <p class="q-text">1. 下面哪句最可能得到能用的结果？</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 帮我写个自我介绍</button>
+          <button class="opt" data-correct="true">B. 你是 HR，帮我写一段应聘新媒体运营的自我介绍，3 段以内，别用「精通」</button>
+          <button class="opt" data-correct="false">C. 写得好一点，谢谢</button>
+        </div>
+        <p class="explain" hidden>解析：角色、背景、要求都有了，AI 才知道往哪个方向写。「写得好一点」等于没说。</p>
+      </div>
+      <div class="q">
+        <p class="q-text">2. 提示词公式里，最不该省的是哪两项？</p>
+        <div class="opts">
+          <button class="opt" data-correct="true">A. 任务和要求</button>
+          <button class="opt" data-correct="false">B. 角色和示例</button>
+          <button class="opt" data-correct="false">C. 寒暄和感谢</button>
+        </div>
+        <p class="explain" hidden>解析：任务告诉它做什么，要求告诉它做到什么程度。这两样没有，它只能猜。</p>
+      </div>
+      <div class="q">
+        <p class="q-text">3. 第一版不满意，最好的做法是？</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 关掉重来，换一个 AI</button>
+          <button class="opt" data-correct="true">B. 直接追问：「再具体一点，举 2 个例子」</button>
+          <button class="opt" data-correct="false">C. 凑合着用</button>
+        </div>
+        <p class="explain" hidden>解析：好答案都是聊出来的。追问比换工具管用，而且你能一直用到满意为止。</p>
+      </div>
+      <p class="quiz-score" hidden></p>
+    </div>
+  </section>
+
+  <!-- ⑤ 金句 -->
+  <section class="block reveal">
+    <h2 class="step"><span>04</span>一句话记住这节课</h2>
+    <div class="quote-card">
+      <p>说得清楚，就是高手。<br>公式不是咒语，是说明书。</p>
+      <p class="quote-sub">角色 + 任务 + 背景 + 要求 + 示例。</p>
+    </div>
+  </section>
+
+  <!-- ⑥ 今天试一件事 -->
+  <section class="block reveal">
+    <h2 class="step"><span>05</span>今天试一件事</h2>
+    <ul class="actions">
+      <li><span class="box"></span><span class="txt">用公式重写你最近问过 AI 的一个问题</span></li>
+      <li><span class="box"></span><span class="txt">加上一句「你先别写，先问我 3 个问题」，看看它问什么</span></li>
+      <li><span class="box"></span><span class="txt">把第一版和追问后的第三版放在一起，对比差别</span></li>
+    </ul>
+    <button id="btn-complete" class="btn btn-primary">✅ 完成本课打卡</button>
+  </section>
+
+  <!-- ⑦ 导航 -->
+  <nav class="lesson-nav reveal" id="lesson-nav"></nav>
+
+</main>
+
+<footer class="footer">
+  <p>《人人 AI 通识课》 · 新时代的工具，动手去用</p>
+</footer>
+
+<script src="../assets/js/course-data.js"></script>
+<script src="../assets/js/components.js"></script>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

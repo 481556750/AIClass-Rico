@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 5 课 · 第一次跟 AI 聊天 | 人人 AI 通识课</title>
+<link rel="stylesheet" href="../assets/css/base.css">
+</head>
+<body class="lesson" data-page="lesson" data-lesson="05">
+
+<header class="topbar">
+  <a class="brand" href="../index.html"><span class="aibot"></span><span>人人 AI 通识课</span></a>
+  <div class="tools">
+    <button class="tool-btn" id="font-toggle" title="调整字号">A</button>
+    <button class="tool-btn" id="theme-toggle" title="深色模式">🌙</button>
+  </div>
+</header>
+
+<div class="courseline">
+  <div class="progress"><i class="js-course-progress"></i></div>
+  <span class="count js-course-count">全课进度 0 / 21</span>
+</div>
+
+<main class="container lesson-wrap">
+
+  <!-- 课程头 -->
+  <header class="lesson-hero reveal">
+    <p class="chip-row">
+      <span class="chip hot">💬 模块二 · 开始用 AI</span>
+      <span class="chip">⏱ 约 12 分钟</span>
+      <span class="chip">💬 模拟聊天</span>
+      <span class="chip">🧠 1 个小测验</span>
+    </p>
+    <h1>第一次跟 AI 聊天</h1>
+    <p class="lesson-lead">上一课我们知道了它会编、会忘。这一课，正式打开它——光标在闪，第一句到底该说什么？</p>
+  </header>
+
+  <!-- ① 场景导入 -->
+  <section class="scene reveal">
+    <div class="robot">
+      <span class="aibot"></span>
+      <span class="robot-name">小艾</span>
+    </div>
+    <div class="bubble">
+      <p><b>乐乐：</b>小艾小艾，我第一次打开 DeepSeek，光标一直在闪，我该说啥啊？</p>
+      <p><b>小艾：</b>别慌。你就把我当成新来的同事——先打个招呼，再交代事情，就行了。</p>
+      <p><b>乐乐：</b>不用先背一段「咒语」吗？</p>
+      <p><b>小艾：</b>不用。第一句不用漂亮，发出去就赢了一半。</p>
+    </div>
+  </section>
+
+  <!-- ② 核心讲解 -->
+  <section class="block reveal">
+    <h2 class="step"><span>01</span>核心讲解</h2>
+
+    <div class="card hl">
+      <h3>📚 别背咒语，先说人话</h3>
+      <p>很多人卡在第一句，以为要会什么神秘口令。其实你说人话就行。</p>
+      <p>比如：「你好，我儿子开学六年级，帮我做一份暑假计划，每天学习 2 小时，还要留出玩的时间。」</p>
+      <p>这句话不完美，但已经有三样东西：<b class="hl-text">你是谁、你要什么、给谁用</b>。对 AI 来说，这比任何咒语都管用。</p>
+    </div>
+
+    <div class="card accent">
+      <h3>🧭 界面上，其实就这几个按钮</h3>
+      <p><b>输入框 + 发送</b>：说话的地方。</p>
+      <p><b>＋ 新对话</b>：重新开一局，它会忘掉刚才聊的（第 4 课说过，它没有长期记忆）。</p>
+      <p><b>联网搜索</b>：让它去查最新的事，比如今天的新闻、政策、价格。</p>
+      <p><b>深度思考</b>：难题让它多想一会儿，简单问题不用开。</p>
+      <p><b>附件</b>：传图片、PDF、表格，它能读（第 9 课细讲）。</p>
+      <p><b>复制 / 重新生成 / 停止</b>：不满意就重来，不用客气。</p>
+      <p>一句话：<b class="hl-text">按钮按不坏，多点两下就会了。</b></p>
+    </div>
+
+    <div class="card sun">
+      <h3>🔁 聊天不是一问一答，是「接着聊」</h3>
+      <p>它记得<b>这一局</b>里你前面说过的话，这叫 <span class="term" data-tip="<b>多轮对话</b>：你一句、它一句，它能记住这一局里前面聊过的内容。但一开新对话，它就全忘了。">多轮对话</span>。</p>
+      <p>所以不用每次重复背景，直接说：「再短一点」「第二条展开」「换成给小学生讲的语气」「举一个我身边的例子」。</p>
+      <p><b>追问，才是 AI 真正好用的地方。</b>第一版不理想太正常了，好答案都是聊出来的。</p>
+    </div>
+
+    <div class="card">
+      <h3>🛡️ 第一次聊天的三条安全线</h3>
+      <p><b>不发</b>身份证、银行卡、密码、验证码。</p>
+      <p><b>不发</b>别人的隐私：照片、电话、住址、聊天记录。</p>
+      <p><b>先核实</b>它说的重要信息，尤其是数字、人名、出处。</p>
+      <p>记住：你是在跟一个「很会说话、但没有常识」的新同事合作。</p>
+    </div>
+  </section>
+
+  <!-- ③ 互动 -->
+  <section class="block reveal">
+    <h2 class="step"><span>02</span>动手玩一玩</h2>
+    <div class="game-card" id="chat-sim"></div>
+    <p class="game-tip">这是模拟窗口，不会真的联网。点下面的句子发送，走完「开口 → 追问 → 开新局」三步。</p>
+  </section>
+
+  <!-- ④ 小测验 -->
+  <section class="block reveal">
+    <h2 class="step"><span>03</span>小测验</h2>
+    <div class="quiz">
+      <div class="q">
+        <p class="q-text">1. 第一次打开 AI，最合适的第一句是？</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 先背一段网上的「万能咒语」</button>
+          <button class="opt" data-correct="true">B. 像跟同事交代事情一样，说清楚你要什么</button>
+          <button class="opt" data-correct="false">C. 只发一个「你好」，等它猜</button>
+        </div>
+        <p class="explain" hidden>解析：它不是你肚子里的蛔虫。说清楚「你是谁、要什么、给谁用」，比任何咒语都管用。</p>
+      </div>
+      <div class="q">
+        <p class="q-text">2. 点「＋ 新对话」会发生什么？</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 它会记住更多内容</button>
+          <button class="opt" data-correct="true">B. 重新开一局，它会忘掉刚才聊的内容</button>
+          <button class="opt" data-correct="false">C. 它会自动帮你写总结</button>
+        </div>
+        <p class="explain" hidden>解析：新对话 = 初次见面。重要背景要重新交代，这也是它「没有记忆」的表现。</p>
+      </div>
+      <div class="q">
+        <p class="q-text">3. 判断：同一局聊天里，每问一句都要把背景重新说一遍。</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 对</button>
+          <button class="opt" data-correct="true">B. 错</button>
+        </div>
+        <p class="explain" hidden>解析：同一局里它记得上下文，直接追问就行；只有开了新对话，才需要重新交代背景。</p>
+      </div>
+      <p class="quiz-score" hidden></p>
+    </div>
+  </section>
+
+  <!-- ⑤ 金句 -->
+  <section class="block reveal">
+    <h2 class="step"><span>04</span>一句话记住这节课</h2>
+    <div class="quote-card">
+      <p>不用背咒语，把它当新同事：<br>说清楚你是谁、要什么、给谁用。</p>
+      <p class="quote-sub">第一句不用漂亮，发出去就赢了一半。</p>
+    </div>
+  </section>
+
+  <!-- ⑥ 今天试一件事 -->
+  <section class="block reveal">
+    <h2 class="step"><span>05</span>今天试一件事</h2>
+    <ul class="actions">
+      <li><span class="box"></span><span class="txt">打开 DeepSeek（或豆包），发出你的第一句——哪怕只是「你好，帮我写一句生日祝福」</span></li>
+      <li><span class="box"></span><span class="txt">试着追问一句：「再短一点」或「换个更轻松的语气」</span></li>
+      <li><span class="box"></span><span class="txt">点一次「＋ 新对话」，感受它「失忆」的样子</span></li>
+    </ul>
+    <button id="btn-complete" class="btn btn-primary">✅ 完成本课打卡</button>
+  </section>
+
+  <!-- ⑦ 导航 -->
+  <nav class="lesson-nav reveal" id="lesson-nav"></nav>
+
+</main>
+
+<footer class="footer">
+  <p>《人人 AI 通识课》 · 新时代的工具，动手去用</p>
+</footer>
+
+<script src="../assets/js/course-data.js"></script>
+<script src="../assets/js/components.js"></script>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

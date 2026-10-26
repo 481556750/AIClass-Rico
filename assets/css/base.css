@@ -579,6 +579,84 @@ em{font-style:normal}
 .check-line[disabled]{cursor:default;opacity:1;color:var(--ink)}
 .check-line .cl-why{display:block;margin-top:6px;font-size:.8rem;color:var(--ink-2)}
 
+/* ---------- 模拟聊天（第 5 课） ---------- */
+.chat-tasks{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.task-chip{font-size:.75rem;font-weight:700;padding:5px 10px;border-radius:99px;background:var(--bg-soft);color:var(--ink-3);border:1px solid var(--line)}
+.task-chip.on{background:var(--ok-bg);color:#0F9D6B;border-color:var(--ok-line)}
+[data-theme="dark"] .task-chip.on{color:#7FE0C4}
+.chat-window{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--bg-card);box-shadow:var(--shadow)}
+.chat-head{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--bg-soft);border-bottom:1px solid var(--line);font-size:.85rem}
+.chat-logo{width:26px;height:26px;border-radius:50%;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.8rem}
+.chat-head b{font-size:.86rem}
+.chat-new{margin-left:auto;font-size:.75rem;font-weight:700;color:var(--brand);background:var(--bg-card);border:1px solid var(--line);border-radius:99px;padding:5px 10px;transition:border-color .15s,box-shadow .15s}
+.chat-new:hover{border-color:var(--brand-2)}
+.chat-new.pulse{animation:chatPulse 1.6s infinite;border-color:var(--brand-2)}
+@keyframes chatPulse{0%,100%{box-shadow:0 0 0 0 rgba(109,90,230,.25)}50%{box-shadow:0 0 0 6px rgba(109,90,230,0)}}
+.chat-log{height:380px;overflow-y:auto;padding:16px 14px;display:flex;flex-direction:column;gap:10px;background:var(--bg-card);scroll-behavior:smooth}
+.chat-empty{margin:auto;text-align:center;color:var(--ink-3);font-size:.85rem;line-height:1.7}
+.chat-empty .ce-emoji{font-size:1.8rem;display:block;margin-bottom:4px}
+.chat-sys{align-self:center;font-size:.72rem;color:var(--ink-3);background:var(--bg-soft);padding:5px 12px;border-radius:99px;text-align:center}
+.msg{display:flex;gap:8px;max-width:88%}
+.msg.ai{align-self:flex-start}
+.msg.user{align-self:flex-end;justify-content:flex-end}
+.msg-avatar{flex:0 0 28px;width:28px;height:28px;border-radius:50%;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800}
+.msg-bubble{padding:10px 13px;border-radius:14px;font-size:.87rem;line-height:1.65;word-break:break-word}
+.msg.ai .msg-bubble{background:var(--bg-soft);border-top-left-radius:4px}
+.msg.user .msg-bubble{background:var(--brand);color:#fff;border-top-right-radius:4px}
+.msg-bubble.typing{display:flex;gap:4px;align-items:center;padding:14px 16px}
+.msg-bubble.typing i{width:6px;height:6px;border-radius:50%;background:var(--ink-3);animation:typingDot 1s infinite}
+.msg-bubble.typing i:nth-child(2){animation-delay:.15s}
+.msg-bubble.typing i:nth-child(3){animation-delay:.3s}
+@keyframes typingDot{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+.chat-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;min-height:34px}
+.chat-chip{border:1px solid var(--line);background:var(--bg-soft);border-radius:99px;padding:8px 14px;font-size:.82rem;font-weight:600;text-align:left;transition:transform .15s,border-color .15s,background .15s}
+.chat-chip:hover{border-color:var(--brand-2);background:var(--bg-card);transform:translateY(-1px)}
+.chat-chip.ghost{color:var(--ink-3);border-style:dashed}
+.chat-wait{font-size:.8rem;color:var(--ink-3);align-self:center}
+.chat-summary{margin-top:14px}
+.chat-again{margin-top:10px}
+
+/* ---------- 提示词积木（第 6 课） ---------- */
+.pl-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pl-label{font-size:.74rem;font-weight:800;color:var(--ink-3);letter-spacing:.05em;margin-bottom:6px}
+.pl-label .pl-stars{margin-left:6px}
+.pl-prompt{background:var(--bg-soft);border:1px dashed var(--line);border-radius:var(--radius-sm);padding:14px;font-size:.85rem;line-height:1.7;min-height:92px}
+.pl-line{display:block}
+.pl-line+.pl-line{margin-top:6px;color:var(--brand);font-weight:600}
+.pl-line.base{font-weight:800}
+.pl-blocks{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.pl-block{display:flex;align-items:center;gap:10px;text-align:left;border:1px solid var(--line);background:var(--bg-card);border-radius:10px;padding:10px 12px;transition:transform .15s,border-color .15s,background .15s}
+.pl-block:hover{border-color:var(--brand-2);transform:translateY(-1px)}
+.pl-block .pb-emoji{font-size:1.2rem}
+.pl-block .pb-body{flex:1}
+.pl-block .pb-body b{display:block;font-size:.84rem}
+.pl-block .pb-body small{display:block;font-size:.71rem;color:var(--ink-3);margin-top:1px}
+.pl-block .pb-state{font-size:.95rem;color:var(--ink-3);font-weight:800}
+.pl-block.on{border-color:var(--ok-line);background:var(--ok-bg)}
+.pl-block.on .pb-state{color:var(--green)}
+.pl-meter{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:.75rem;color:var(--ink-3)}
+.pl-bar{flex:1;height:8px;border-radius:99px;background:var(--bg-soft);border:1px solid var(--line);overflow:hidden}
+.pl-bar i{display:block;height:100%;background:var(--grad);transition:width .4s}
+.pl-meter b{color:var(--ink-2)}
+.pl-right{display:flex;flex-direction:column}
+.pl-output{flex:1;background:var(--bg-soft);border:1px solid var(--line);border-radius:var(--radius-sm);padding:14px;font-size:.85rem;line-height:1.75;min-height:180px;animation:fadeUp .35s}
+.pl-output.best{border-color:var(--ok-line);background:var(--ok-bg)}
+.pl-output p+p{margin-top:8px}
+.pl-out-tag{display:inline-block;font-size:.69rem;font-weight:800;padding:2px 8px;border-radius:99px;background:var(--bg-card);border:1px solid var(--line);margin-bottom:8px;color:var(--ink-2)}
+.pl-stars{color:var(--sun);font-size:.85rem;letter-spacing:1px;font-weight:400}
+
+/* ---------- 改稿台（第 7 课） ---------- */
+.edit-mail{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.edit-line{display:block;width:100%;text-align:left;border:1px solid var(--line);background:var(--bg-soft);border-radius:10px;padding:13px 15px;font-size:.92rem;transition:transform .15s,border-color .15s,background .15s}
+.edit-line:hover{border-color:var(--brand-2);transform:translateY(-1px)}
+.edit-line .el-before{display:block;color:var(--ink-2)}
+.edit-line .el-hint{display:block;font-size:.73rem;color:var(--brand);font-weight:700;margin-top:5px}
+.edit-line.done{background:var(--ok-bg);border-color:var(--ok-line);cursor:default}
+.edit-line.done .el-after{display:block;font-weight:700}
+.edit-line.done .edit-why{display:block;font-size:.78rem;color:var(--ink-2);margin-top:6px;line-height:1.6}
+.edit-final .edit-mail-final{margin:8px 0;padding:12px 14px;background:var(--bg-card);border-radius:8px;border:1px solid var(--line)}
+.edit-final .edit-mail-final p+p{margin-top:8px}
+
 /* ---------- 徽章（首页） ---------- */
 .badges{margin:6px 0 36px}
 .badge-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
@@ -626,4 +704,8 @@ em{font-style:normal}
   .lesson-card .l-emoji{order:1}
   .lesson-card .l-status{order:2;margin-left:auto}
   .lesson-card .l-body{order:3;flex:1 1 100%}
+  .pl-grid{grid-template-columns:1fr}
+  .chat-log{height:300px}
+  .msg{max-width:94%}
+  .pl-output{min-height:auto}
 }

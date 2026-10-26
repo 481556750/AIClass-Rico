@@ -25,9 +25,9 @@ const COURSE = {
     {
       id: "m2", emoji: "🛠️", name: "模块二 · 开始用 AI（DeepSeek 从入门到顺手）",
       lessons: [
-        { id: "05", emoji: "💬", title: "第一次跟 AI 聊天", minutes: 12, desc: "界面按钮 · 模拟演练", ready: false },
-        { id: "06", emoji: "🔑", title: "提问的艺术：提示词万能公式 ★", minutes: 15, desc: "提示词积木 · 对比实验", ready: false },
-        { id: "07", emoji: "✍️", title: "让 AI 当你的笔杆子", minutes: 12, desc: "邮件 · 总结 · 文案", ready: false },
+        { id: "05", file: "lessons/lesson-05.html", emoji: "💬", title: "第一次跟 AI 聊天", minutes: 12, desc: "界面按钮 · 模拟演练", ready: true },
+        { id: "06", file: "lessons/lesson-06.html", emoji: "🔑", title: "提问的艺术：提示词万能公式 ★", minutes: 15, desc: "提示词积木 · 对比实验", ready: true },
+        { id: "07", file: "lessons/lesson-07.html", emoji: "✍️", title: "让 AI 当你的笔杆子", minutes: 12, desc: "邮件 · 总结 · 文案", ready: true },
         { id: "08", emoji: "👩‍🏫", title: "让 AI 当你的家庭教师", minutes: 12, desc: "出题机 · 翻译陪练", ready: false },
         { id: "09", emoji: "📷", title: "拍照、上传、做表", minutes: 12, desc: "读文件 · 整理表格", ready: false },
         { id: "10", emoji: "🍜", title: "生活里的 AI 搭子", minutes: 12, desc: "菜谱 · 攻略 · 带娃", ready: false },

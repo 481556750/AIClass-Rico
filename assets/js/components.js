@@ -542,6 +542,398 @@
     render();
   }
 
+  /* ================= 模拟聊天（第 5 课） ================= */
+  const CHAT_SCENARIOS = [
+    {
+      id: "plan",
+      chip: "帮乐乐做个暑假计划",
+      user: "你好，我儿子开学六年级，帮我做一份暑假计划，每天学习 2 小时，还要留出玩的时间。",
+      ai: "好呀！先给你一个「每天 2 小时」的轻量版框架：\n\n上午 9:00–10:00 学习（数学、语文交替）\n下午 4:00–5:00 阅读或兴趣\n晚上 自由玩，睡前 20 分钟复盘\n\n每周留一天完全不学习。要不要我按周排成一张表？",
+      follow: [
+        { chip: "再短一点", ai: "精简版：每天 2 小时，上午学习、下午阅读，每周留一天放空。先跑一周，不合适再调。" },
+        { chip: "排成表格", ai: "周一至周五：\n9:00–10:00 数学 / 语文\n16:00–17:00 阅读 / 兴趣\n20:30–20:50 复盘\n\n周六：自由活动\n周日：完全不学习" }
+      ]
+    },
+    {
+      id: "shop",
+      chip: "帮王阿姨写新品介绍",
+      user: "我开水果店，新到了一批阳光玫瑰葡萄，帮我写一段发朋友圈的介绍，要接地气。",
+      ai: "【新到阳光玫瑰】\n皮薄、脆甜、带一点玫瑰香，咬下去「咔嚓」一声。\n今早刚到店，颗颗现挑，不甜不要钱。\n小区门口「王阿姨水果店」，下午 5 点前到店还能试吃～",
+      follow: [
+        { chip: "再短一点", ai: "【阳光玫瑰到货】脆甜带玫瑰香，今早刚到，不甜不要钱。小区门口王阿姨水果店，5 点前可试吃。" },
+        { chip: "加一句促销", ai: "【阳光玫瑰到货】脆甜带玫瑰香，今早刚到，不甜不要钱。\n前 20 位买两斤送半斤，小区门口王阿姨水果店，5 点前可试吃～" }
+      ]
+    },
+    {
+      id: "study",
+      chip: "帮小雨解释一个概念",
+      user: "我是大学生，用最简单的话给我讲讲什么是「机会成本」，最好举一个我身边的例子。",
+      ai: "机会成本 = 你选了 A，就放弃了 B，B 就是你选 A 的代价。\n\n比如今晚你有 3 小时：去兼职能赚 60 块，去图书馆能复习完一章。你选了复习，那 60 块就是你的机会成本。\n\n一句话：真正的成本，是你没选的那个选项。",
+      follow: [
+        { chip: "举个更生活的例子", ai: "比如周末只有一下午：去看电影 = 放弃复习一章；复习 = 放弃那场电影。被放弃的那个，就是机会成本。" },
+        { chip: "一句话总结", ai: "你选了什么，另一个选项就是代价。" }
+      ]
+    }
+  ];
+
+  function initChatSim(el) {
+    const tasks = { first: false, follow: false, fresh: false };
+    let scenario = null;
+    let busy = false;
+    let log = [];
+    let used = new Set();
+
+    function taskChip(on, text) {
+      return '<span class="task-chip' + (on ? " on" : "") + '">' + (on ? "✓ " : "") + text + '</span>';
+    }
+
+    function esc(t) {
+      return t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br>");
+    }
+
+    function logHtml() {
+      if (!log.length && !busy) {
+        return '<div class="chat-empty"><span class="ce-emoji">💬</span>' +
+          '<p>这是小艾的模拟聊天窗口。<br>从下面挑一句，发出去试试。</p></div>';
+      }
+      const msgs = log.map(m => {
+        if (m.role === "sys") return '<div class="chat-sys">' + esc(m.text) + '</div>';
+        if (m.role === "user") return '<div class="msg user"><div class="msg-bubble">' + esc(m.text) + '</div></div>';
+        return '<div class="msg ai"><span class="msg-avatar">艾</span><div class="msg-bubble">' + esc(m.text) + '</div></div>';
+      }).join("");
+      const typing = busy
+        ? '<div class="msg ai"><span class="msg-avatar">艾</span><div class="msg-bubble typing"><i></i><i></i><i></i></div></div>'
+        : "";
+      return msgs + typing;
+    }
+
+    function chipsHtml() {
+      if (busy) return '<span class="chat-wait">小艾正在输入…</span>';
+      if (!scenario) {
+        return CHAT_SCENARIOS.map((s, i) =>
+          '<button class="chat-chip" data-s="' + i + '">' + s.chip + '</button>'
+        ).join("");
+      }
+      const rest = scenario.follow.map((f, i) => ({ f: f, i: i })).filter(x => !used.has(x.i));
+      if (!rest.length) {
+        return '<span class="chat-wait">示例追问用完了，点上面的「＋ 新对话」试试 →</span>';
+      }
+      return rest.map(x =>
+        '<button class="chat-chip" data-f="' + x.i + '">' + x.f.chip + '</button>'
+      ).join("") +
+        '<button class="chat-chip ghost" data-new="1">换个话题</button>';
+    }
+
+    function summaryHtml() {
+      return '<div class="train-verdict chat-summary">' +
+        '<b>演练完成 🎉</b> 你刚刚做了三件事：开口、追问、开新局。' +
+        '<br>现实里的日常用法，90% 也就是这三步。' +
+        '<div class="chat-again"><button class="btn btn-ghost js-again">再练一次 ↻</button></div>' +
+      '</div>';
+    }
+
+    function render() {
+      const done = ["first", "follow", "fresh"].filter(k => tasks[k]).length;
+      el.innerHTML =
+        '<div class="guess-round-tag">模拟聊天 · 任务 ' + done + ' / 3</div>' +
+        '<div class="chat-tasks">' +
+          taskChip(tasks.first, "① 发出第一句") +
+          taskChip(tasks.follow, "② 追问一句") +
+          taskChip(tasks.fresh, "③ 开一次新对话") +
+        '</div>' +
+        '<div class="chat-window">' +
+          '<div class="chat-head">' +
+            '<span class="chat-logo">艾</span><b>小艾 · 模拟对话</b>' +
+            '<button class="chat-new' + (scenario && tasks.follow && !tasks.fresh ? " pulse" : "") + '" data-new="1">＋ 新对话</button>' +
+          '</div>' +
+          '<div class="chat-log" aria-live="polite">' + logHtml() + '</div>' +
+        '</div>' +
+        '<div class="chat-chips">' + chipsHtml() + '</div>' +
+        (done === 3 ? summaryHtml() : "");
+      const lg = el.querySelector(".chat-log");
+      if (lg) lg.scrollTop = lg.scrollHeight;
+      bind();
+    }
+
+    function bind() {
+      Array.from(el.querySelectorAll("[data-s]")).forEach(btn => {
+        btn.addEventListener("click", () => sendScenario(parseInt(btn.dataset.s, 10)));
+      });
+      Array.from(el.querySelectorAll("[data-f]")).forEach(btn => {
+        btn.addEventListener("click", () => sendFollow(parseInt(btn.dataset.f, 10)));
+      });
+      Array.from(el.querySelectorAll("[data-new]")).forEach(btn => {
+        btn.addEventListener("click", newChat);
+      });
+      const again = el.querySelector(".js-again");
+      if (again) again.addEventListener("click", reset);
+    }
+
+    function sendScenario(i) {
+      if (busy) return;
+      scenario = CHAT_SCENARIOS[i];
+      used = new Set();
+      tasks.first = true;
+      log = [{ role: "user", text: scenario.user }];
+      busy = true;
+      render();
+      setTimeout(() => {
+        log.push({ role: "ai", text: scenario.ai });
+        busy = false;
+        render();
+      }, 700);
+    }
+
+    function sendFollow(i) {
+      if (busy || !scenario) return;
+      const f = scenario.follow[i];
+      if (!f || used.has(i)) return;
+      used.add(i);
+      tasks.follow = true;
+      log.push({ role: "user", text: f.chip });
+      busy = true;
+      render();
+      setTimeout(() => {
+        log.push({ role: "ai", text: f.ai });
+        busy = false;
+        render();
+      }, 600);
+    }
+
+    function newChat() {
+      if (busy) return;
+      scenario = null;
+      used = new Set();
+      tasks.fresh = true;
+      log = [{ role: "sys", text: "新对话已开始 · 它不记得刚才聊过什么了" }];
+      render();
+    }
+
+    function reset() {
+      tasks.first = false; tasks.follow = false; tasks.fresh = false;
+      scenario = null; busy = false; log = []; used = new Set();
+      render();
+    }
+
+    render();
+  }
+
+  /* ================= 提示词积木（第 6 课） ================= */
+  const PROMPT_BASE = "帮我写一段自我介绍。";
+  const PROMPT_BLOCKS = [
+    { key: "role", emoji: "🎭", name: "角色", text: "你是一位有 10 年经验的 HR，看过上万份简历。", hint: "告诉它「以谁的身份」来写" },
+    { key: "bg", emoji: "📋", name: "背景", text: "我是应届生，应聘新媒体运营；做过校园公众号，从 0 做到 3000 粉。", hint: "把你的具体情况交代清楚" },
+    { key: "req", emoji: "📏", name: "要求", text: "写成 3 段，每段不超过 2 行；语气自信但不吹牛；不要用「精通」这种词。", hint: "长度、语气、禁忌都能提" },
+    { key: "demo", emoji: "💡", name: "示例", text: "开头可以像这样：「我把一个 300 人的校园号做到 3000 粉，靠的不是运气。」", hint: "给它一个「照着写」的样本" }
+  ];
+  const PROMPT_LEVELS = [
+    { stars: 1, label: "空话连篇" },
+    { stars: 2, label: "有点像样" },
+    { stars: 3, label: "开始具体" },
+    { stars: 4, label: "接近可用" },
+    { stars: 5, label: "直接能用" }
+  ];
+
+  function initPromptLab(el) {
+    const active = new Set();
+
+    function stars(n) {
+      return "★".repeat(n) + "☆".repeat(5 - n);
+    }
+
+    function compose() {
+      const has = k => active.has(k);
+      let head = has("bg")
+        ? "你好，我是应届生，应聘新媒体运营。"
+        : "你好，我想应聘贵公司的岗位。";
+      if (has("demo")) {
+        head = (has("bg") ? "你好，我是应届生，应聘新媒体运营。" : "") +
+          "我把一个 300 人的校园号做到 3000 粉，靠的不是运气。";
+      }
+      if (has("role")) head += "我知道 HR 看一份简历只有十几秒，所以先说重点。";
+
+      let body = "";
+      if (has("bg")) {
+        body = has("demo")
+          ? "选题、排版、数据复盘都由我独立完成，最高一篇阅读 8000+。"
+          : "我运营过一个 300 人的校园公众号，一年做到 3000 粉，最高一篇阅读 8000+；选题、排版、数据复盘都由我独立完成。";
+      }
+
+      let attitude = "";
+      if (has("req") && has("role")) attitude = "我不算天才，但交得出作品和数据；也不喜欢用「精通」这种词。";
+      else if (has("req")) attitude = "我不算天才，但交得出作品和数据。";
+      else if (has("role")) attitude = "我相信作品和数据，比形容词更有说服力。";
+
+      const close = has("req")
+        ? "期待和您聊聊。"
+        : "我性格开朗，善于沟通，希望能得到这个宝贵的机会。";
+
+      if (has("req")) {
+        const paras = [head];
+        const mid = [body, attitude].filter(Boolean).join("");
+        if (mid) paras.push(mid);
+        paras.push(close);
+        return paras;
+      }
+      return [[head, body, attitude, close].filter(Boolean).join("")];
+    }
+
+    function buildPrompt() {
+      const parts = [PROMPT_BASE];
+      PROMPT_BLOCKS.forEach(b => { if (active.has(b.key)) parts.push(b.text); });
+      return parts.join("\n");
+    }
+
+    function copyPrompt() {
+      const text = buildPrompt();
+      function done() {
+        window.dispatchEvent(new CustomEvent("aic-toast", { detail: "✅ 提示词已复制，去真实工具里试试" }));
+      }
+      function fallback() {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand("copy"); done(); }
+        catch (e) { window.dispatchEvent(new CustomEvent("aic-toast", { detail: "复制失败，请手动选中提示词" })); }
+        document.body.removeChild(ta);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(fallback);
+      } else {
+        fallback();
+      }
+    }
+
+    function render() {
+      const t = PROMPT_LEVELS[active.size];
+      const pct = Math.round(active.size / PROMPT_BLOCKS.length * 100);
+      const paras = compose();
+      el.innerHTML =
+        '<div class="guess-round-tag">提示词实验室 · 点积木，看输出变化</div>' +
+        '<p class="train-lead">同一个任务，只差「说清楚」。点下面的积木，把它加进提示词。</p>' +
+        '<div class="pl-grid">' +
+          '<div class="pl-left">' +
+            '<div class="pl-label">你的提示词</div>' +
+            '<div class="pl-prompt">' +
+              '<span class="pl-line base">' + PROMPT_BASE + '</span>' +
+              PROMPT_BLOCKS.filter(b => active.has(b.key)).map(b =>
+                '<span class="pl-line">＋ ' + b.text + '</span>'
+              ).join("") +
+            '</div>' +
+            '<div class="pl-blocks">' +
+              PROMPT_BLOCKS.map(b =>
+                '<button class="pl-block' + (active.has(b.key) ? " on" : "") + '" data-k="' + b.key + '">' +
+                  '<span class="pb-emoji">' + b.emoji + '</span>' +
+                  '<span class="pb-body"><b>' + b.name + '</b><small>' + b.hint + '</small></span>' +
+                  '<span class="pb-state">' + (active.has(b.key) ? "✓" : "＋") + '</span>' +
+                '</button>'
+              ).join("") +
+            '</div>' +
+            '<div class="pl-meter"><span>具体度</span><div class="pl-bar"><i style="width:' + pct + '%"></i></div><b>' + pct + '%</b></div>' +
+          '</div>' +
+          '<div class="pl-right">' +
+            '<div class="pl-label">小艾的输出 <span class="pl-stars">' + stars(t.stars) + '</span></div>' +
+            '<div class="pl-output' + (active.size === PROMPT_BLOCKS.length ? " best" : "") + '" aria-live="polite">' +
+              '<span class="pl-out-tag">' + t.label + '</span>' +
+              paras.map(p => '<p>' + p + '</p>').join("") +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="guess-foot">' +
+          '<span class="guess-score">' + (active.size === PROMPT_BLOCKS.length
+            ? "集齐了：角色 + 背景 + 要求 + 示例，你已经会写提示词了。"
+            : "至少加 3 块，看看差别有多大。") + '</span>' +
+          '<button class="btn btn-ghost js-copy">复制提示词</button>' +
+        '</div>';
+      Array.from(el.querySelectorAll(".pl-block")).forEach(btn => {
+        btn.addEventListener("click", () => {
+          const k = btn.dataset.k;
+          if (active.has(k)) active.delete(k); else active.add(k);
+          render();
+        });
+      });
+      el.querySelector(".js-copy").addEventListener("click", copyPrompt);
+    }
+
+    render();
+  }
+
+  /* ================= 改稿台（第 7 课） ================= */
+  const EDIT_LINES = [
+    {
+      before: "尊敬的领导：您好！",
+      after: "王哥，晚上好：",
+      why: "称呼改成平时怎么叫就怎么叫。太客气反而生分，也像群发的模板。"
+    },
+    {
+      before: "因个人原因，特此请假一天，望批准。",
+      after: "明天上午我得带孩子去趟医院，下午 2 点前回来。",
+      why: "「个人原因」等于没说。具体事由 + 回来的时间，领导才好安排。"
+    },
+    {
+      before: "手上的工作已妥善安排，请放心。",
+      after: "上午的会我请小李代我参加，材料已经发他了；急事可以打我电话。",
+      why: "「妥善安排」是空话。说清楚谁接手、材料在哪，才叫真的安排好了。"
+    },
+    {
+      before: "此致敬礼！",
+      after: "谢谢王哥！",
+      why: "结尾不用公文腔，一句谢谢更像你本人。"
+    }
+  ];
+
+  function initEditor(el) {
+    const fixed = new Set();
+
+    function render() {
+      const allDone = fixed.size === EDIT_LINES.length;
+      el.innerHTML =
+        '<div class="guess-round-tag">改稿台 · 已改 ' + fixed.size + ' / ' + EDIT_LINES.length + ' 句</div>' +
+        '<p class="train-lead">这是 AI 给阿杰写的请假邮件初稿。点每一句，把它改成「像阿杰本人」的话。</p>' +
+        '<div class="edit-mail">' +
+          EDIT_LINES.map((l, i) => fixed.has(i)
+            ? '<div class="edit-line done">' +
+                '<span class="el-after">' + l.after + '</span>' +
+                '<span class="edit-why">✓ ' + l.why + '</span>' +
+              '</div>'
+            : '<button class="edit-line" data-i="' + i + '">' +
+                '<span class="el-before">' + l.before + '</span>' +
+                '<span class="el-hint">点一下，改成人话 →</span>' +
+              '</button>'
+          ).join("") +
+        '</div>' +
+        (allDone
+          ? '<div class="train-verdict edit-final">' +
+              '<b>这就是定稿：</b>' +
+              '<div class="edit-mail-final">' +
+                EDIT_LINES.map(l => '<p>' + l.after + '</p>').join("") +
+              '</div>' +
+              '<span class="tiny">同一件事，换个说法，就从「模板」变成了「本人」。AI 写初稿，你当主编。</span>' +
+            '</div>' +
+            '<div class="guess-foot">' +
+              '<span class="guess-score">4 句全改完，这封邮件像阿杰自己写的了。</span>' +
+              '<button class="btn btn-ghost js-again">再改一次 ↻</button>' +
+            '</div>'
+          : '<div class="guess-foot">' +
+              '<span class="guess-score">还剩 ' + (EDIT_LINES.length - fixed.size) + ' 句等你动笔。</span>' +
+            '</div>')
+        ;
+      Array.from(el.querySelectorAll(".edit-line[data-i]")).forEach(btn => {
+        btn.addEventListener("click", () => {
+          fixed.add(parseInt(btn.dataset.i, 10));
+          render();
+        });
+      });
+      const again = el.querySelector(".js-again");
+      if (again) again.addEventListener("click", () => { fixed.clear(); render(); });
+    }
+
+    render();
+  }
+
   /* ================= 自动挂载 ================= */
   document.addEventListener("DOMContentLoaded", function () {
     Array.from(document.querySelectorAll(".quiz")).forEach(initQuiz);
@@ -555,5 +947,11 @@
     if (so) initSorter(so);
     const ck = document.getElementById("checker");
     if (ck) initChecker(ck);
+    const cs = document.getElementById("chat-sim");
+    if (cs) initChatSim(cs);
+    const pl = document.getElementById("prompt-lab");
+    if (pl) initPromptLab(pl);
+    const ed = document.getElementById("editor");
+    if (ed) initEditor(ed);
   });
 })();

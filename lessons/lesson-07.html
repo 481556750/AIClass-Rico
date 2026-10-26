@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 7 课 · 让 AI 当你的笔杆子 | 人人 AI 通识课</title>
+<link rel="stylesheet" href="../assets/css/base.css">
+</head>
+<body class="lesson" data-page="lesson" data-lesson="07">
+
+<header class="topbar">
+  <a class="brand" href="../index.html"><span class="aibot"></span><span>人人 AI 通识课</span></a>
+  <div class="tools">
+    <button class="tool-btn" id="font-toggle" title="调整字号">A</button>
+    <button class="tool-btn" id="theme-toggle" title="深色模式">🌙</button>
+  </div>
+</header>
+
+<div class="courseline">
+  <div class="progress"><i class="js-course-progress"></i></div>
+  <span class="count js-course-count">全课进度 0 / 21</span>
+</div>
+
+<main class="container lesson-wrap">
+
+  <!-- 课程头 -->
+  <header class="lesson-hero reveal">
+    <p class="chip-row">
+      <span class="chip hot">✍️ 模块二 · 开始用 AI</span>
+      <span class="chip">⏱ 约 12 分钟</span>
+      <span class="chip">📝 改稿台</span>
+      <span class="chip">🧠 1 个小测验</span>
+    </p>
+    <h1>让 AI 当你的<br>笔杆子</h1>
+    <p class="lesson-lead">会问之后，这一课让它替你写：邮件、总结、文案、朋友圈。但记住——AI 写初稿，你当主编。</p>
+  </header>
+
+  <!-- ① 场景导入 -->
+  <section class="scene reveal">
+    <div class="robot">
+      <span class="aibot"></span>
+      <span class="robot-name">小艾</span>
+    </div>
+    <div class="bubble">
+      <p><b>阿杰：</b>明天要请假带孩子去医院，晚上 11 点还在憋邮件，改了删、删了改。</p>
+      <p><b>阿杰：</b>AI 十秒就写好了，可我一看——「尊敬的领导，因个人原因……」太假了，发不出去。</p>
+      <p><b>小艾：</b>它写得没错，但不像你。你改两句，就活了。</p>
+    </div>
+  </section>
+
+  <!-- ② 核心讲解 -->
+  <section class="block reveal">
+    <h2 class="step"><span>01</span>核心讲解</h2>
+
+    <div class="card hl">
+      <h3>✍️ 它最擅长「从 0 到 1」</h3>
+      <p>你卡住的是第一句，它最不缺的就是第一句。</p>
+      <p>邮件、通知、总结、文案、朋友圈、道歉信——先让它写个初稿，比你对着空白页发呆强。</p>
+      <p>但「初稿」不是「定稿」。<b class="hl-text">它负责快，你负责像你。</b></p>
+    </div>
+
+    <div class="card accent">
+      <h3>🔍 烂稿和好稿，差在哪</h3>
+      <p><b>烂稿：</b>「尊敬的领导：因个人原因，特此请假一天，望批准。」——像群发的模板。</p>
+      <p><b>好稿：</b>「王哥，明天上午我得带孩子去趟医院，下午 2 点前回来。上午的会我请小李代我参加，材料已经发他了。」</p>
+      <p>差别就三样：<b>具体事由、交接安排、像本人的称呼和语气</b>。</p>
+    </div>
+
+    <div class="card sun">
+      <h3>🧭 三步工作流：给料 → 要两版 → 当主编</h3>
+      <p><b>① 给料</b>：用第 6 课的公式，把背景和要求说清楚。</p>
+      <p><b>② 要两版</b>：加一句「再写一版更口语的」，挑一个底子。</p>
+      <p><b>③ 当主编</b>：改事实、改语气、删空话。<b>发出去之前，每个字都算你的。</b></p>
+      <p>一句话：AI 写初稿，你签个字——签字的人得负责。</p>
+    </div>
+
+    <div class="card">
+      <h3>⚠️ 哪些能让它写，哪些不能</h3>
+      <p><b>放心交给它</b>：通知、总结、祝福、文案初稿、朋友圈。</p>
+      <p><b>必须自己把关</b>：数字、承诺、合同、医疗和法律内容。</p>
+      <p>判断标准很简单：<b>这句话发出去，你愿意为它负责吗？</b></p>
+    </div>
+  </section>
+
+  <!-- ③ 互动 -->
+  <section class="block reveal">
+    <h2 class="step"><span>02</span>动手玩一玩</h2>
+    <div class="game-card" id="editor"></div>
+    <p class="game-tip">同一件事，四句话，从「模板」改成「阿杰本人」。点一句改一句。</p>
+  </section>
+
+  <!-- ④ 小测验 -->
+  <section class="block reveal">
+    <h2 class="step"><span>03</span>小测验</h2>
+    <div class="quiz">
+      <div class="q">
+        <p class="q-text">1. AI 写的请假邮件第一句是「尊敬的领导：因个人原因……」，最该先改什么？</p>
+        <div class="opts">
+          <button class="opt" data-correct="true">A. 换成具体的请假事由和回来的时间</button>
+          <button class="opt" data-correct="false">B. 多加几个「尊敬的」</button>
+          <button class="opt" data-correct="false">C. 整封删掉，自己从头写</button>
+        </div>
+        <p class="explain" hidden>解析：「个人原因」等于没说。具体事由 + 回来时间，领导才好安排工作。</p>
+      </div>
+      <div class="q">
+        <p class="q-text">2. 用 AI 写东西，正确的分工是？</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. AI 写，我直接发</button>
+          <button class="opt" data-correct="true">B. AI 写初稿，我改事实、语气和细节，再发</button>
+          <button class="opt" data-correct="false">C. 我写，AI 一个字都不许碰</button>
+        </div>
+        <p class="explain" hidden>解析：它是笔杆子，不是责任人。发出去的话，最后署名的是你。</p>
+      </div>
+      <div class="q">
+        <p class="q-text">3. 下面哪类内容，AI 写完你必须自己核实？</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 一句生日祝福</button>
+          <button class="opt" data-correct="true">B. 合同金额和医疗建议</button>
+          <button class="opt" data-correct="false">C. 一个笑话</button>
+        </div>
+        <p class="explain" hidden>解析：数字、承诺、专业建议，错了代价很大。AI 可以起草，但核实这一步不能省。</p>
+      </div>
+      <p class="quiz-score" hidden></p>
+    </div>
+  </section>
+
+  <!-- ⑤ 金句 -->
+  <section class="block reveal">
+    <h2 class="step"><span>04</span>一句话记住这节课</h2>
+    <div class="quote-card">
+      <p>AI 写初稿，你当主编；<br>它负责快，你负责像你。</p>
+      <p class="quote-sub">发出去之前，每个字都算你的。</p>
+    </div>
+  </section>
+
+  <!-- ⑥ 今天试一件事 -->
+  <section class="block reveal">
+    <h2 class="step"><span>05</span>今天试一件事</h2>
+    <ul class="actions">
+      <li><span class="box"></span><span class="txt">把明天要发的一条消息交给 AI 写初稿（请假、感谢、通知都行）</span></li>
+      <li><span class="box"></span><span class="txt">用第 6 课的公式补上背景和要求，再要一版「更口语的」</span></li>
+      <li><span class="box"></span><span class="txt">发出前，把不像自己的句子改成你自己的话</span></li>
+    </ul>
+    <button id="btn-complete" class="btn btn-primary">✅ 完成本课打卡</button>
+  </section>
+
+  <!-- ⑦ 导航 -->
+  <nav class="lesson-nav reveal" id="lesson-nav"></nav>
+
+</main>
+
+<footer class="footer">
+  <p>《人人 AI 通识课》 · 新时代的工具，动手去用</p>
+</footer>
+
+<script src="../assets/js/course-data.js"></script>
+<script src="../assets/js/components.js"></script>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>
