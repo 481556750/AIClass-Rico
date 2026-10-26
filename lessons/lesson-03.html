@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 3 课 · AI 家族全家福 | 人人 AI 通识课</title>
+<link rel="stylesheet" href="../assets/css/base.css">
+</head>
+<body class="lesson" data-page="lesson" data-lesson="03">
+
+<header class="topbar">
+  <a class="brand" href="../index.html"><span class="aibot"></span><span>人人 AI 通识课</span></a>
+  <div class="tools">
+    <button class="tool-btn" id="font-toggle" title="调整字号">A</button>
+    <button class="tool-btn" id="theme-toggle" title="深色模式">🌙</button>
+  </div>
+</header>
+
+<div class="courseline">
+  <div class="progress"><i class="js-course-progress"></i></div>
+  <span class="count js-course-count">全课进度 0 / 21</span>
+</div>
+
+<main class="container lesson-wrap">
+
+  <!-- 课程头 -->
+  <header class="lesson-hero reveal">
+    <p class="chip-row">
+      <span class="chip hot">🤔 模块一 · AI 到底是什么</span>
+      <span class="chip">⏱ 约 12 分钟</span>
+      <span class="chip">🃏 分门别类</span>
+      <span class="chip">🧠 1 个小测验</span>
+    </p>
+    <h1>AI 家族<br>全家福</h1>
+    <p class="lesson-lead">「AI 不就是个高级搜索吗？」——这句话，家庭群里至少吵过三回。今天一次讲清楚：谁是谁，该找谁。</p>
+  </header>
+
+  <!-- ① 场景导入 -->
+  <section class="scene reveal">
+    <div class="robot">
+      <span class="aibot"></span>
+      <span class="robot-name">小艾</span>
+    </div>
+    <div class="bubble">
+      <p><b>王阿姨：</b>AI 不就是个高级搜索吗？我查东西用百度就行。</p>
+      <p><b>小艾：</b>阿姨，搜索是「帮你找到已有的」，AI 是「现场给你造一个」。这俩差得可远了。</p>
+      <p><b>王阿姨：</b>那你说说，到底有啥不一样？</p>
+    </div>
+  </section>
+
+  <!-- ② 核心讲解 -->
+  <section class="block reveal">
+    <h2 class="step"><span>01</span>核心讲解</h2>
+
+    <div class="card hl">
+      <h3>👨‍👩‍👧‍👦 三个「工具人」，各干各的</h3>
+      <p><b>🧮 老程序</b>：按写好的规则办事。计算器、红绿灯、微波炉，都是这一类。</p>
+      <p><b>🔍 搜索引擎</b>：把已经存在的网页找给你，还给你出处——它只负责「找」。</p>
+      <p><b>✨ 生成式 AI</b>：现场造一段新的文字、图片、声音、视频——它负责「造」。</p>
+      <p>三者不是谁升级谁，而是<b class="hl-text">不同的工种</b>。你让搜索去写文章，它写不了；让 AI 去查今天天气，它容易瞎编。</p>
+    </div>
+
+    <div class="card accent">
+      <h3>🎨 生成式 AI 这一家子</h3>
+      <p><b>写字</b>：DeepSeek、豆包、Kimi、ChatGPT</p>
+      <p><b>画图</b>：即梦、豆包绘画</p>
+      <p><b>音乐</b>：Suno、海绵音乐</p>
+      <p><b>视频</b>：可灵、即梦</p>
+      <p>名字花里胡哨，本质就一句：<b>它们都是「造东西」的</b>，只是造的东西不一样。</p>
+    </div>
+
+    <div class="card sun">
+      <h3>👀 多模态：能看、能听、能说</h3>
+      <p>拍张照问「这是什么虫子」；发一段语音让它转成文字；传一张表格让它整理。</p>
+      <p>这叫 <span class="term" data-tip="<b>多模态</b>：不只会读文字，还能看图、听声音、看视频。一种 AI 同时会好几种『感官』，就叫多模态。">多模态</span>——不只会读字，还能看图、听声音。</p>
+      <p>所以别把它当成「一个聊天框」：手机拍完照，直接丢给它，也是正经用法。</p>
+    </div>
+
+    <div class="card">
+      <h3>🧭 那到底该找谁？</h3>
+      <p><b>查电话、查天气、查新闻</b> → 搜索（有出处，还是最新的）</p>
+      <p><b>算账、算房贷、换算单位</b> → 计算器 / 表格（不会算错）</p>
+      <p><b>写请假条、起名字、编故事、修图片</b> → 生成式 AI</p>
+      <p>口诀：<b class="hl-text">要现成的用搜索，要新的用 AI，要准的用计算器。</b></p>
+    </div>
+  </section>
+
+  <!-- ③ 互动 -->
+  <section class="block reveal">
+    <h2 class="step"><span>02</span>动手玩一玩</h2>
+    <div class="game-card" id="sorter"></div>
+    <p class="game-tip">八张卡片，三个筐。选错了没关系，每张都有解释。</p>
+  </section>
+
+  <!-- ④ 小测验 -->
+  <section class="block reveal">
+    <h2 class="step"><span>03</span>小测验</h2>
+    <div class="quiz">
+      <div class="q">
+        <p class="q-text">1. 让 AI 帮你写一段婚礼致辞，属于哪一类？</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 搜索</button>
+          <button class="opt" data-correct="true">B. 生成</button>
+          <button class="opt" data-correct="false">C. 计算</button>
+        </div>
+        <p class="explain" hidden>解析：致辞原本不存在，是现场造出来的——这就是「生成」。</p>
+      </div>
+      <div class="q">
+        <p class="q-text">2. 判断：「AI 就是更聪明的搜索。」</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 对</button>
+          <button class="opt" data-correct="true">B. 错</button>
+        </div>
+        <p class="explain" hidden>解析：搜索找「已有的」，AI 造「新的」；搜索给出处，AI 不给。两回事。</p>
+      </div>
+      <div class="q">
+        <p class="q-text">3. 手机相册能「搜猫」，主要靠什么？</p>
+        <div class="opts">
+          <button class="opt" data-correct="true">A. 图像识别（AI）</button>
+          <button class="opt" data-correct="false">B. 有人提前一张张分类</button>
+          <button class="opt" data-correct="false">C. 照片的文件名</button>
+        </div>
+        <p class="explain" hidden>解析：相册里早就用上了图像识别。AI 其实天天在你口袋里，只是你没注意。</p>
+      </div>
+      <p class="quiz-score" hidden></p>
+    </div>
+  </section>
+
+  <!-- ⑤ 金句 -->
+  <section class="block reveal">
+    <h2 class="step"><span>04</span>一句话记住这节课</h2>
+    <div class="quote-card">
+      <p>AI 不是更聪明的搜索，<br>它是会「造东西」的机器。</p>
+      <p class="quote-sub">查、算、造，各找各的行家。</p>
+    </div>
+  </section>
+
+  <!-- ⑥ 今天试一件事 -->
+  <section class="block reveal">
+    <h2 class="step"><span>05</span>今天试一件事</h2>
+    <ul class="actions">
+      <li><span class="box"></span><span class="txt">在手机里找 3 个「其实用了 AI」的功能（相册搜图、语音助手、输入法）</span></li>
+      <li><span class="box"></span><span class="txt">下次查资料前，先想一秒：这个该用搜索还是 AI？</span></li>
+      <li><span class="box"></span><span class="txt">用 AI 生成一句祝福，再用搜索查一句名言，感受一下差别</span></li>
+    </ul>
+    <button id="btn-complete" class="btn btn-primary">✅ 完成本课打卡</button>
+  </section>
+
+  <!-- ⑦ 导航 -->
+  <nav class="lesson-nav reveal" id="lesson-nav"></nav>
+
+</main>
+
+<footer class="footer">
+  <p>《人人 AI 通识课》 · 新时代的工具，动手去用</p>
+</footer>
+
+<script src="../assets/js/course-data.js"></script>
+<script src="../assets/js/components.js"></script>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

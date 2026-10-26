@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 2 课 · AI 是「学」会的，不是「查」出来的 | 人人 AI 通识课</title>
+<link rel="stylesheet" href="../assets/css/base.css">
+</head>
+<body class="lesson" data-page="lesson" data-lesson="02">
+
+<header class="topbar">
+  <a class="brand" href="../index.html"><span class="aibot"></span><span>人人 AI 通识课</span></a>
+  <div class="tools">
+    <button class="tool-btn" id="font-toggle" title="调整字号">A</button>
+    <button class="tool-btn" id="theme-toggle" title="深色模式">🌙</button>
+  </div>
+</header>
+
+<div class="courseline">
+  <div class="progress"><i class="js-course-progress"></i></div>
+  <span class="count js-course-count">全课进度 0 / 21</span>
+</div>
+
+<main class="container lesson-wrap">
+
+  <!-- 课程头 -->
+  <header class="lesson-hero reveal">
+    <p class="chip-row">
+      <span class="chip hot">🤔 模块一 · AI 到底是什么</span>
+      <span class="chip">⏱ 约 12 分钟</span>
+      <span class="chip">🧪 训练实验室</span>
+      <span class="chip">🧠 1 个小测验</span>
+    </p>
+    <h1>AI 是「学」会的<br>不是「查」出来的</h1>
+    <p class="lesson-lead">它为什么能跟你聊唐诗，却不知道你家楼下昨天开了家奶茶店？答案藏在它的「学生时代」里。</p>
+  </header>
+
+  <!-- ① 场景导入 -->
+  <section class="scene reveal">
+    <div class="robot">
+      <span class="aibot"></span>
+      <span class="robot-name">小艾</span>
+    </div>
+    <div class="bubble">
+      <p>昨天你问我「今天有什么新闻」，我答不上来；可你问我唐诗，我倒背如流。</p>
+      <p>是不是很奇怪？其实答案很简单——<b>我上过学，而且早就毕业了</b>。</p>
+    </div>
+  </section>
+
+  <!-- ② 核心讲解 -->
+  <section class="block reveal">
+    <h2 class="step"><span>01</span>核心讲解</h2>
+
+    <div class="card hl">
+      <h3>📚 小艾上过学，只是学校有点特别</h3>
+      <p>它的「上学」叫<b>训练</b>：把海量的书、网页、对话当成教材，一遍遍地读。</p>
+      <p>但它不是在背课文，而是在学一件事——<b class="hl-text">什么样的开头，接什么样的话最像样</b>。</p>
+      <p>这些教材，正式的名字叫 <span class="term" data-tip="<b>训练数据</b>：AI 上学用的『教材』，包括书、网页、图片、对话等等。教材里有什么，它才可能学会什么。">训练数据</span>。教材里没有的，它多半也不会。</p>
+    </div>
+
+    <div class="card accent">
+      <h3>🎓 它有一个「毕业日期」</h3>
+      <p>训练一结束，它的知识就定格了。之后发生的事，它不知道。</p>
+      <p>所以它能跟你聊李白、聊历史，却不知道你小区门口昨天新开的奶茶店——除非你打开「联网搜索」，让它临时去查。</p>
+      <p><b>记住：不联网的 AI，是一个「有毕业日期」的人。</b></p>
+    </div>
+
+    <div class="card sun">
+      <h3>🐈 你教它什么，它就会什么</h3>
+      <p>只给它看白猫的照片，它见到黑猫可能认不出来，甚至硬说成白猫——因为它只学过「猫是白色的」。</p>
+      <p>教材里有偏见，它的答案就有偏见。更麻烦的是：<b>教材标错了，它也照学不误</b>。</p>
+      <p>下面这个实验，你亲手教它一次就明白了。</p>
+    </div>
+
+    <div class="card">
+      <h3>🔍 所以，它真的不是百度</h3>
+      <p><b>百度</b>：柜子里有，就取给你；没有，就说没有，还会给你出处。</p>
+      <p><b>AI</b>：用学过的规律，现场推一个给你。推得对不对，它自己也不知道。</p>
+      <p>这就是为什么同一个问题问两遍，答案可能不一样——下一课我们细讲它是怎么「推」的。</p>
+    </div>
+  </section>
+
+  <!-- ③ 互动 -->
+  <section class="block reveal">
+    <h2 class="step"><span>02</span>动手玩一玩</h2>
+    <div class="game-card" id="trainer"></div>
+    <p class="game-tip">玩完你就懂了：AI 的「知识」不是存在柜子里的，是教材喂出来的。</p>
+  </section>
+
+  <!-- ④ 小测验 -->
+  <section class="block reveal">
+    <h2 class="step"><span>03</span>小测验</h2>
+    <div class="quiz">
+      <div class="q">
+        <p class="q-text">1. AI 不知道「今天早上发生了什么」，最主要的原因是？</p>
+        <div class="opts">
+          <button class="opt" data-correct="true">A. 它的知识有截止日期，训练结束后就定格了</button>
+          <button class="opt" data-correct="false">B. 它太笨，学不会新东西</button>
+          <button class="opt" data-correct="false">C. 它故意不告诉你</button>
+        </div>
+        <p class="explain" hidden>解析：训练一结束，知识就定格。想知道最新的事，得让它「联网搜索」现查。</p>
+      </div>
+      <div class="q">
+        <p class="q-text">2. 如果只给 AI 看过白猫的照片，它见到黑猫最可能？</p>
+        <div class="opts">
+          <button class="opt" data-correct="true">A. 认不出来，甚至硬说成白猫</button>
+          <button class="opt" data-correct="false">B. 一眼就认出是黑猫</button>
+          <button class="opt" data-correct="false">C. 自动上网找答案</button>
+        </div>
+        <p class="explain" hidden>解析：它只学了「猫是白色的」这个规律。没教过的东西，它只能硬猜。</p>
+      </div>
+      <div class="q">
+        <p class="q-text">3. 判断：AI 的回答，是从资料库里「取」出来的标准答案。</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 对</button>
+          <button class="opt" data-correct="true">B. 错</button>
+        </div>
+        <p class="explain" hidden>解析：它是用学过的规律现推一个，不是取现成的。所以同一个问题问两遍，答案可能不一样。</p>
+      </div>
+      <p class="quiz-score" hidden></p>
+    </div>
+  </section>
+
+  <!-- ⑤ 金句 -->
+  <section class="block reveal">
+    <h2 class="step"><span>04</span>一句话记住这节课</h2>
+    <div class="quote-card">
+      <p>AI 的答案不是从柜子里取的，<br>是用教材里的规律现推的。</p>
+      <p class="quote-sub">教材旧了、偏了，它就旧了、偏了。</p>
+    </div>
+  </section>
+
+  <!-- ⑥ 今天试一件事 -->
+  <section class="block reveal">
+    <h2 class="step"><span>05</span>今天试一件事</h2>
+    <ul class="actions">
+      <li><span class="box"></span><span class="txt">问 AI 一件「最近一周的新闻」，看它知不知道</span></li>
+      <li><span class="box"></span><span class="txt">问它：「你的知识更新到什么时候？」</span></li>
+      <li><span class="box"></span><span class="txt">再问一个常识题（比如「李白是谁」），对比两者的差别</span></li>
+    </ul>
+    <button id="btn-complete" class="btn btn-primary">✅ 完成本课打卡</button>
+  </section>
+
+  <!-- ⑦ 导航 -->
+  <nav class="lesson-nav reveal" id="lesson-nav"></nav>
+
+</main>
+
+<footer class="footer">
+  <p>《人人 AI 通识课》 · 新时代的工具，动手去用</p>
+</footer>
+
+<script src="../assets/js/course-data.js"></script>
+<script src="../assets/js/components.js"></script>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

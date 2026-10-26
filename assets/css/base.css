@@ -199,8 +199,8 @@ em{font-style:normal}
 .lesson-card[data-ready="false"]{opacity:.55;pointer-events:none}
 .lesson-card .l-emoji{font-size:1.4rem}
 .lesson-card .l-body{flex:1;min-width:0}
-.lesson-card .l-title{font-weight:700;font-size:.98rem}
-.lesson-card .l-meta{font-size:.78rem;color:var(--ink-3);margin-top:2px}
+.lesson-card .l-title{display:block;font-weight:700;font-size:.98rem}
+.lesson-card .l-meta{display:block;font-size:.78rem;color:var(--ink-3);margin-top:2px}
 .lesson-card .l-status{
   font-size:.78rem;font-weight:700;color:var(--ink-3);
   padding:5px 12px;border-radius:99px;background:var(--bg-soft);white-space:nowrap;
@@ -479,6 +479,124 @@ em{font-style:normal}
   .aibot .eye,.aibot.hello{animation:none}
 }
 
+/* ---------- 训练实验室（第 2 课） ---------- */
+.train-lead{font-size:.95rem;color:var(--ink-2);margin-bottom:16px}
+.book-list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.book-opt{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  border:1px solid var(--line);background:var(--bg-soft);
+  border-radius:var(--radius-sm);padding:16px 10px;
+  transition:transform .15s,border-color .15s,box-shadow .15s;
+}
+.book-opt:hover{transform:translateY(-2px);border-color:var(--brand-2)}
+.book-opt .b-emoji{font-size:1.7rem}
+.book-opt .b-name{font-weight:800;font-size:.9rem;margin-top:4px}
+.book-opt .b-desc{font-size:.74rem;color:var(--ink-3);text-align:center}
+.book-opt.sel{border-color:var(--brand);box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 18%,transparent)}
+
+.train-bar{height:12px;border-radius:99px;background:var(--bg-soft);border:1px solid var(--line);overflow:hidden;margin:18px 0 10px}
+.train-bar i{display:block;height:100%;width:0;background:var(--grad);transition:width 1.8s linear}
+.train-hint{font-size:.82rem;color:var(--ink-3)}
+
+.exam-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:6px 0 16px}
+.exam-item{
+  position:relative;text-align:center;
+  border:1px solid var(--line);border-radius:var(--radius-sm);
+  background:var(--bg-soft);padding:12px 4px;
+  animation:fadeUp .45s both;
+}
+.exam-item .e-emoji{display:block;font-size:1.6rem;line-height:1.3}
+.exam-item .e-ans{display:block;font-size:.72rem;color:var(--ink-2);margin-top:4px}
+.exam-item .e-mark{position:absolute;right:6px;top:4px;font-size:.8rem;font-weight:800}
+.exam-item.ok{border-color:var(--ok-line);background:var(--ok-bg)}
+.exam-item.ok .e-mark{color:var(--green)}
+.exam-item.bad{border-color:var(--bad-line);background:var(--bad-bg)}
+.exam-item.bad .e-mark{color:var(--red)}
+
+.train-verdict{
+  background:var(--bg-soft);border-left:4px solid var(--brand-2);
+  border-radius:var(--radius-sm);padding:14px 16px;
+  font-size:.92rem;color:var(--ink-2);animation:fadeUp .4s;
+}
+.train-verdict p+p{margin-top:6px}
+.train-verdict+.guess-foot{margin-top:14px}
+
+.sample-list{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.sample-item{position:relative;text-align:center;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--bg-soft);padding:12px 6px}
+.sample-item .s-emoji{display:block;font-size:1.5rem}
+.sample-item .s-tag{display:block;font-size:.74rem;color:var(--ink-2);margin-top:4px}
+.sample-item.wrong{border-color:var(--bad-line);background:var(--bad-bg)}
+.sample-item .s-flag{display:block;font-size:.66rem;font-weight:800;color:var(--red);margin-top:2px}
+
+.bad-exam{
+  display:flex;align-items:center;justify-content:center;gap:14px;
+  background:var(--bg-soft);border-radius:var(--radius);padding:22px;margin-bottom:16px;
+}
+.bad-exam .be-img{font-size:2.4rem}
+.bad-exam .be-arrow{color:var(--ink-3);font-weight:800}
+.bad-exam .be-ans{font-weight:800}
+.bad-exam .be-mark{color:var(--red);font-weight:800;font-size:1.2rem}
+
+/* ---------- 分门别类（第 3 课） ---------- */
+.sort-card{
+  background:var(--grad);color:#fff;font-weight:800;font-size:1.1rem;
+  border-radius:var(--radius);padding:26px 22px;text-align:center;
+  box-shadow:var(--shadow);margin-bottom:16px;
+}
+.sort-bins{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.sort-bin{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  border:1px solid var(--line);background:var(--bg-soft);
+  border-radius:var(--radius-sm);padding:14px 8px;
+  transition:transform .15s,border-color .15s,background .15s;
+}
+.sort-bin:hover{transform:translateY(-2px);border-color:var(--brand-2)}
+.sort-bin .sb-name{font-weight:800;font-size:.95rem}
+.sort-bin .sb-hint{font-size:.72rem;color:var(--ink-3);text-align:center}
+.sort-bin.right{border-color:var(--ok-line);background:var(--ok-bg)}
+.sort-bin.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.sort-feedback{display:none;margin-top:14px;font-size:.9rem;border-radius:var(--radius-sm);padding:12px 15px}
+.sort-feedback.show{display:block;animation:fadeUp .35s}
+.sort-feedback.ok{background:var(--ok-bg);border:1px solid var(--ok-line);color:var(--ink-2)}
+.sort-feedback.bad{background:var(--bad-bg);border:1px solid var(--bad-line);color:var(--ink-2)}
+.sort-next{margin-top:10px}
+
+/* ---------- 找茬质检（第 4、16 课） ---------- */
+.check-title{font-weight:800;margin-bottom:4px}
+.check-lines{display:flex;flex-direction:column;gap:8px;margin:12px 0 16px}
+.check-line{
+  display:block;width:100%;text-align:left;
+  border:1px solid var(--line);background:var(--bg-soft);
+  border-radius:10px;padding:12px 14px;font-size:.93rem;
+  transition:border-color .15s,background .15s;
+}
+.check-line:hover{border-color:var(--brand-2)}
+.check-line.marked{border-color:var(--red);background:var(--bad-bg)}
+.check-line.marked .cl-text::after{content:" 🚩"}
+.check-line.ok{border-color:var(--ok-line);background:var(--ok-bg)}
+.check-line.bad{border-color:var(--bad-line);background:var(--bad-bg)}
+.check-line[disabled]{cursor:default;opacity:1;color:var(--ink)}
+.check-line .cl-why{display:block;margin-top:6px;font-size:.8rem;color:var(--ink-2)}
+
+/* ---------- 徽章（首页） ---------- */
+.badges{margin:6px 0 36px}
+.badge-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.badge-item{
+  position:relative;text-align:center;
+  background:var(--bg-card);border:1px solid var(--line);
+  border-radius:var(--radius-sm);padding:14px 8px;
+  transition:transform .2s,border-color .2s,box-shadow .2s;
+}
+.badge-item .b-ico{display:block;font-size:1.8rem;line-height:1.4;filter:grayscale(1);opacity:.38;transition:filter .3s,opacity .3s}
+.badge-item .b-name{display:block;font-size:.78rem;font-weight:800;color:var(--ink-3)}
+.badge-item .b-sub{display:block;font-size:.66rem;color:var(--ink-3);margin-top:2px}
+.badge-item .b-lock{position:absolute;right:6px;top:4px;font-size:.7rem;opacity:.7}
+.badge-item.on{border-color:var(--brand-2);box-shadow:0 6px 18px color-mix(in srgb,var(--brand) 18%,transparent)}
+.badge-item.on .b-ico{filter:none;opacity:1;animation:pop .5s}
+.badge-item.on .b-name{color:var(--ink)}
+@keyframes pop{0%{transform:scale(.5)}70%{transform:scale(1.18)}100%{transform:scale(1)}}
+
 /* ---------- 手机适配 ---------- */
 @media (max-width:640px){
   .hero{padding-top:34px}
@@ -490,4 +608,22 @@ em{font-style:normal}
   .scene .aibot{width:46px;height:46px}
   .lesson-hero{padding-top:26px}
   .quote-card p{font-size:1.1rem}
+  .book-list{grid-template-columns:1fr}
+  .book-opt{flex-direction:row;align-items:center;gap:10px;padding:13px 16px;text-align:left}
+  .book-opt .b-emoji{font-size:1.5rem}
+  .book-opt .b-name{margin-top:0}
+  .book-opt .b-desc{margin-left:auto;text-align:right}
+  .sample-list{grid-template-columns:repeat(2,1fr)}
+  .sort-bins{grid-template-columns:1fr}
+  .sort-bin{flex-direction:row;justify-content:space-between;padding:13px 16px}
+  .sort-bin .sb-hint{text-align:left}
+  .badge-strip{grid-template-columns:repeat(3,1fr)}
+  .exam-grid{gap:6px}
+  .exam-item{padding:10px 2px}
+  .exam-item .e-emoji{font-size:1.35rem}
+  .exam-item .e-ans{font-size:.66rem}
+  .lesson-card{flex-wrap:wrap;row-gap:4px}
+  .lesson-card .l-emoji{order:1}
+  .lesson-card .l-status{order:2;margin-left:auto}
+  .lesson-card .l-body{order:3;flex:1 1 100%}
 }

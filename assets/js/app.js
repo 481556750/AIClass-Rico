@@ -96,6 +96,43 @@
   function readyLessons() { return allLessons().filter(l => l.ready); }
   function doneCount() { return readyLessons().filter(l => isDone(l.id)).length; }
 
+  /* ---------------- 徽章 ---------------- */
+  const BADGES = [
+    { id: "m1",   emoji: "🔍", name: "AI 观察员", desc: "通关模块一", module: "m1" },
+    { id: "m2",   emoji: "🛠️", name: "AI 使用者", desc: "通关模块二", module: "m2" },
+    { id: "m3",   emoji: "🎨", name: "AI 创作者", desc: "通关模块三", module: "m3" },
+    { id: "m4",   emoji: "🛡️", name: "反诈卫士", desc: "通关模块四", module: "m4" },
+    { id: "m5",   emoji: "🚴", name: "AI 合伙人", desc: "通关模块五", module: "m5" },
+    { id: "grad", emoji: "🎓", name: "AI 毕业生", desc: "通关全部课程", module: null }
+  ];
+
+  function unlockedBadges() {
+    const out = {};
+    COURSE.modules.forEach(m => {
+      const badge = BADGES.find(b => b.module === m.id);
+      if (badge && m.lessons.length && m.lessons.every(l => l.ready && isDone(l.id))) out[badge.id] = true;
+    });
+    if (allLessons().length && allLessons().every(l => l.ready && isDone(l.id))) out.grad = true;
+    return out;
+  }
+
+  function renderBadges() {
+    const wrap = $("#badge-strip");
+    if (!wrap) return;
+    const un = unlockedBadges();
+    wrap.innerHTML = BADGES.map(b => {
+      const on = !!un[b.id];
+      return '<div class="badge-item' + (on ? " on" : "") + '">' +
+        '<span class="b-ico">' + b.emoji + '</span>' +
+        '<span class="b-name">' + b.name + '</span>' +
+        '<span class="b-sub">' + b.desc + '</span>' +
+        (on ? '' : '<span class="b-lock">🔒</span>') +
+      '</div>';
+    }).join("");
+    const cnt = $("#badge-count");
+    if (cnt) cnt.textContent = BADGES.filter(b => un[b.id]).length;
+  }
+
   function updateProgressUI() {
     const total = allLessons().length;
     const done = doneCount();
@@ -134,9 +171,13 @@
           '<span class="l-status' + (l.ready && !done ? " ready" : "") + '">' + st + '</span>' +
         '</a>';
       }).join("");
+      const badge = BADGES.find(b => b.module === m.id);
+      const doneMark = allDone
+        ? '<span class="m-done">' + (badge ? "🏅 " + badge.name : "模块已通关 ✓") + '</span>'
+        : "";
       return '<section class="module">' +
         '<h3 class="module-head"><span class="m-emoji">' + m.emoji + '</span>' + m.name +
-          (allDone ? '<span class="m-done">模块已通关 ✓</span>' : "") +
+          doneMark +
         '</h3>' + cells +
       '</section>';
     }).join("");
@@ -145,6 +186,7 @@
 
   function initHome() {
     renderMap();
+    renderBadges();
     const btn = $("#btn-continue");
     if (!btn) return;
     const next = allLessons().find(l => l.ready && !isDone(l.id));
@@ -199,13 +241,21 @@
       btn.textContent = "✅ 本课已完成打卡";
     }
     btn.addEventListener("click", () => {
+      const before = unlockedBadges();
       setDone(id);
+      const after = unlockedBadges();
       const total = allLessons().length;
       const done = doneCount();
       btn.classList.add("is-done"); btn.disabled = true;
       btn.textContent = "✅ 本课已完成打卡";
       updateProgressUI();
-      toast("🎉 打卡成功！全课进度 " + done + " / " + total);
+      renderBadges();
+      const got = BADGES.filter(b => after[b.id] && !before[b.id]);
+      if (got.length) {
+        toast("🏅 解锁徽章：" + got[0].emoji + " " + got[0].name + "！");
+      } else {
+        toast("🎉 打卡成功！全课进度 " + done + " / " + total);
+      }
     });
   }
 

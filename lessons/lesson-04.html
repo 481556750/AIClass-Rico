@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 4 课 · AI 会骗人吗？——幻觉与「没有记忆」 | 人人 AI 通识课</title>
+<link rel="stylesheet" href="../assets/css/base.css">
+</head>
+<body class="lesson" data-page="lesson" data-lesson="04">
+
+<header class="topbar">
+  <a class="brand" href="../index.html"><span class="aibot"></span><span>人人 AI 通识课</span></a>
+  <div class="tools">
+    <button class="tool-btn" id="font-toggle" title="调整字号">A</button>
+    <button class="tool-btn" id="theme-toggle" title="深色模式">🌙</button>
+  </div>
+</header>
+
+<div class="courseline">
+  <div class="progress"><i class="js-course-progress"></i></div>
+  <span class="count js-course-count">全课进度 0 / 21</span>
+</div>
+
+<main class="container lesson-wrap">
+
+  <!-- 课程头 -->
+  <header class="lesson-hero reveal">
+    <p class="chip-row">
+      <span class="chip hot">🤔 模块一 · AI 到底是什么</span>
+      <span class="chip">⏱ 约 12 分钟</span>
+      <span class="chip">🔍 找茬质检</span>
+      <span class="chip">🧠 1 个小测验</span>
+    </p>
+    <h1>AI 会骗人吗？<br>幻觉与「没有记忆」</h1>
+    <p class="lesson-lead">它会一本正经地推荐一本不存在的书，还会把作者、出版社、目录都编齐。不是它坏，是它「太想把话接下去」。</p>
+  </header>
+
+  <!-- ① 场景导入 -->
+  <section class="scene reveal">
+    <div class="robot">
+      <span class="aibot"></span>
+      <span class="robot-name">小艾</span>
+    </div>
+    <div class="bubble">
+      <p>上周我推荐给小雨一本书，作者、出版社、目录都编得有模有样。</p>
+      <p>她跑去图书馆一查——<b>根本没有这本书</b>。</p>
+      <p>对不起，那本书是我编的。而且我编的时候，一点都没心虚。</p>
+    </div>
+  </section>
+
+  <!-- ② 核心讲解 -->
+  <section class="block reveal">
+    <h2 class="step"><span>01</span>核心讲解</h2>
+
+    <div class="card hl">
+      <h3>🎭 什么叫「幻觉」</h3>
+      <p>AI 一本正经地编造不存在的东西：书名、论文、法条、历史年份、产品参数。</p>
+      <p>它说得越顺、细节越全，你越难发现。这个毛病有个正式名字——<b class="hl-text">幻觉</b>。</p>
+      <p>注意：它不是「故意骗你」。它自己也不知道哪句是真的、哪句是编的。</p>
+    </div>
+
+    <div class="card accent">
+      <h3>🤔 它为什么非要编？</h3>
+      <p>因为它学的是「怎么说得像」，不是「怎么说得对」。</p>
+      <p>遇到没把握的地方，编一个顺口的，比老老实实说「我不知道」更符合它学过的套路。</p>
+      <p>所以它很少主动认输——<b>这个刹车，得你来踩</b>。</p>
+    </div>
+
+    <div class="card sun">
+      <h3>🧠 它还没有记忆</h3>
+      <p>关掉窗口，它就忘了刚才聊过什么。每次新对话，都是「初次见面」。</p>
+      <p>有些产品有「记忆」功能，那是额外做的，不是它天生记得。</p>
+      <p>所以：重要的背景信息，每次都要重新告诉它。</p>
+    </div>
+
+    <div class="card">
+      <h3>⚠️ 三个高危区，看到就多留个心眼</h3>
+      <p><b>数字和日期</b>：药量、金额、年份、价格。</p>
+      <p><b>人名和出处</b>：书名、论文、法条、链接。</p>
+      <p><b>专业建议</b>：看病、打官司、投资。</p>
+      <p>遇到这三类，别直接信——<b>先核实，再使用</b>。</p>
+    </div>
+  </section>
+
+  <!-- ③ 互动 -->
+  <section class="block reveal">
+    <h2 class="step"><span>02</span>动手玩一玩</h2>
+    <div class="game-card" id="checker" data-set="plants"></div>
+    <p class="game-tip">练完这双眼睛，以后 AI 再跟你「编」，你一眼就能看出来。</p>
+  </section>
+
+  <!-- ④ 小测验 -->
+  <section class="block reveal">
+    <h2 class="step"><span>03</span>小测验</h2>
+    <div class="quiz">
+      <div class="q">
+        <p class="q-text">1. AI 编造了一本不存在的书，这种现象叫什么？</p>
+        <div class="opts">
+          <button class="opt" data-correct="true">A. 幻觉</button>
+          <button class="opt" data-correct="false">B. 中毒</button>
+          <button class="opt" data-correct="false">C. 死机</button>
+        </div>
+        <p class="explain" hidden>解析：它不是在骗你，它自己也不知道那是编的——这就是「幻觉」。</p>
+      </div>
+      <div class="q">
+        <p class="q-text">2. 为什么它不直接说「我不知道」？</p>
+        <div class="opts">
+          <button class="opt" data-correct="true">A. 它被训练成「把话接得像样」，编比认输更顺</button>
+          <button class="opt" data-correct="false">B. 它觉得这样显得聪明</button>
+          <button class="opt" data-correct="false">C. 它在保护你的情绪</button>
+        </div>
+        <p class="explain" hidden>解析：它的目标是「像」，不是「对」。所以没把握时，它也会顺着往下编。</p>
+      </div>
+      <div class="q">
+        <p class="q-text">3. 下面哪类信息最需要你亲自核实？</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 一句普通的问候</button>
+          <button class="opt" data-correct="true">B. 药量和法律条款</button>
+          <button class="opt" data-correct="false">C. 一个笑话</button>
+        </div>
+        <p class="explain" hidden>解析：药量、法条、金额、年份——错一个数字，后果就可能很严重。</p>
+      </div>
+      <p class="quiz-score" hidden></p>
+    </div>
+  </section>
+
+  <!-- ⑤ 金句 -->
+  <section class="block reveal">
+    <h2 class="step"><span>04</span>一句话记住这节课</h2>
+    <div class="quote-card">
+      <p>AI 追求的是「像真的」，<br>不是「是真的」。</p>
+      <p class="quote-sub">重要的数字、人名、出处，自己再核一遍。</p>
+    </div>
+  </section>
+
+  <!-- ⑥ 今天试一件事 -->
+  <section class="block reveal">
+    <h2 class="step"><span>05</span>今天试一件事</h2>
+    <ul class="actions">
+      <li><span class="box"></span><span class="txt">让 AI 推荐 3 本书，去豆瓣或图书馆查是否真实存在</span></li>
+      <li><span class="box"></span><span class="txt">问它一个你熟悉的领域的问题，看它有没有编</span></li>
+      <li><span class="box"></span><span class="txt">记住：它说「肯定」的时候，也可能在编</span></li>
+    </ul>
+    <button id="btn-complete" class="btn btn-primary">✅ 完成本课打卡</button>
+  </section>
+
+  <!-- ⑦ 导航 -->
+  <nav class="lesson-nav reveal" id="lesson-nav"></nav>
+
+</main>
+
+<footer class="footer">
+  <p>《人人 AI 通识课》 · 新时代的工具，动手去用</p>
+</footer>
+
+<script src="../assets/js/course-data.js"></script>
+<script src="../assets/js/components.js"></script>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

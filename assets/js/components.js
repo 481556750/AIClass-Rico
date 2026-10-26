@@ -218,6 +218,330 @@
     });
   }
 
+  /* ================= 训练实验室（第 2 课） ================= */
+  const TRAIN_BOOKS = [
+    { id: "cat",    emoji: "📕", name: "《只有猫》",     desc: "只教猫一种",   know: ["猫"] },
+    { id: "catdog", emoji: "📗", name: "《猫和狗》",     desc: "教猫和狗",     know: ["猫", "狗"] },
+    { id: "all",    emoji: "📘", name: "《猫狗兔大全》", desc: "教猫、狗、兔", know: ["猫", "狗", "兔"] }
+  ];
+  const TRAIN_EXAM = [
+    { emoji: "🐱", label: "猫" },
+    { emoji: "🐶", label: "狗" },
+    { emoji: "🐰", label: "兔" },
+    { emoji: "🐟", label: "鱼" },
+    { emoji: "🐦", label: "鸟" }
+  ];
+  const TRAIN_BAD_SAMPLES = [
+    { emoji: "🐱", tag: "猫" },
+    { emoji: "🐶", tag: "猫", wrong: true },
+    { emoji: "🐱", tag: "猫" },
+    { emoji: "🐶", tag: "猫", wrong: true }
+  ];
+
+  function initTrainer(el) {
+    function choose() {
+      el.innerHTML =
+        '<div class="guess-round-tag">第 1 步 · 给小艾选一本教材</div>' +
+        '<p class="train-lead">你教它什么，它才会什么。选一本，看看它学完能考几分。</p>' +
+        '<div class="book-list">' +
+        TRAIN_BOOKS.map((b, i) =>
+          '<button class="book-opt" data-i="' + i + '">' +
+            '<span class="b-emoji">' + b.emoji + '</span>' +
+            '<span class="b-name">' + b.name + '</span>' +
+            '<span class="b-desc">' + b.desc + '</span>' +
+          '</button>'
+        ).join("") +
+        '</div>' +
+        '<p class="game-tip" style="margin-top:12px">选中的教材，就是它的全部世界观。</p>';
+      Array.from(el.querySelectorAll(".book-opt")).forEach(btn => {
+        btn.addEventListener("click", () => {
+          Array.from(el.querySelectorAll(".book-opt")).forEach(b => b.classList.remove("sel"));
+          btn.classList.add("sel");
+          train(TRAIN_BOOKS[parseInt(btn.dataset.i, 10)]);
+        });
+      });
+    }
+
+    function train(book) {
+      el.innerHTML =
+        '<div class="guess-round-tag">第 2 步 · 训练中</div>' +
+        '<p class="train-lead">' + book.emoji + ' 小艾正在读' + book.name + '……</p>' +
+        '<div class="train-bar"><i></i></div>' +
+        '<p class="train-hint">它不是在背答案，而是在学「什么样的图配什么名字」。</p>';
+      const bar = el.querySelector(".train-bar i");
+      setTimeout(() => { bar.style.width = "100%"; }, 60);
+      setTimeout(() => exam(book), 2000);
+    }
+
+    function exam(book) {
+      const rows = TRAIN_EXAM.map(x => {
+        const ok = book.know.indexOf(x.label) !== -1;
+        return { emoji: x.emoji, label: x.label, ok: ok, ans: ok ? x.label : "猜成猫" };
+      });
+      const score = rows.filter(r => r.ok).length;
+      const miss = rows.length - score;
+      el.innerHTML =
+        '<div class="guess-round-tag">第 3 步 · 考试</div>' +
+        '<p class="train-lead">教材：' + book.emoji + ' ' + book.name + '。考官拿出 5 张新图，看它认不认得。</p>' +
+        '<div class="exam-grid">' +
+        rows.map((r, i) =>
+          '<div class="exam-item ' + (r.ok ? "ok" : "bad") + '" style="animation-delay:' + (i * 0.12) + 's">' +
+            '<span class="e-emoji">' + r.emoji + '</span>' +
+            '<span class="e-ans">' + r.ans + '</span>' +
+            '<span class="e-mark">' + (r.ok ? "✓" : "✗") + '</span>' +
+          '</div>'
+        ).join("") +
+        '</div>' +
+        '<div class="train-verdict">' +
+          '<b>答对 ' + score + ' / 5</b> —— 教材里教过的 ' + score + ' 种全认对了；没教过的 ' + miss + ' 种，它只能硬猜。' +
+        '</div>' +
+        '<div class="guess-foot">' +
+          '<span class="guess-score">想让它认识更多？得喂更多教材。</span>' +
+          '<button class="btn btn-primary js-bad">那教材错了呢？→</button>' +
+        '</div>';
+      el.querySelector(".js-bad").addEventListener("click", badIntro);
+    }
+
+    function badIntro() {
+      el.innerHTML =
+        '<div class="guess-round-tag">彩蛋关 · 如果教材本身是错的</div>' +
+        '<p class="train-lead">这次教材里混进了 2 张标错的图：明明是狗，却被标成了「猫」。小艾会学成什么样？</p>' +
+        '<div class="sample-list">' +
+        TRAIN_BAD_SAMPLES.map(s =>
+          '<div class="sample-item' + (s.wrong ? " wrong" : "") + '">' +
+            '<span class="s-emoji">' + s.emoji + '</span>' +
+            '<span class="s-tag">标签：' + s.tag + '</span>' +
+            (s.wrong ? '<span class="s-flag">标错了</span>' : '') +
+          '</div>'
+        ).join("") +
+        '</div>' +
+        '<div class="guess-foot">' +
+          '<span class="guess-score">小艾不会怀疑教材，它只会照单全收。</span>' +
+          '<button class="btn btn-primary js-train2">开始训练 →</button>' +
+        '</div>';
+      el.querySelector(".js-train2").addEventListener("click", function () {
+        el.innerHTML =
+          '<div class="guess-round-tag">训练中</div>' +
+          '<div class="train-bar"><i></i></div>' +
+          '<p class="train-hint">它正在把「猫」和这些图对上号……</p>';
+        const bar = el.querySelector(".train-bar i");
+        setTimeout(() => { bar.style.width = "100%"; }, 60);
+        setTimeout(badExam, 1800);
+      });
+    }
+
+    function badExam() {
+      el.innerHTML =
+        '<div class="guess-round-tag">考试结果</div>' +
+        '<div class="bad-exam">' +
+          '<span class="be-img">🐶</span>' +
+          '<span class="be-arrow">→</span>' +
+          '<span class="be-ans">小艾：这是「猫」</span>' +
+          '<span class="be-mark">✗</span>' +
+        '</div>' +
+        '<div class="train-verdict">它把狗认成了猫——因为教材里就是这么教的。<b>AI 不会质疑教材，你教错，它就学错。</b></div>' +
+        '<div class="guess-foot">' +
+          '<span class="guess-score">所以：数据有偏见，AI 就有偏见。</span>' +
+          '<button class="btn btn-primary js-done">我彻底懂了 →</button>' +
+        '</div>';
+      el.querySelector(".js-done").addEventListener("click", done);
+    }
+
+    function done() {
+      el.innerHTML =
+        '<div class="guess-round-tag">实验完成 🎉</div>' +
+        '<div class="train-verdict">' +
+          '<p><b>记住三件事：</b></p>' +
+          '<p>1. AI 的知识来自「教材」，教材里没有的，它不会。</p>' +
+          '<p>2. 教材有截止日期，所以它不知道最新的事（除非联网搜索）。</p>' +
+          '<p>3. 教材错了、偏了，它就跟着错、跟着偏。</p>' +
+        '</div>' +
+        '<div class="guess-foot">' +
+          '<span class="guess-score">这就是「AI 是学出来的」，不是查出来的。</span>' +
+          '<button class="btn btn-ghost js-again">再玩一次 ↻</button>' +
+        '</div>';
+      el.querySelector(".js-again").addEventListener("click", choose);
+    }
+
+    choose();
+  }
+
+  /* ================= 分门别类（第 3 课） ================= */
+  const SORT_BINS = [
+    { id: "search", name: "🔍 搜索", hint: "找到已有的信息" },
+    { id: "calc",   name: "🧮 计算", hint: "按规则算出数字" },
+    { id: "gen",    name: "✨ 生成", hint: "现场造出新内容" }
+  ];
+  const SORT_CARDS = [
+    { text: "查「附近哪里能修手机」",       bin: "search", why: "这是找一条已经存在的信息，搜索最快。" },
+    { text: "算「三个人 AA 制每人多少」",   bin: "calc",   why: "纯算数，计算器最靠谱，也不会算错。" },
+    { text: "写一条给朋友的生日祝福",       bin: "gen",    why: "要一段新的、带点心意的话——生成式 AI 的强项。" },
+    { text: "查「某位明星的生日」",         bin: "search", why: "这是查一个既有事实，搜索还能给出处。" },
+    { text: "把照片里乱入的路人去掉",       bin: "gen",    why: "要造出原本不存在的画面，属于生成。" },
+    { text: "算「房贷每月要还多少」",       bin: "calc",   why: "套公式算数，计算器或表格更准。" },
+    { text: "编一个哄孩子睡觉的故事",       bin: "gen",    why: "要现场编一个新故事——生成式 AI 的拿手好戏。" },
+    { text: "查「明天会不会下雨」",         bin: "search", why: "查实时预报，搜索（或天气 App）才有最新数据。" }
+  ];
+
+  function initSorter(el) {
+    let i = 0, mistakes = 0, locked = false;
+
+    function show() {
+      if (i >= SORT_CARDS.length) return finish();
+      const c = SORT_CARDS[i];
+      locked = false;
+      el.innerHTML =
+        '<div class="guess-round-tag">第 ' + (i + 1) + ' / ' + SORT_CARDS.length + ' 张 · 这张卡该交给谁？</div>' +
+        '<div class="sort-card">' + c.text + '</div>' +
+        '<div class="sort-bins">' +
+        SORT_BINS.map(b =>
+          '<button class="sort-bin" data-bin="' + b.id + '">' +
+            '<span class="sb-name">' + b.name + '</span>' +
+            '<span class="sb-hint">' + b.hint + '</span>' +
+          '</button>'
+        ).join("") +
+        '</div>' +
+        '<div class="sort-feedback"></div>';
+      Array.from(el.querySelectorAll(".sort-bin")).forEach(btn => {
+        btn.addEventListener("click", () => pick(btn.dataset.bin, btn));
+      });
+    }
+
+    function pick(bin, btn) {
+      if (locked) return;
+      const c = SORT_CARDS[i];
+      const fb = el.querySelector(".sort-feedback");
+      if (bin === c.bin) {
+        locked = true;
+        btn.classList.add("right");
+        fb.className = "sort-feedback show ok";
+        fb.innerHTML = "✅ 对了！" + c.why +
+          '<div class="sort-next"><button class="btn btn-primary">' +
+          (i + 1 === SORT_CARDS.length ? "看总结 →" : "下一张 →") + '</button></div>';
+        fb.querySelector(".btn").addEventListener("click", () => { i++; show(); });
+      } else {
+        mistakes++;
+        btn.classList.remove("shake");
+        void btn.offsetWidth;
+        btn.classList.add("shake");
+        fb.className = "sort-feedback show bad";
+        fb.innerHTML = "再想想：这件事是要「找到现成的」，还是「算出个数」，还是「造一个新的」？";
+      }
+    }
+
+    function finish() {
+      const msg = mistakes === 0
+        ? "全对！你已经是选工具的小行家了 🏆"
+        : mistakes <= 2
+          ? "很不错！错的那几张，记住一句话就行：要现成的找搜索，要新的找 AI。"
+          : "没关系，记住这句口诀：查用搜索、算用计算器、造用 AI。";
+      el.innerHTML =
+        '<div class="guess-round-tag">分类完成 🎉</div>' +
+        '<div class="train-verdict"><b>8 张卡片全部归位</b>，一共试错 ' + mistakes + ' 次。' + msg + '</div>' +
+        '<div class="guess-foot">' +
+          '<span class="guess-score">查、算、造，各找各的行家。</span>' +
+          '<button class="btn btn-ghost js-again">再玩一次 ↻</button>' +
+        '</div>';
+      el.querySelector(".js-again").addEventListener("click", () => { i = 0; mistakes = 0; show(); });
+    }
+
+    show();
+  }
+
+  /* ================= 找茬质检（第 4、16 课） ================= */
+  const CHECK_SETS = {
+    plants: {
+      title: "小艾写的《怎么养绿萝》",
+      tip: "点你认为「有问题」的句子，标记完再提交质检报告。",
+      lines: [
+        { text: "绿萝喜欢散射光，怕太阳直晒。", bad: false, why: "这条没问题。绿萝确实怕强光直射。" },
+        { text: "夏天每天浇三次水，越多越好。", bad: true, why: "错。浇水过多会烂根，见干见湿才是对的。" },
+        { text: "叶子发黄，可能是浇水过多或光照不足。", bad: false, why: "这条没问题，两个都是常见原因。" },
+        { text: "绿萝能吸收 90% 的甲醛，新房放一盆就够了。", bad: true, why: "夸大。植物能吸一点，但远达不到 90%，更不能代替开窗通风。" },
+        { text: "剪一段带气根的枝条插进水里，就能长出新根。", bad: false, why: "这条没问题，扦插就是这么操作的。" },
+        { text: "绿萝原产南美洲亚马逊雨林，1902 年由英国植物学家引入中国。", bad: true, why: "编造。年份、人物这些细节越具体，越可能是 AI 编出来的。" }
+      ]
+    }
+  };
+
+  function initChecker(el) {
+    const set = CHECK_SETS[el.dataset.set] || CHECK_SETS.plants;
+    const marked = new Set();
+    let done = false;
+
+    function render() {
+      el.innerHTML =
+        '<div class="guess-round-tag">找茬质检 · 这份回答里有 3 处问题</div>' +
+        '<p class="check-title">' + set.title + '</p>' +
+        '<p class="train-lead">' + set.tip + '</p>' +
+        '<div class="check-lines">' +
+        set.lines.map((l, i) =>
+          '<button class="check-line" data-i="' + i + '">' +
+            '<span class="cl-text">' + l.text + '</span>' +
+            '<span class="cl-why" hidden></span>' +
+          '</button>'
+        ).join("") +
+        '</div>' +
+        '<div class="guess-foot">' +
+          '<span class="guess-score js-score">已标记 0 处</span>' +
+          '<button class="btn btn-primary js-submit">提交质检报告</button>' +
+        '</div>';
+      Array.from(el.querySelectorAll(".check-line")).forEach(btn => {
+        btn.addEventListener("click", () => {
+          if (done) return;
+          const i = btn.dataset.i;
+          if (marked.has(i)) { marked.delete(i); btn.classList.remove("marked"); }
+          else { marked.add(i); btn.classList.add("marked"); }
+          el.querySelector(".js-score").textContent = "已标记 " + marked.size + " 处";
+        });
+      });
+      el.querySelector(".js-submit").addEventListener("click", submit);
+    }
+
+    function submit() {
+      if (marked.size === 0) {
+        window.dispatchEvent(new CustomEvent("aic-toast", { detail: "先点一句你认为有问题的话，再提交 😉" }));
+        return;
+      }
+      done = true;
+      let caught = 0, falseAlarm = 0, missed = 0;
+      Array.from(el.querySelectorAll(".check-line")).forEach(btn => {
+        const i = parseInt(btn.dataset.i, 10);
+        const l = set.lines[i];
+        const isMarked = marked.has(String(i));
+        btn.classList.remove("marked");
+        btn.classList.add(l.bad ? "bad" : "ok");
+        if (l.bad && isMarked) caught++;
+        if (!l.bad && isMarked) falseAlarm++;
+        if (l.bad && !isMarked) missed++;
+        const why = btn.querySelector(".cl-why");
+        why.hidden = false;
+        why.textContent = (l.bad ? "❌ " : "✅ ") + l.why + (isMarked && !l.bad ? "（你误标了这一条）" : "");
+        btn.disabled = true;
+      });
+      const total = set.lines.filter(l => l.bad).length;
+      const verdict = caught === total && falseAlarm === 0
+        ? "完美质检！" + total + " 处问题全抓到，还没冤枉好人 🏆"
+        : caught === total
+          ? total + " 处都抓到了，不过误标了 " + falseAlarm + " 条没问题的句子 👀"
+          : missed > 0
+            ? "漏掉了 " + missed + " 处。越像模像样的细节，越要留个心眼。"
+            : "再看看标记，有几处其实没问题。";
+      el.querySelector(".guess-foot").innerHTML =
+        '<span class="guess-score">抓对 ' + caught + ' / ' + total + ' · 误报 ' + falseAlarm + ' · 漏掉 ' + missed + '</span>' +
+        '<button class="btn btn-ghost js-again">再检查一次 ↻</button>';
+      el.querySelector(".js-again").addEventListener("click", () => {
+        marked.clear(); done = false; render();
+      });
+      const note = document.createElement("div");
+      note.className = "train-verdict";
+      note.innerHTML = verdict + '<br><span class="tiny">记住：AI 追求的是「像真的」，不是「是真的」。</span>';
+      el.appendChild(note);
+    }
+
+    render();
+  }
+
   /* ================= 自动挂载 ================= */
   document.addEventListener("DOMContentLoaded", function () {
     Array.from(document.querySelectorAll(".quiz")).forEach(initQuiz);
@@ -225,5 +549,11 @@
     if (g) initGuessGame(g);
     const lv = document.getElementById("level-test");
     if (lv) initLevelTest(lv);
+    const tr = document.getElementById("trainer");
+    if (tr) initTrainer(tr);
+    const so = document.getElementById("sorter");
+    if (so) initSorter(so);
+    const ck = document.getElementById("checker");
+    if (ck) initChecker(ck);
   });
 })();

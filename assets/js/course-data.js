@@ -17,9 +17,9 @@ const COURSE = {
       id: "m1", emoji: "🤔", name: "模块一 · AI 到底是什么",
       lessons: [
         { id: "01", file: "lessons/lesson-01.html", emoji: "🎯", title: "AI 其实就是个超级「猜词王」", minutes: 12, desc: "猜词挑战 · 概率思维", ready: true },
-        { id: "02", emoji: "🍎", title: "AI 是「学」会的，不是「查」出来的", minutes: 12, desc: "训练数据 · 给 AI 当老师", ready: false },
-        { id: "03", emoji: "👨‍👩‍👧‍👦", title: "AI 家族全家福", minutes: 12, desc: "生成式 AI vs 老程序 vs 搜索引擎", ready: false },
-        { id: "04", emoji: "🎭", title: "AI 会骗人吗？——幻觉与「没有记忆」", minutes: 12, desc: "幻觉本质 · 找茬练习", ready: false }
+        { id: "02", file: "lessons/lesson-02.html", emoji: "🍎", title: "AI 是「学」会的，不是「查」出来的", minutes: 12, desc: "训练数据 · 给 AI 当老师", ready: true },
+        { id: "03", file: "lessons/lesson-03.html", emoji: "👨‍👩‍👧‍👦", title: "AI 家族全家福", minutes: 12, desc: "生成式 AI vs 老程序 vs 搜索引擎", ready: true },
+        { id: "04", file: "lessons/lesson-04.html", emoji: "🎭", title: "AI 会骗人吗？——幻觉与「没有记忆」", minutes: 12, desc: "幻觉本质 · 找茬练习", ready: true }
       ]
     },
     {
