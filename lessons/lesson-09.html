@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 9 课 · 拍照、上传、做表 | 人人 AI 通识课</title>
+<link rel="stylesheet" href="../assets/css/base.css">
+</head>
+<body class="lesson" data-page="lesson" data-lesson="09">
+
+<header class="topbar">
+  <a class="brand" href="../index.html"><span class="aibot"></span><span>人人 AI 通识课</span></a>
+  <div class="tools">
+    <button class="tool-btn" id="font-toggle" title="调整字号">A</button>
+    <button class="tool-btn" id="theme-toggle" title="深色模式">🌙</button>
+  </div>
+</header>
+
+<div class="courseline">
+  <div class="progress"><i class="js-course-progress"></i></div>
+  <span class="count js-course-count">全课进度 0 / 21</span>
+</div>
+
+<main class="container lesson-wrap">
+
+  <!-- 课程头 -->
+  <header class="lesson-hero reveal">
+    <p class="chip-row">
+      <span class="chip hot">📷 模块二 · 开始用 AI</span>
+      <span class="chip">⏱ 约 12 分钟</span>
+      <span class="chip">📄 文件助手</span>
+      <span class="chip">🧠 1 个小测验</span>
+    </p>
+    <h1>拍照、上传、<br>做表</h1>
+    <p class="lesson-lead">上一课它当老师，这一课它当助手：药盒、账单、合同、会议纪要，拍给它、传给它，几秒钟读成摘要和表格。但它读得快，不代表读得对。</p>
+  </header>
+
+  <!-- ① 场景导入 -->
+  <section class="scene reveal">
+    <div class="robot">
+      <span class="aibot"></span>
+      <span class="robot-name">小艾</span>
+    </div>
+    <div class="bubble">
+      <p><b>王阿姨：</b>供货商发来一张手写账单，字挤在一起，我看了半天。</p>
+      <p><b>小艾：</b>拍给我，我帮你读成表格。</p>
+      <p><b>王阿姨：</b>你还会这个？</p>
+      <p><b>小艾：</b>会。但数字你得自己再对一遍。</p>
+    </div>
+  </section>
+
+  <!-- ② 核心讲解 -->
+  <section class="block reveal">
+    <h2 class="step"><span>01</span>核心讲解</h2>
+
+    <div class="card hl">
+      <h3>👀 它能看图了</h3>
+      <p>拍药盒、说明书、菜单、作业题、发票、名片，直接问，不用一个字一个字打。</p>
+      <p>比如：<b class="hl-text">「这是什么药？怎么吃？要注意什么？」</b></p>
+      <p>对老人、对忙人、对看不清楚的小字，这一步能省掉一大半事。</p>
+    </div>
+
+    <div class="card accent">
+      <h3>📄 上传文件，让它读</h3>
+      <p>PDF、Word、Excel、图片，大多能传。长文档别让它「念一遍」，先说：<b>「总结成 5 条要点。」</b></p>
+      <p>读完再追问：「第 3 条展开说说。」「把里面的日期列出来。」</p>
+      <p>一份 50 页的文件，先读摘要，再决定哪几页值得细看——这才是它的用法。</p>
+      <p>传之前先想清楚：你是要摘要、要对比，还是要它按某个格式输出。问得越具体，读得越准。</p>
+    </div>
+
+    <div class="card sun">
+      <h3>📊 做表是它的强项</h3>
+      <p>把乱七八糟的信息变成表：品名 / 数量 / 单价 / 日期。</p>
+      <p>还能让它排序、算合计、标出异常值。比如：「把这 20 张小票整理成表格，按金额从高到低排。」</p>
+      <p>你原来要敲半小时的东西，它几秒钟排好——但最后一眼，还是得你来扫。</p>
+    </div>
+
+    <div class="card">
+      <h3>🔍 三件事必须自己看</h3>
+      <p><b>数字</b>：金额、剂量、日期。<b>名字</b>：药名、人名、公司名。<b>模糊处</b>：手写、反光、截图压缩。</p>
+      <p>OCR（把图片里的字认出来）再强，也会把 12.5 读成 125。差一个小数点，账单就翻十倍。</p>
+      <p>还有隐私：上传前裁掉身份证号、电话、地址，别把整张证件照直接发上去（第 17 课细讲）。公司文件、合同，也先确认能不能外传。</p>
+    </div>
+  </section>
+
+  <!-- ③ 互动 -->
+  <section class="block reveal">
+    <h2 class="step"><span>02</span>动手玩一玩</h2>
+    <div class="game-card" id="files"></div>
+    <p class="game-tip">三个文件都是模拟的。重点看：它能读出什么，以及哪里需要你核对。</p>
+  </section>
+
+  <!-- ④ 小测验 -->
+  <section class="block reveal">
+    <h2 class="step"><span>03</span>小测验</h2>
+    <div class="quiz">
+      <div class="q">
+        <p class="q-text">1. 下面哪种用法最适合拍照上传？</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 让 AI 猜你相册里有多少张照片</button>
+          <button class="opt" data-correct="true">B. 拍下药盒，问「这是什么药、怎么吃」</button>
+          <button class="opt" data-correct="false">C. 让它帮你打电话给医生</button>
+        </div>
+        <p class="explain" hidden>解析：看图识物、读说明书，是它的强项。打电话、做决定，它替不了你。</p>
+      </div>
+      <div class="q">
+        <p class="q-text">2. 上传 50 页 PDF，最合适的第一句是？</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 全部念给我听</button>
+          <button class="opt" data-correct="true">B. 先帮我总结成 5 条要点，再展开第 2 条</button>
+          <button class="opt" data-correct="false">C. 帮我改成小说</button>
+        </div>
+        <p class="explain" hidden>解析：先摘要、再展开，省时间也不容易漏重点。一上来就让它念，等于没用它。</p>
+      </div>
+      <div class="q">
+        <p class="q-text">3. 表格里有一行「苹果 125 元」，但你记得是 12.5 元，应该？</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 相信 AI，它不会错</button>
+          <button class="opt" data-correct="true">B. 对照原图核对，改过来</button>
+          <button class="opt" data-correct="false">C. 删掉这一行</button>
+        </div>
+        <p class="explain" hidden>解析：小数点、相似字、手写体，都是识别错误的高发区。数字类的信息，必须回原图核对。</p>
+      </div>
+      <p class="quiz-score" hidden></p>
+    </div>
+  </section>
+
+  <!-- ⑤ 金句 -->
+  <section class="block reveal">
+    <h2 class="step"><span>04</span>一句话记住这节课</h2>
+    <div class="quote-card">
+      <p>拍一下、传上去、做成表——<br>但数字和名字，永远自己再看一眼。</p>
+      <p class="quote-sub">它读得快，你负责读得对。</p>
+    </div>
+  </section>
+
+  <!-- ⑥ 今天试一件事 -->
+  <section class="block reveal">
+    <h2 class="step"><span>05</span>今天试一件事</h2>
+    <ul class="actions">
+      <li><span class="box"></span><span class="txt">拍一张药盒或说明书，问它「这是什么、要注意什么」</span></li>
+      <li><span class="box"></span><span class="txt">传一份长文档，让它先总结成 5 条要点</span></li>
+      <li><span class="box"></span><span class="txt">让它把你手头的零散信息做成一张表，再核对一遍数字</span></li>
+    </ul>
+    <button id="btn-complete" class="btn btn-primary">✅ 完成本课打卡</button>
+  </section>
+
+  <!-- ⑦ 导航 -->
+  <nav class="lesson-nav reveal" id="lesson-nav"></nav>
+
+</main>
+
+<footer class="footer">
+  <p>《人人 AI 通识课》 · 新时代的工具，动手去用</p>
+</footer>
+
+<script src="../assets/js/course-data.js"></script>
+<script src="../assets/js/components.js"></script>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

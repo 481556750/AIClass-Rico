@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 8 课 · 让 AI 当你的家庭教师 | 人人 AI 通识课</title>
+<link rel="stylesheet" href="../assets/css/base.css">
+</head>
+<body class="lesson" data-page="lesson" data-lesson="08">
+
+<header class="topbar">
+  <a class="brand" href="../index.html"><span class="aibot"></span><span>人人 AI 通识课</span></a>
+  <div class="tools">
+    <button class="tool-btn" id="font-toggle" title="调整字号">A</button>
+    <button class="tool-btn" id="theme-toggle" title="深色模式">🌙</button>
+  </div>
+</header>
+
+<div class="courseline">
+  <div class="progress"><i class="js-course-progress"></i></div>
+  <span class="count js-course-count">全课进度 0 / 21</span>
+</div>
+
+<main class="container lesson-wrap">
+
+  <!-- 课程头 -->
+  <header class="lesson-hero reveal">
+    <p class="chip-row">
+      <span class="chip hot">👩‍🏫 模块二 · 开始用 AI</span>
+      <span class="chip">⏱ 约 12 分钟</span>
+      <span class="chip">🎯 出题机</span>
+      <span class="chip">🧠 1 个小测验</span>
+    </p>
+    <h1>让 AI 当你的<br>家庭教师</h1>
+    <p class="lesson-lead">上一课让它替你写，这一课让它教你学：讲思路、举例子、出题考你。关键是——把它当老师用，不是当答案机用。</p>
+  </header>
+
+  <!-- ① 场景导入 -->
+  <section class="scene reveal">
+    <div class="robot">
+      <span class="aibot"></span>
+      <span class="robot-name">小艾</span>
+    </div>
+    <div class="bubble">
+      <p><b>乐乐：</b>这道分数题我看了十分钟，还是不会。小艾，直接告诉我答案吧。</p>
+      <p><b>小艾：</b>告诉你会害了你。我换个方式——先不讲答案，我一步一步问你。</p>
+      <p><b>乐乐：</b>……还能这样？</p>
+      <p><b>小艾：</b>能。而且最后，我还要出题考你。</p>
+    </div>
+  </section>
+
+  <!-- ② 核心讲解 -->
+  <section class="block reveal">
+    <h2 class="step"><span>01</span>核心讲解</h2>
+
+    <div class="card hl">
+      <h3>🎯 别问答案，问「怎么想」</h3>
+      <p>直接要答案，你拿到的是一行字；让它讲思路，你拿到的是方法。</p>
+      <p>下次遇到不会的题，先说一句：<b class="hl-text">「别直接告诉我答案，一步一步引导我。」</b></p>
+      <p>它当老师，你当学生——但真正提问的人是你。这一句，比「这题怎么做」值钱十倍。</p>
+      <p>更好的顺序是：你先自己做一遍，再让它检查你的思路。哪里卡住、哪里跳步，一目了然。</p>
+    </div>
+
+    <div class="card accent">
+      <h3>🗣️ 让它讲人话</h3>
+      <p>听不懂，很多时候不是你的问题，是它讲得太绕。</p>
+      <p>三句好用的：<b>「用 10 岁能听懂的话讲一遍。」「举一个我生活里的例子。」「把步骤拆成 1、2、3。」</b></p>
+      <p>它讲得越具体，你越容易发现自己到底卡在哪一步。你是学生，不是受气包——听不懂就让它重讲。</p>
+      <p>学英语也一样：让它陪你聊三句今天的经历，再让它指出时态和用词的小错——比干背单词有意思。</p>
+    </div>
+
+    <div class="card sun">
+      <h3>🎲 关键不是「讲」，是「考」</h3>
+      <p>听懂了是错觉，做对了才算。</p>
+      <p>让它出 3 道题考你；错的地方，让它换一种讲法再讲一遍。这就是下面「出题机」的用法：<b>把被动听讲，变成主动回忆。</b></p>
+      <p>学习这件事，输出永远比输入管用。你讲给别人听一遍，比听十遍都记得牢。</p>
+    </div>
+
+    <div class="card">
+      <h3>⚠️ 它也会讲错</h3>
+      <p>AI 是陪练，不是裁判。课本、老师、标准答案才是准绳。</p>
+      <p>数学步骤、历史年份、公式，最容易一本正经地错。它说「肯定」的时候，你也要留个心眼（第 4 课）。</p>
+      <p>用它预习、复习、找题做，都很好；但别拿它替代课堂和老师。</p>
+    </div>
+  </section>
+
+  <!-- ③ 互动 -->
+  <section class="block reveal">
+    <h2 class="step"><span>02</span>动手玩一玩</h2>
+    <div class="game-card" id="tutor"></div>
+    <p class="game-tip">选一门课，让小艾出 3 道题。答错不丢人，正好知道哪里没懂。</p>
+  </section>
+
+  <!-- ④ 小测验 -->
+  <section class="block reveal">
+    <h2 class="step"><span>03</span>小测验</h2>
+    <div class="quiz">
+      <div class="q">
+        <p class="q-text">1. 想让 AI 真正帮你学懂，最好的问法是？</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 直接把答案给我</button>
+          <button class="opt" data-correct="true">B. 别直接给答案，一步一步引导我，最后出题考我</button>
+          <button class="opt" data-correct="false">C. 把整本书总结成一句话</button>
+        </div>
+        <p class="explain" hidden>解析：要答案只得到一行字，要思路才得到方法。最后加一句「出题考我」，才算真的学会。</p>
+      </div>
+      <div class="q">
+        <p class="q-text">2. AI 讲的知识和你课本不一样，应该？</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 以 AI 为准，它知道的更多</button>
+          <button class="opt" data-correct="true">B. 以课本和老师为准，再让它解释一遍</button>
+          <button class="opt" data-correct="false">C. 换一个 AI，直到答案一样</button>
+        </div>
+        <p class="explain" hidden>解析：AI 是陪练，不是裁判。课本和老师是准绳；让它解释，是为了帮你理解，不是让它改标准答案。</p>
+      </div>
+      <div class="q">
+        <p class="q-text">3. 「让它出题考自己」为什么有效？</p>
+        <div class="opts">
+          <button class="opt" data-correct="true">A. 做题能暴露哪里没真懂</button>
+          <button class="opt" data-correct="false">B. 题目做得越多越厉害</button>
+          <button class="opt" data-correct="false">C. 可以不用看书了</button>
+        </div>
+        <p class="explain" hidden>解析：做题是主动回忆，会把「以为自己懂了」的地方照出来。错题不是打击，是地图。</p>
+      </div>
+      <p class="quiz-score" hidden></p>
+    </div>
+  </section>
+
+  <!-- ⑤ 金句 -->
+  <section class="block reveal">
+    <h2 class="step"><span>04</span>一句话记住这节课</h2>
+    <div class="quote-card">
+      <p>关键不是它讲得多好，<br>是它能不能把你考会。</p>
+      <p class="quote-sub">听懂了是错觉，做对了才算。</p>
+    </div>
+  </section>
+
+  <!-- ⑥ 今天试一件事 -->
+  <section class="block reveal">
+    <h2 class="step"><span>05</span>今天试一件事</h2>
+    <ul class="actions">
+      <li><span class="box"></span><span class="txt">挑一个最近没懂的知识点，让它用「10 岁能懂」的话讲一遍</span></li>
+      <li><span class="box"></span><span class="txt">让它出 3 道题考你，错的地方让它换个讲法再讲</span></li>
+      <li><span class="box"></span><span class="txt">拿课本对一遍它讲的内容，看看有没有出入</span></li>
+    </ul>
+    <button id="btn-complete" class="btn btn-primary">✅ 完成本课打卡</button>
+  </section>
+
+  <!-- ⑦ 导航 -->
+  <nav class="lesson-nav reveal" id="lesson-nav"></nav>
+
+</main>
+
+<footer class="footer">
+  <p>《人人 AI 通识课》 · 新时代的工具，动手去用</p>
+</footer>
+
+<script src="../assets/js/course-data.js"></script>
+<script src="../assets/js/components.js"></script>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

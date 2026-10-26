@@ -934,6 +934,518 @@
     render();
   }
 
+  /* ================= 出题机（第 8 课） ================= */
+  const TUTOR_TOPICS = [
+    {
+      id: "fraction", name: "分数加减", emoji: "➗",
+      questions: [
+        { q: "1/2 + 1/3 = ?", opts: ["2/5", "5/6", "1/6"], ok: 1, why: "先通分：1/2 = 3/6，1/3 = 2/6，加起来是 5/6。分母不能直接相加。" },
+        { q: "3/4 − 1/2 = ?", opts: ["2/2", "1/4", "1/2"], ok: 1, why: "通分：3/4 − 2/4 = 1/4。" },
+        { q: "2/3 × 3/4 = ?", opts: ["1/2", "6/7", "8/9"], ok: 0, why: "分数相乘，分子乘分子、分母乘分母：6/12 = 1/2。" }
+      ]
+    },
+    {
+      id: "photo", name: "光合作用", emoji: "🌿",
+      questions: [
+        { q: "光合作用主要发生在植物的哪个部位？", opts: ["根", "叶绿体", "花"], ok: 1, why: "叶绿体是光合作用的「工厂」，主要分布在叶子里。" },
+        { q: "光合作用需要下面哪两样东西？", opts: ["二氧化碳和水", "氧气和糖", "泥土和阳光"], ok: 0, why: "植物用二氧化碳和水，在光下造出氧气和糖。" },
+        { q: "光合作用释放的气体是？", opts: ["二氧化碳", "氧气", "氮气"], ok: 1, why: "它吸收二氧化碳，释放氧气——所以我们说植物能「净化空气」。" }
+      ]
+    },
+    {
+      id: "english", name: "英语过去时", emoji: "🔤",
+      questions: [
+        { q: "I ___ to the park yesterday.", opts: ["go", "went", "going"], ok: 1, why: "yesterday 是过去时间，go 的过去式是 went。" },
+        { q: "She ___ her homework last night.", opts: ["do", "did", "does"], ok: 1, why: "last night 是过去时间，do 的过去式是 did。" },
+        { q: "下面哪句是对的？", opts: ["He goed home.", "He went home.", "He goes home yesterday."], ok: 1, why: "go 是不规则动词，过去式是 went，不是 goed。" }
+      ]
+    }
+  ];
+
+  function initTutor(el) {
+    let topic = null, idx = 0, score = 0, answered = false, results = [];
+
+    function choose() {
+      el.innerHTML =
+        '<div class="guess-round-tag">小艾出题机 · 选一门课</div>' +
+        '<p class="train-lead">你选一门，小艾出 3 道题考你。答错的地方，它会讲给你听。</p>' +
+        '<div class="tutor-topics">' +
+          TUTOR_TOPICS.map((t, i) =>
+            '<button class="tutor-topic" data-i="' + i + '">' +
+              '<span class="tt-emoji">' + t.emoji + '</span>' +
+              '<b>' + t.name + '</b>' +
+              '<small>3 道题 · 约 2 分钟</small>' +
+            '</button>'
+          ).join("") +
+        '</div>';
+      Array.from(el.querySelectorAll(".tutor-topic")).forEach(btn => {
+        btn.addEventListener("click", () => start(parseInt(btn.dataset.i, 10)));
+      });
+    }
+
+    function start(i) {
+      topic = TUTOR_TOPICS[i];
+      idx = 0; score = 0; answered = false; results = [];
+      question();
+    }
+
+    function question() {
+      const q = topic.questions[idx];
+      answered = false;
+      el.innerHTML =
+        '<div class="guess-round-tag">' + topic.emoji + ' ' + topic.name + ' · 第 ' + (idx + 1) + ' / ' + topic.questions.length + ' 题</div>' +
+        '<div class="tutor-q">' + q.q + '</div>' +
+        '<div class="tutor-opts">' +
+          q.opts.map((o, i) => '<button class="tutor-opt" data-o="' + i + '">' + o + '</button>').join("") +
+        '</div>' +
+        '<div class="tutor-fb" aria-live="polite"></div>';
+      Array.from(el.querySelectorAll(".tutor-opt")).forEach(btn => {
+        btn.addEventListener("click", () => answer(parseInt(btn.dataset.o, 10)));
+      });
+    }
+
+    function answer(i) {
+      if (answered) return;
+      answered = true;
+      const q = topic.questions[idx];
+      const right = i === q.ok;
+      if (right) score++;
+      results.push(right);
+      Array.from(el.querySelectorAll(".tutor-opt")).forEach((btn, k) => {
+        btn.disabled = true;
+        if (k === q.ok) btn.classList.add("ok");
+        else if (k === i) btn.classList.add("bad");
+      });
+      const fb = el.querySelector(".tutor-fb");
+      fb.className = "tutor-fb show " + (right ? "ok" : "bad");
+      fb.innerHTML = (right ? "✅ 答对了！" : "❌ 不对哦。") + q.why +
+        '<div class="tutor-next"><button class="btn btn-primary">' +
+          (idx + 1 === topic.questions.length ? "看成绩 →" : "下一题 →") +
+        '</button></div>';
+      fb.querySelector(".btn").addEventListener("click", () => {
+        if (idx + 1 === topic.questions.length) result();
+        else { idx++; question(); }
+      });
+    }
+
+    function result() {
+      const total = topic.questions.length;
+      const msg = score === total
+        ? "全对！别急着骄傲——让它再出 3 道更难的。"
+        : score >= total - 1
+          ? "不错。错的那道，让它换一种讲法再讲一遍。"
+          : "没关系，这正是「出题」的意义：把没懂的地方找出来。";
+      el.innerHTML =
+        '<div class="guess-round-tag">考试结束 · ' + topic.name + '</div>' +
+        '<div class="tutor-score">' + score + ' <small>/ ' + total + '</small></div>' +
+        '<p class="tutor-msg">' + msg + '</p>' +
+        '<div class="tutor-review">' +
+          topic.questions.map((q, i) =>
+            '<div class="tutor-review-row ' + (results[i] ? "ok" : "bad") + '">' +
+              '<b>' + (results[i] ? "✓" : "✗") + ' 第 ' + (i + 1) + ' 题</b>' +
+              '<span>' + q.why + '</span>' +
+            '</div>'
+          ).join("") +
+        '</div>' +
+        '<div class="guess-foot">' +
+          '<span class="guess-score">错题解析都在上面，别只看分数。</span>' +
+          '<button class="btn btn-primary js-again">再考一次 ↻</button>' +
+          '<button class="btn btn-ghost js-topic">换一门课</button>' +
+        '</div>';
+      el.querySelector(".js-again").addEventListener("click", () => start(TUTOR_TOPICS.indexOf(topic)));
+      el.querySelector(".js-topic").addEventListener("click", choose);
+    }
+
+    choose();
+  }
+
+  /* ================= 文件助手（第 9 课） ================= */
+  const FILE_ITEMS = [
+    {
+      id: "medicine",
+      emoji: "💊",
+      name: "药盒照片.jpg",
+      kind: "图片 · 药盒",
+      raw: "阿莫西林胶囊 0.25g × 24 粒\n适应症：敏感菌引起的感染\n用法用量：成人一次 2 粒，一日 3 次\n禁忌：青霉素过敏者禁用",
+      summary: "这是阿莫西林胶囊（0.25g × 24 粒）。\n成人常用量：一次 2 粒，一日 3 次。\n青霉素过敏者禁用。",
+      warn: "药名和剂量请再对照说明书；具体用药听医生的。"
+    },
+    {
+      id: "pdf",
+      emoji: "📄",
+      name: "项目会议纪要.pdf",
+      kind: "PDF · 12 页",
+      raw: "……本次会议讨论了 Q3 上线节奏、预算调整与人员分工……\n上线时间：9 月 15 日\n追加预算：8 万元\n物料：小李\n渠道：小王",
+      summary: "3 条要点：\n① Q3 上线推迟到 9 月 15 日；\n② 预算增加 8 万，用于投放；\n③ 小李负责物料，小王负责渠道。",
+      warn: "日期和金额，建议回到原文核对。"
+    },
+    {
+      id: "bill",
+      emoji: "🧾",
+      name: "手写账单照片.jpg",
+      kind: "图片 · 手写",
+      raw: "苹果 12.5 元\n香蕉 8 元\n牛奶 25 元\n鸡蛋 18.5 元",
+      summary: "共 4 项，识别合计 176.5 元。",
+      summaryFixed: "已修正：苹果 12.5 元，合计 64 元。",
+      warn: "手写数字容易认错，尤其是小数点。",
+      rows: [
+        { name: "苹果", value: "125 元", fixed: "12.5 元", wrong: true },
+        { name: "香蕉", value: "8 元" },
+        { name: "牛奶", value: "25 元" },
+        { name: "鸡蛋", value: "18.5 元" }
+      ]
+    }
+  ];
+
+  function initFiles(el) {
+    let busy = false;
+    let foundBill = false;
+
+    function choose() {
+      foundBill = false;
+      el.innerHTML =
+        '<div class="guess-round-tag">文件助手 · 选一个文件试试</div>' +
+        '<p class="train-lead">真实工具里，这里可以上传图片、PDF、Word、Excel。这是模拟演示。</p>' +
+        '<div class="file-grid">' +
+          FILE_ITEMS.map((f, i) =>
+            '<button class="file-card" data-i="' + i + '">' +
+              '<span class="fc-emoji">' + f.emoji + '</span>' +
+              '<span class="fc-name">' + f.name + '</span>' +
+              '<span class="fc-kind">' + f.kind + '</span>' +
+            '</button>'
+          ).join("") +
+        '</div>';
+      Array.from(el.querySelectorAll(".file-card")).forEach(btn => {
+        btn.addEventListener("click", () => process(FILE_ITEMS[parseInt(btn.dataset.i, 10)]));
+      });
+    }
+
+    function process(item) {
+      if (busy) return;
+      busy = true;
+      foundBill = false;
+      el.innerHTML =
+        '<div class="guess-round-tag">正在识别 · ' + item.name + '</div>' +
+        '<div class="file-scan">' +
+          '<span class="fs-emoji">' + item.emoji + '</span>' +
+          '<div class="train-bar"><i></i></div>' +
+          '<p>正在读取文字、表格和数字……</p>' +
+        '</div>';
+      const bar = el.querySelector(".train-bar i");
+      setTimeout(() => { bar.style.width = "100%"; }, 50);
+      setTimeout(() => { busy = false; show(item); }, 1300);
+    }
+
+    function billRows(item) {
+      return '<div class="bill-table">' +
+        item.rows.map((r, i) =>
+          '<button class="bill-row' + (foundBill && r.wrong ? " found" : "") + '" data-row="' + i + '"' +
+            (foundBill ? " disabled" : "") + '>' +
+            '<span>' + r.name + '</span>' +
+            '<b>' + (foundBill && r.wrong ? r.fixed : r.value) + '</b>' +
+          '</button>'
+        ).join("") +
+      '</div>';
+    }
+
+    function show(item) {
+      const isBill = item.id === "bill";
+      el.innerHTML =
+        '<div class="guess-round-tag">识别完成 · ' + item.name + '</div>' +
+        '<div class="file-result" aria-live="polite">' +
+          '<div class="file-col">' +
+            '<div class="pl-label">文件里写的</div>' +
+            '<div class="file-raw">' + item.raw.replace(/\n/g, "<br>") + '</div>' +
+          '</div>' +
+          '<div class="file-col">' +
+            '<div class="pl-label">小艾的摘要</div>' +
+            '<div class="file-summary">' +
+              (isBill
+                ? billRows(item) + '<p class="bill-total">' + (foundBill ? item.summaryFixed : item.summary) + '</p>'
+                : item.summary.replace(/\n/g, "<br>")) +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<p class="file-warn">⚠️ ' + item.warn + '</p>' +
+        (isBill
+          ? (foundBill
+              ? '<div class="train-verdict"><b>你抓到了 1 处识别错误。</b><br>手写、反光、小数点，都是「看图识字」的高发区——AI 读得快，但数字要自己核。</div>'
+              : '<p class="train-lead">账单里有一行可能被认错了。点一下你觉得可疑的那一行。</p>')
+          : '') +
+        '<div class="guess-foot">' +
+          '<span class="guess-score">' + (isBill && !foundBill ? "提示：注意小数点。" : "能读、能总结，但不代表 100% 正确。") + '</span>' +
+          '<button class="btn btn-ghost js-back">换一个文件 ↻</button>' +
+        '</div>';
+      el.querySelector(".js-back").addEventListener("click", choose);
+      if (isBill && !foundBill) {
+        Array.from(el.querySelectorAll(".bill-row[data-row]")).forEach(btn => {
+          btn.addEventListener("click", () => checkRow(parseInt(btn.dataset.row, 10)));
+        });
+      }
+    }
+
+    function checkRow(i) {
+      const item = FILE_ITEMS[2];
+      const row = item.rows[i];
+      if (row.wrong) {
+        foundBill = true;
+        show(item);
+        window.dispatchEvent(new CustomEvent("aic-toast", { detail: "✅ 抓到了！小数点被漏掉了" }));
+      } else {
+        const btn = el.querySelector('.bill-row[data-row="' + i + '"]');
+        btn.classList.remove("shake");
+        void btn.offsetWidth;
+        btn.classList.add("shake");
+        window.dispatchEvent(new CustomEvent("aic-toast", { detail: "这行和原图一致，再看看别的" }));
+      }
+    }
+
+    choose();
+  }
+
+  /* ================= 生活情景（第 10 课） ================= */
+  const LIFE_SCENES = [
+    {
+      id: "dinner",
+      emoji: "🍳",
+      title: "冰箱只剩鸡蛋、番茄、半根胡萝卜",
+      desc: "今晚两个人吃，只有 20 分钟。",
+      options: [
+        {
+          text: "推荐个家常菜",
+          good: false,
+          reply: "推荐红烧肉：五花肉 500g、冰糖、生抽、老抽，小火慢炖 40 分钟。",
+          why: "还得下楼买肉，冰箱里的菜没用上。"
+        },
+        {
+          text: "只有鸡蛋、番茄、半根胡萝卜，20 分钟，两个人吃，能做什么？",
+          good: true,
+          reply: "番茄炒蛋 + 胡萝卜丝蛋饼，20 分钟够。先打蛋，番茄切块，胡萝卜擦丝拌进蛋液里煎。",
+          why: "把食材、时间、人数说全，它才能用你的资源解决你的问题。"
+        }
+      ]
+    },
+    {
+      id: "homework",
+      emoji: "🧒",
+      title: "10 岁儿子一写作业就拖",
+      desc: "你想今晚就跟他聊一次。",
+      options: [
+        {
+          text: "我儿子 10 岁，一写作业就拖，我想今晚跟他好好聊一次，怎么开口？",
+          good: true,
+          reply: "可以这样说：「我不是来催你的，是想跟你商量一个我们都能接受的办法。」然后问他 3 个问题：哪科最难？卡在哪一步？希望我怎么帮你？",
+          why: "把「管」换成「聊」，它给的才是能直接说出口的话。"
+        },
+        {
+          text: "怎么管孩子写作业？",
+          good: false,
+          reply: "建立规则、固定学习时间、奖惩分明，必要时和老师沟通。",
+          why: "道理都对，但今晚还是不知道怎么开口。"
+        }
+      ]
+    },
+    {
+      id: "repair",
+      emoji: "🔧",
+      title: "楼道灯坏了 3 天，物业还没修",
+      desc: "你想让他们今天就来人。",
+      options: [
+        {
+          text: "物业不管事怎么办？",
+          good: false,
+          reply: "可以向业委会反映，或依据物业服务合同投诉，必要时走法律途径。",
+          why: "一下跳到「对抗」，事情反而更难办。"
+        },
+        {
+          text: "楼道灯坏了 3 天，帮我写一条客气但坚定的报修信息",
+          good: true,
+          reply: "【报修】3 号楼 2 单元 5 楼楼道灯已坏 3 天，晚上老人小孩上下楼不安全。请今天安排师傅上门，谢谢。",
+          why: "给它对象、事实、语气，它就能替你把话说清楚。"
+        }
+      ]
+    }
+  ];
+
+  function initLife(el) {
+    let i = 0, score = 0, answered = false;
+
+    function scene() {
+      if (i >= LIFE_SCENES.length) return summary();
+      const s = LIFE_SCENES[i];
+      answered = false;
+      el.innerHTML =
+        '<div class="guess-round-tag">情景 ' + (i + 1) + ' / ' + LIFE_SCENES.length + ' · 你选哪种问法？</div>' +
+        '<div class="life-scene">' +
+          '<span class="ls-emoji">' + s.emoji + '</span>' +
+          '<div><b>' + s.title + '</b><p>' + s.desc + '</p></div>' +
+        '</div>' +
+        '<div class="life-opts">' +
+          s.options.map((o, k) =>
+            '<button class="life-opt" data-o="' + k + '">' +
+              '<span class="lo-tag">' + String.fromCharCode(65 + k) + '</span>' +
+              '<span>' + o.text + '</span>' +
+            '</button>'
+          ).join("") +
+        '</div>' +
+        '<div class="life-result" aria-live="polite"></div>';
+      Array.from(el.querySelectorAll(".life-opt")).forEach(btn => {
+        btn.addEventListener("click", () => pick(parseInt(btn.dataset.o, 10)));
+      });
+    }
+
+    function pick(k) {
+      if (answered) return;
+      answered = true;
+      const s = LIFE_SCENES[i];
+      const good = s.options.findIndex(o => o.good);
+      if (k === good) score++;
+      const chosen = s.options[k];
+      const best = s.options[good];
+      Array.from(el.querySelectorAll(".life-opt")).forEach((btn, idx) => {
+        btn.disabled = true;
+        if (idx === good) btn.classList.add("right");
+        else if (idx === k) btn.classList.add("wrong");
+      });
+      const res = el.querySelector(".life-result");
+      res.className = "life-result show";
+      res.innerHTML =
+        (k === good
+          ? '<p class="life-verdict ok">✅ 选对了，这句更落地。</p>'
+          : '<p class="life-verdict bad">⚠️ 也能聊，但不够落地。看看差别：</p>') +
+        '<div class="life-reply ' + (k === good ? "good" : "bad") + '">' +
+          '<span class="lr-label">你选的</span>' +
+          '<p>' + chosen.reply + '</p>' +
+          '<span class="lr-why">' + chosen.why + '</span>' +
+        '</div>' +
+        (k === good ? '' :
+          '<div class="life-reply good">' +
+            '<span class="lr-label">更好的问法</span>' +
+            '<p class="lr-q">' + best.text + '</p>' +
+            '<p>' + best.reply + '</p>' +
+            '<span class="lr-why">' + best.why + '</span>' +
+          '</div>') +
+        '<div class="life-next"><button class="btn btn-primary">' +
+          (i + 1 === LIFE_SCENES.length ? "看总结 →" : "下一个情景 →") +
+        '</button></div>';
+      res.querySelector(".btn").addEventListener("click", () => { i++; scene(); });
+    }
+
+    function summary() {
+      const msg = score === LIFE_SCENES.length
+        ? "3 / 3，你已经会把条件说全了 🏆"
+        : score >= 2
+          ? "2 / 3，不错。记住：先说「有什么、要什么、给谁」。"
+          : "别急，记住一句：先交代条件，再提要求。";
+      el.innerHTML =
+        '<div class="guess-round-tag">三个情景走完 🎉</div>' +
+        '<div class="train-verdict"><b>' + msg + '</b><br>同一个 AI，问法不同，结果差很远。</div>' +
+        '<div class="guess-foot">' +
+          '<span class="guess-score">琐事交给它，判断留自己。</span>' +
+          '<button class="btn btn-ghost js-again">再玩一次 ↻</button>' +
+        '</div>';
+      el.querySelector(".js-again").addEventListener("click", () => { i = 0; score = 0; scene(); });
+    }
+
+    scene();
+  }
+
+  /* ================= 五招卡片（第 11 课） ================= */
+  const TIPS = [
+    {
+      emoji: "🗣️", name: "追问",
+      normal: "帮我写个活动方案。",
+      normalReply: "好的，以下是一个活动方案：一、活动主题……（通用模板）",
+      pro: "帮我写个活动方案。先给 3 个主题方向，我选一个你再展开。",
+      proReply: "3 个方向：① 亲子运动会 ② 旧物交换市集 ③ 夜间露天电影。你选哪个？",
+      why: "第一版只是草稿。追问一句，它才会往你要的方向走。"
+    },
+    {
+      emoji: "💡", name: "举例",
+      normal: "帮我写几句朋友圈文案。",
+      normalReply: "时光荏苒，岁月如歌，愿美好与你环环相扣……（空泛）",
+      pro: "帮我写 3 句水果店朋友圈文案，像这样：「今早刚到，脆甜，不甜不要钱。」",
+      proReply: "① 阳光玫瑰到货，脆甜带香，不甜不要钱。② 今早现摘的草莓，颗颗带露水。③ 最后 10 箱，卖完收摊。",
+      why: "给一个样本，比说「写得好一点」管用十倍。"
+    },
+    {
+      emoji: "🔍", name: "自查",
+      normal: "这个历史事件是哪一年？",
+      normalReply: "1898 年。（可能记错或编造）",
+      pro: "你确定吗？再检查一遍，有没有记错或编造的地方。",
+      proReply: "我重新核对：应是 1898 年，但建议以教材为准；我不能保证绝对准确。",
+      why: "自查能减少错误，但不能保证全对；重要事实仍要自己核。"
+    },
+    {
+      emoji: "🪜", name: "分步",
+      normal: "帮我写一份 3000 字的年度总结。",
+      normalReply: "（一次性生成，结构松散，重点不清）",
+      pro: "先别写正文，先列 5 个部分的提纲，我确认后再写。",
+      proReply: "提纲：① 年度回顾 ② 关键数据 ③ 存在问题 ④ 改进措施 ⑤ 明年计划。确认后我再展开。",
+      why: "长任务拆开做，质量更稳，也更容易改。"
+    },
+    {
+      emoji: "🔄", name: "换说法",
+      normal: "这个方案有什么风险？",
+      normalReply: "整体可行，注意执行细节。",
+      pro: "这个方案最可能失败的 3 个原因是什么？如果只能改一处，改哪里？",
+      proReply: "① 预算不足 ② 人手不够 ③ 时间太紧。优先改时间——把上线推迟两周，风险能降一半。",
+      why: "换个角度问，能逼出不一样的答案。"
+    }
+  ];
+
+  function initTips(el) {
+    let viewed = new Set();
+
+    function render() {
+      el.innerHTML =
+        '<div class="guess-round-tag">五招卡片 · 已看 ' + viewed.size + ' / ' + TIPS.length + '</div>' +
+        '<p class="train-lead">每张卡都是一组对比：普通问法 vs 高手问法。点开看看差别。</p>' +
+        '<div class="tips-list">' +
+          TIPS.map((t, i) => {
+            const on = viewed.has(i);
+            return '<div class="tip-card' + (on ? " on" : "") + '">' +
+              '<div class="tip-head">' +
+                '<span class="tip-emoji">' + t.emoji + '</span>' +
+                '<b>' + t.name + '</b>' +
+                '<span class="tip-no">0' + (i + 1) + '</span>' +
+              '</div>' +
+              '<div class="tip-before">' +
+                '<span class="tp-label">普通问法</span>' +
+                '<p class="tp-q">' + t.normal + '</p>' +
+                '<p class="tp-reply">' + t.normalReply + '</p>' +
+              '</div>' +
+              (on
+                ? '<div class="tip-after">' +
+                    '<span class="tp-label">高手问法</span>' +
+                    '<p class="tp-q">' + t.pro + '</p>' +
+                    '<p class="tp-reply">' + t.proReply + '</p>' +
+                    '<p class="tp-why">💡 ' + t.why + '</p>' +
+                  '</div>'
+                : '<button class="tip-toggle" data-i="' + i + '">看高手版 ↓</button>') +
+            '</div>';
+          }).join("") +
+        '</div>' +
+        (viewed.size === TIPS.length
+          ? '<div class="train-verdict"><b>五招集齐 ✓</b> 高手不是会咒语，是会追问；好答案，都是聊出来的。</div>' +
+            '<div class="guess-foot">' +
+              '<span class="guess-score">现在去真实工具里，挑一招试试。</span>' +
+              '<button class="btn btn-ghost js-again">重新看一遍 ↻</button>' +
+            '</div>'
+          : '');
+      Array.from(el.querySelectorAll(".tip-toggle")).forEach(btn => {
+        btn.addEventListener("click", () => {
+          viewed.add(parseInt(btn.dataset.i, 10));
+          render();
+        });
+      });
+      const again = el.querySelector(".js-again");
+      if (again) again.addEventListener("click", () => { viewed = new Set(); render(); });
+    }
+
+    render();
+  }
+
   /* ================= 自动挂载 ================= */
   document.addEventListener("DOMContentLoaded", function () {
     Array.from(document.querySelectorAll(".quiz")).forEach(initQuiz);
@@ -953,5 +1465,13 @@
     if (pl) initPromptLab(pl);
     const ed = document.getElementById("editor");
     if (ed) initEditor(ed);
+    const tu = document.getElementById("tutor");
+    if (tu) initTutor(tu);
+    const fl = document.getElementById("files");
+    if (fl) initFiles(fl);
+    const lf = document.getElementById("life");
+    if (lf) initLife(lf);
+    const tp = document.getElementById("tips");
+    if (tp) initTips(tp);
   });
 })();

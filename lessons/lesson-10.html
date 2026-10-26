@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 10 课 · 生活里的 AI 搭子 | 人人 AI 通识课</title>
+<link rel="stylesheet" href="../assets/css/base.css">
+</head>
+<body class="lesson" data-page="lesson" data-lesson="10">
+
+<header class="topbar">
+  <a class="brand" href="../index.html"><span class="aibot"></span><span>人人 AI 通识课</span></a>
+  <div class="tools">
+    <button class="tool-btn" id="font-toggle" title="调整字号">A</button>
+    <button class="tool-btn" id="theme-toggle" title="深色模式">🌙</button>
+  </div>
+</header>
+
+<div class="courseline">
+  <div class="progress"><i class="js-course-progress"></i></div>
+  <span class="count js-course-count">全课进度 0 / 21</span>
+</div>
+
+<main class="container lesson-wrap">
+
+  <!-- 课程头 -->
+  <header class="lesson-hero reveal">
+    <p class="chip-row">
+      <span class="chip hot">🍜 模块二 · 开始用 AI</span>
+      <span class="chip">⏱ 约 12 分钟</span>
+      <span class="chip">🧩 情景分支</span>
+      <span class="chip">🧠 1 个小测验</span>
+    </p>
+    <h1>生活里的<br>AI 搭子</h1>
+    <p class="lesson-lead">工作学习之外，生活里的琐事也能交给它：晚饭、攻略、报修、带娃。前提是——把条件说全。</p>
+  </header>
+
+  <!-- ① 场景导入 -->
+  <section class="scene reveal">
+    <div class="robot">
+      <span class="aibot"></span>
+      <span class="robot-name">小艾</span>
+    </div>
+    <div class="bubble">
+      <p><b>王阿姨：</b>冰箱里就剩鸡蛋、番茄、半根胡萝卜，晚饭不知道做啥。</p>
+      <p><b>小艾：</b>你问我「推荐个菜」，我只能给你红烧肉；你把冰箱里有什么告诉我，我就能给你今晚能做的。</p>
+      <p><b>王阿姨：</b>那你说，能做什么？</p>
+      <p><b>小艾：</b>番茄炒蛋，加一个胡萝卜丝蛋饼。20 分钟，刚好。</p>
+    </div>
+  </section>
+
+  <!-- ② 核心讲解 -->
+  <section class="block reveal">
+    <h2 class="step"><span>01</span>核心讲解</h2>
+
+    <div class="card hl">
+      <h3>🍳 菜谱：按你家的条件来</h3>
+      <p>别问「推荐个菜」，问：<b class="hl-text">「冰箱里有鸡蛋、番茄、半根胡萝卜，两个人吃，20 分钟，能做什么？」</b></p>
+      <p>食材、人数、时间，三样说全，它给的才是你今晚真能做出来的，而不是又让你跑一趟超市。</p>
+      <p>想再省事，加一句：「步骤写短一点，我边做边看。」</p>
+    </div>
+
+    <div class="card accent">
+      <h3>🗺️ 攻略：说清时间、预算、同行人</h3>
+      <p>「周末带 6 岁孩子玩半天，预算 300，不开车。」——信息越全，路线越靠谱。</p>
+      <p>只说「附近有什么好玩的」，它只能给你网红打卡地；说清孩子多大、怕不怕晒、要不要午睡，它才会给你能落地的半日路线。</p>
+      <p>最后加一句：「按上午、中午、下午排个时间表。」</p>
+    </div>
+
+    <div class="card sun">
+      <h3>🔧 报修 / 投诉：帮你把话说清楚</h3>
+      <p>把事实、时间、诉求告诉它，让它写成一条「客气但坚定」的信息。</p>
+      <p>比如：「楼道灯坏了 3 天，晚上老人小孩上下楼不安全，帮我写一条报修信息，客气但坚定。」</p>
+      <p>比你自己憋半天更省事，也不容易一开口就吵起来。</p>
+    </div>
+
+    <div class="card">
+      <h3>🧒 带娃 / 沟通：先问「怎么开口」</h3>
+      <p>别问「怎么管孩子」，问「我想今晚跟他聊一次，怎么开口」。</p>
+      <p>它给的不是大道理，是能直接说出口的话——开场白、要问的三个问题、聊崩了怎么收场。</p>
+      <p><b>边界：</b>看病、法律、投资，找专业的人。它给的是参考，不是决定。</p>
+    </div>
+  </section>
+
+  <!-- ③ 互动 -->
+  <section class="block reveal">
+    <h2 class="step"><span>02</span>动手玩一玩</h2>
+    <div class="game-card" id="life"></div>
+    <p class="game-tip">三个生活场景，每个都有两种问法。先选你的，再看差别。</p>
+  </section>
+
+  <!-- ④ 小测验 -->
+  <section class="block reveal">
+    <h2 class="step"><span>03</span>小测验</h2>
+    <div class="quiz">
+      <div class="q">
+        <p class="q-text">1. 冰箱只剩鸡蛋和番茄，最有效的问法是？</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 推荐个菜</button>
+          <button class="opt" data-correct="true">B. 冰箱里只有鸡蛋和番茄，20 分钟，两个人吃，能做什么</button>
+          <button class="opt" data-correct="false">C. 今晚吃什么</button>
+        </div>
+        <p class="explain" hidden>解析：把现有的食材、时间、人数说全，它才能用你手头的东西解决问题。</p>
+      </div>
+      <div class="q">
+        <p class="q-text">2. 孩子不写作业，想让 AI 帮上忙，最好的问法是？</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 怎么管孩子</button>
+          <button class="opt" data-correct="true">B. 我想今晚跟他聊一次，怎么开口</button>
+          <button class="opt" data-correct="false">C. 帮我骂他一顿</button>
+        </div>
+        <p class="explain" hidden>解析：「怎么管」得到大道理，「怎么开口」得到能直接说的话。越具体，越能用。</p>
+      </div>
+      <div class="q">
+        <p class="q-text">3. 让 AI 帮你报修，下面哪句最有用？</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 物业不管事怎么办</button>
+          <button class="opt" data-correct="true">B. 楼道灯坏了 3 天，帮我写一条客气但坚定的报修信息</button>
+          <button class="opt" data-correct="false">C. 帮我起诉物业</button>
+        </div>
+        <p class="explain" hidden>解析：给它事实、对象和语气，它就能替你把话说清楚。一上来就「对抗」，事情反而更难办。</p>
+      </div>
+      <p class="quiz-score" hidden></p>
+    </div>
+  </section>
+
+  <!-- ⑤ 金句 -->
+  <section class="block reveal">
+    <h2 class="step"><span>04</span>一句话记住这节课</h2>
+    <div class="quote-card">
+      <p>琐事交给它，判断留自己；<br>把条件说全，它才帮得上忙。</p>
+      <p class="quote-sub">同一个 AI，问法不同，结果差很远。</p>
+    </div>
+  </section>
+
+  <!-- ⑥ 今天试一件事 -->
+  <section class="block reveal">
+    <h2 class="step"><span>05</span>今天试一件事</h2>
+    <ul class="actions">
+      <li><span class="box"></span><span class="txt">用「冰箱里有什么」问一次菜谱，看看它能不能用上现有食材</span></li>
+      <li><span class="box"></span><span class="txt">让它帮你写一条报修或投诉信息，语气选「客气但坚定」</span></li>
+      <li><span class="box"></span><span class="txt">把「怎么管」换成「怎么开口」，试一次</span></li>
+    </ul>
+    <button id="btn-complete" class="btn btn-primary">✅ 完成本课打卡</button>
+  </section>
+
+  <!-- ⑦ 导航 -->
+  <nav class="lesson-nav reveal" id="lesson-nav"></nav>
+
+</main>
+
+<footer class="footer">
+  <p>《人人 AI 通识课》 · 新时代的工具，动手去用</p>
+</footer>
+
+<script src="../assets/js/course-data.js"></script>
+<script src="../assets/js/components.js"></script>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

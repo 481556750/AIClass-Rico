@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 11 课 · 五个越用越顺手的技巧 | 人人 AI 通识课</title>
+<link rel="stylesheet" href="../assets/css/base.css">
+</head>
+<body class="lesson" data-page="lesson" data-lesson="11">
+
+<header class="topbar">
+  <a class="brand" href="../index.html"><span class="aibot"></span><span>人人 AI 通识课</span></a>
+  <div class="tools">
+    <button class="tool-btn" id="font-toggle" title="调整字号">A</button>
+    <button class="tool-btn" id="theme-toggle" title="深色模式">🌙</button>
+  </div>
+</header>
+
+<div class="courseline">
+  <div class="progress"><i class="js-course-progress"></i></div>
+  <span class="count js-course-count">全课进度 0 / 21</span>
+</div>
+
+<main class="container lesson-wrap">
+
+  <!-- 课程头 -->
+  <header class="lesson-hero reveal">
+    <p class="chip-row">
+      <span class="chip hot">🧰 模块二 · 开始用 AI</span>
+      <span class="chip">⏱ 约 12 分钟</span>
+      <span class="chip">🃏 五招卡片</span>
+      <span class="chip">🧠 1 个小测验</span>
+    </p>
+    <h1>五个越用<br>越顺手的技巧</h1>
+    <p class="lesson-lead">用了一阵子，为什么有人越用越顺，有人还是问一句就关？差别不在工具，在这五个小动作。</p>
+  </header>
+
+  <!-- ① 场景导入 -->
+  <section class="scene reveal">
+    <div class="robot">
+      <span class="aibot"></span>
+      <span class="robot-name">小艾</span>
+    </div>
+    <div class="bubble">
+      <p><b>小雨：</b>我用了半年 AI，感觉还是不如室友顺手。</p>
+      <p><b>小艾：</b>你每次是不是问完一句，不满意就关了？</p>
+      <p><b>小雨：</b>……你怎么知道？</p>
+      <p><b>小艾：</b>高手不是会咒语，是会追问。好答案，都是聊出来的。</p>
+    </div>
+  </section>
+
+  <!-- ② 核心讲解 -->
+  <section class="block reveal">
+    <h2 class="step"><span>01</span>核心讲解</h2>
+
+    <div class="card hl">
+      <h3>🔁 追问：第一版只是草稿</h3>
+      <p>没有谁一句话就能问出好答案。第一版不满意，别关掉，补一句：</p>
+      <p><b class="hl-text">「第二条展开说说。」「再具体一点，给个例子。」「换个更口语的说法。」</b></p>
+      <p>它不怕你改，就怕你不说哪里不对。你每追问一次，它就往你的方向靠近一步。</p>
+    </div>
+
+    <div class="card accent">
+      <h3>💡 举例：给它一个样本</h3>
+      <p>「写得好一点」是玄学，「像这样……」才是指令。</p>
+      <p>想让它写文案，先给它一句你喜欢的样子；想让它改文章，先贴一段你满意的风格。</p>
+      <p>一个例子，胜过十个形容词。</p>
+    </div>
+
+    <div class="card sun">
+      <h3>🔍 自查：让它自己挑错</h3>
+      <p>加一句：<b>「你确定吗？再检查一遍，有没有记错或编造的地方。」</b></p>
+      <p>它常常会重新审一遍，自己改掉一两个错。这招对数据、年份、引用特别有用。</p>
+      <p>但记住：自查能减少错误，不能保证全对。重要的事实，仍要自己核实（第 4、16 课）。</p>
+    </div>
+
+    <div class="card">
+      <h3>🪜 分步：长任务拆开做</h3>
+      <p>别一上来就「帮我写 3000 字」，先说：<b>「先别写正文，列 5 个部分的提纲，我确认后再写。」</b></p>
+      <p>提纲对了，正文才不容易跑偏；写坏了，也只改一段，不用推倒重来。</p>
+      <p>长任务像盖房子：先看图，再砌墙。</p>
+
+      <h3 style="margin-top:18px">🔄 换说法：同一个问题问 3 遍</h3>
+      <p>「这个方案有什么风险？」和「这个方案最可能失败的 3 个原因是什么？」——后一句更容易逼出真话。</p>
+      <p>换个角度、换个身份、换个问法，比较三次答案。一致的部分可以信，不一致的地方，正是你要多看一眼的地方。</p>
+    </div>
+  </section>
+
+  <!-- ③ 互动 -->
+  <section class="block reveal">
+    <h2 class="step"><span>02</span>动手玩一玩</h2>
+    <div class="game-card" id="tips"></div>
+    <p class="game-tip">五张卡，五组对比。每张都点开看看，再挑一招去真实工具里试。</p>
+  </section>
+
+  <!-- ④ 小测验 -->
+  <section class="block reveal">
+    <h2 class="step"><span>03</span>小测验</h2>
+    <div class="quiz">
+      <div class="q">
+        <p class="q-text">1. 第一版答案不满意，最有效的做法是？</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 换一个 AI，从头再问</button>
+          <button class="opt" data-correct="true">B. 追问：「第二条展开，举 2 个例子」</button>
+          <button class="opt" data-correct="false">C. 凑合用</button>
+        </div>
+        <p class="explain" hidden>解析：第一版只是草稿。说清楚哪里不满意，比换工具更快。</p>
+      </div>
+      <div class="q">
+        <p class="q-text">2. 「你先别写，先列提纲，我确认后再写」用了哪一招？</p>
+        <div class="opts">
+          <button class="opt" data-correct="true">A. 分步骤</button>
+          <button class="opt" data-correct="false">B. 换说法</button>
+          <button class="opt" data-correct="false">C. 举例</button>
+        </div>
+        <p class="explain" hidden>解析：把长任务拆成「提纲 → 确认 → 正文」，质量更稳，也更容易改。</p>
+      </div>
+      <div class="q">
+        <p class="q-text">3. 担心 AI 编造，最直接的一招是？</p>
+        <div class="opts">
+          <button class="opt" data-correct="true">A. 问它「你确定吗？再检查一遍」</button>
+          <button class="opt" data-correct="false">B. 多问几遍同一个问题</button>
+          <button class="opt" data-correct="false">C. 相信它，它不会错</button>
+        </div>
+        <p class="explain" hidden>解析：自查能让它重新审一遍，减少错误；但不能保证全对。重要事实仍要自己核实。</p>
+      </div>
+      <p class="quiz-score" hidden></p>
+    </div>
+  </section>
+
+  <!-- ⑤ 金句 -->
+  <section class="block reveal">
+    <h2 class="step"><span>04</span>一句话记住这节课</h2>
+    <div class="quote-card">
+      <p>高手不是会咒语，是会追问；<br>好答案，都是聊出来的。</p>
+      <p class="quote-sub">你每多问一句，答案就更像你的。</p>
+    </div>
+  </section>
+
+  <!-- ⑥ 今天试一件事 -->
+  <section class="block reveal">
+    <h2 class="step"><span>05</span>今天试一件事</h2>
+    <ul class="actions">
+      <li><span class="box"></span><span class="txt">拿最近一次不满意的回答，追问 3 轮</span></li>
+      <li><span class="box"></span><span class="txt">试一次「先列提纲，我确认后再写」</span></li>
+      <li><span class="box"></span><span class="txt">问它「你确定吗？哪里可能出错？」</span></li>
+    </ul>
+    <button id="btn-complete" class="btn btn-primary">✅ 完成本课打卡</button>
+  </section>
+
+  <!-- ⑦ 导航 -->
+  <nav class="lesson-nav reveal" id="lesson-nav"></nav>
+
+</main>
+
+<footer class="footer">
+  <p>《人人 AI 通识课》 · 新时代的工具，动手去用</p>
+</footer>
+
+<script src="../assets/js/course-data.js"></script>
+<script src="../assets/js/components.js"></script>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

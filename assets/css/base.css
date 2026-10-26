@@ -657,6 +657,160 @@ em{font-style:normal}
 .edit-final .edit-mail-final{margin:8px 0;padding:12px 14px;background:var(--bg-card);border-radius:8px;border:1px solid var(--line)}
 .edit-final .edit-mail-final p+p{margin-top:8px}
 
+/* ---------- 出题机（第 8 课） ---------- */
+.tutor-topics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0 6px}
+.tutor-topic{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  padding:18px 10px;background:var(--bg-card);border:1px solid var(--line);
+  border-radius:var(--radius-sm);
+  transition:transform .15s,border-color .15s,box-shadow .15s;
+}
+.tutor-topic:hover{transform:translateY(-2px);border-color:var(--brand-2);box-shadow:0 6px 16px color-mix(in srgb,var(--brand) 12%,transparent)}
+.tt-emoji{font-size:1.8rem;line-height:1.3}
+.tutor-topic b{font-size:.94rem}
+.tutor-topic small{font-size:.72rem;color:var(--ink-3)}
+.tutor-q{font-size:1.2rem;font-weight:800;line-height:1.55;margin:18px 0 14px}
+.tutor-opts{display:grid;gap:10px}
+.tutor-opt{
+  text-align:left;padding:13px 16px;
+  background:var(--bg-card);border:1px solid var(--line);border-radius:10px;
+  font-weight:600;transition:transform .12s,border-color .12s,background .12s;
+}
+.tutor-opt:hover:not(:disabled){border-color:var(--brand-2);transform:translateX(3px)}
+.tutor-opt.ok{border-color:var(--ok-line);background:var(--ok-bg);font-weight:800}
+.tutor-opt.bad{border-color:var(--bad-line);background:var(--bad-bg)}
+.tutor-fb{display:none;margin-top:14px;padding:14px 16px;border-radius:10px;font-size:.88rem;line-height:1.7}
+.tutor-fb.show{display:block;animation:fadeUp .35s}
+.tutor-fb.ok{background:var(--ok-bg);border:1px solid var(--ok-line)}
+.tutor-fb.bad{background:var(--bad-bg);border:1px solid var(--bad-line)}
+.tutor-next{margin-top:12px;text-align:right}
+.tutor-score{font-size:3rem;font-weight:900;line-height:1.1;margin:8px 0 2px;color:var(--brand);font-variant-numeric:tabular-nums}
+.tutor-score small{font-size:1rem;color:var(--ink-3);font-weight:700}
+.tutor-msg{font-size:.94rem;color:var(--ink-2);margin-bottom:12px}
+.tutor-review{display:grid;gap:8px;margin:14px 0}
+.tutor-review-row{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:8px;font-size:.82rem;line-height:1.65}
+.tutor-review-row.ok{background:var(--ok-bg)}
+.tutor-review-row.bad{background:var(--bad-bg)}
+.tutor-review-row b{white-space:nowrap;font-size:.8rem}
+.tutor-review-row span{color:var(--ink-2)}
+
+/* ---------- 文件助手（第 9 课） ---------- */
+.file-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+.file-card{
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  padding:22px 12px;background:var(--bg-card);border:1px solid var(--line);
+  border-radius:var(--radius-sm);text-align:center;
+  transition:transform .15s,border-color .15s,box-shadow .15s;
+}
+.file-card:hover{transform:translateY(-2px);border-color:var(--brand-2);box-shadow:0 6px 16px color-mix(in srgb,var(--brand) 12%,transparent)}
+.fc-emoji{font-size:2.2rem;line-height:1.2}
+.fc-name{font-weight:800;font-size:.88rem;line-height:1.4}
+.fc-kind{font-size:.72rem;color:var(--ink-3)}
+.file-scan{
+  display:flex;flex-direction:column;align-items:center;
+  padding:26px 20px;margin-top:14px;
+  background:var(--bg-soft);border:1px solid var(--line);border-radius:var(--radius-sm);
+}
+.fs-emoji{font-size:2.8rem;line-height:1.2;animation:floaty 1.6s ease-in-out infinite}
+.file-scan .train-bar{width:min(360px,100%);margin:12px 0 8px}
+.file-scan p{font-size:.8rem;color:var(--ink-3)}
+.file-result{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.file-col{min-width:0}
+.pl-label{font-size:.7rem;font-weight:800;letter-spacing:.09em;color:var(--ink-3);margin-bottom:6px}
+.file-raw{
+  height:calc(100% - 22px);background:var(--bg-soft);border:1px solid var(--line);
+  border-radius:8px;padding:12px;font-size:.8rem;line-height:1.75;color:var(--ink-2);
+  word-break:break-word;
+}
+.file-summary{
+  background:var(--bg-card);border:1px solid var(--line);border-radius:8px;
+  padding:12px;font-size:.83rem;line-height:1.7;
+}
+.file-warn{font-size:.8rem;color:var(--ink-3);margin-top:12px;line-height:1.6}
+.bill-table{display:grid;gap:6px;margin-bottom:9px}
+.bill-row{
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+  padding:7px 10px;background:var(--bg-soft);border:1px solid var(--line);
+  border-radius:7px;font-size:.82rem;transition:border-color .12s,background .12s;
+}
+.bill-row:hover:not(:disabled){border-color:var(--brand-2)}
+.bill-row b{font-variant-numeric:tabular-nums}
+.bill-row:disabled{cursor:default}
+.bill-row.found{border-color:var(--ok-line);background:var(--ok-bg)}
+.bill-row.found b{color:var(--green);font-weight:800}
+.bill-row.shake{animation:shake .4s}
+.bill-total{font-size:.8rem;color:var(--ink-2);font-weight:700}
+
+/* ---------- 生活情景（第 10 课） ---------- */
+.life-scene{
+  display:flex;gap:14px;align-items:flex-start;
+  padding:16px;margin:14px 0;
+  background:var(--bg-soft);border:1px solid var(--line);border-radius:var(--radius-sm);
+}
+.ls-emoji{font-size:2rem;line-height:1.2}
+.life-scene b{font-size:.98rem;line-height:1.5}
+.life-scene p{font-size:.82rem;color:var(--ink-3);margin-top:2px}
+.life-opts{display:grid;gap:10px}
+.life-opt{
+  display:flex;gap:10px;align-items:flex-start;text-align:left;
+  padding:13px 15px;background:var(--bg-card);border:1px solid var(--line);border-radius:10px;
+  font-size:.88rem;line-height:1.6;
+  transition:transform .12s,border-color .12s,background .12s;
+}
+.life-opt:hover:not(:disabled){border-color:var(--brand-2);transform:translateX(3px)}
+.lo-tag{
+  flex:none;display:inline-flex;align-items:center;justify-content:center;
+  width:23px;height:23px;border-radius:50%;
+  background:var(--bg-soft);border:1px solid var(--line);
+  font-size:.72rem;font-weight:800;color:var(--ink-2);
+}
+.life-opt.right{border-color:var(--ok-line);background:var(--ok-bg)}
+.life-opt.right .lo-tag{background:var(--ok-line);color:#fff;border-color:transparent}
+.life-opt.wrong{border-color:var(--bad-line);background:var(--bad-bg)}
+.life-opt:disabled{cursor:default}
+.life-result{display:none;margin-top:14px}
+.life-result.show{display:block;animation:fadeUp .35s}
+.life-verdict{font-size:.9rem;font-weight:800;margin-bottom:10px}
+.life-verdict.ok{color:var(--green)}
+.life-verdict.bad{color:var(--red)}
+.life-reply{
+  padding:12px 14px;margin-bottom:10px;
+  border:1px solid var(--line);border-radius:8px;background:var(--bg-soft);
+  font-size:.84rem;line-height:1.7;
+}
+.life-reply.good{border-color:var(--ok-line);background:var(--ok-bg)}
+.life-reply.bad{border-color:var(--bad-line);background:var(--bad-bg)}
+.lr-label{display:block;font-size:.68rem;font-weight:800;letter-spacing:.09em;color:var(--ink-3);margin-bottom:3px}
+.life-reply p+p{margin-top:6px}
+.lr-q{font-weight:700}
+.lr-why{display:block;font-size:.77rem;color:var(--ink-2);margin-top:7px}
+.life-next{text-align:right;margin-top:10px}
+
+/* ---------- 五招卡片（第 11 课） ---------- */
+.tips-list{display:grid;gap:12px;margin-top:14px}
+.tip-card{
+  padding:14px 16px;background:var(--bg-card);border:1px solid var(--line);
+  border-radius:var(--radius-sm);transition:border-color .2s;
+}
+.tip-card.on{border-color:var(--brand-2)}
+.tip-head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.tip-emoji{font-size:1.15rem;line-height:1.2}
+.tip-head b{font-size:.95rem}
+.tip-no{margin-left:auto;font-size:.7rem;font-weight:800;color:var(--ink-3);letter-spacing:.12em}
+.tip-before,.tip-after{padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg-soft)}
+.tip-after{margin-top:8px;background:var(--ok-bg);border-color:var(--ok-line)}
+.tp-label{display:block;font-size:.66rem;font-weight:800;letter-spacing:.1em;color:var(--ink-3);margin-bottom:3px}
+.tp-q{font-size:.85rem;font-weight:700;line-height:1.6}
+.tp-reply{font-size:.81rem;color:var(--ink-2);line-height:1.65;margin-top:4px}
+.tp-why{font-size:.77rem;color:var(--ink-2);line-height:1.6;margin-top:8px;padding-top:7px;border-top:1px dashed var(--ok-line)}
+.tip-toggle{
+  width:100%;margin-top:10px;padding:8px;
+  border:1px dashed var(--line);border-radius:7px;
+  font-size:.8rem;font-weight:700;color:var(--brand);
+  transition:border-color .15s,background .15s;
+}
+.tip-toggle:hover{border-color:var(--brand-2);background:var(--bg-soft)}
+
 /* ---------- 徽章（首页） ---------- */
 .badges{margin:6px 0 36px}
 .badge-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
@@ -708,4 +862,18 @@ em{font-style:normal}
   .chat-log{height:300px}
   .msg{max-width:94%}
   .pl-output{min-height:auto}
+  .tutor-topics{grid-template-columns:1fr}
+  .tutor-topic{flex-direction:row;justify-content:flex-start;gap:10px;padding:13px 16px;text-align:left}
+  .tutor-topic small{margin-left:auto}
+  .tutor-q{font-size:1.05rem}
+  .file-grid{grid-template-columns:1fr}
+  .file-card{flex-direction:row;justify-content:flex-start;gap:10px;padding:13px 16px;text-align:left}
+  .fc-emoji{font-size:1.6rem}
+  .fc-kind{margin-left:auto}
+  .file-result{grid-template-columns:1fr}
+  .file-raw{height:auto}
+  .life-scene{padding:13px}
+  .ls-emoji{font-size:1.7rem}
+  .life-opt{font-size:.85rem;padding:12px 13px}
+  .tip-card{padding:12px 13px}
 }
