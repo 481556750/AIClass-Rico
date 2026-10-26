@@ -1051,7 +1051,7 @@ em{font-style:normal}
 .agent-log{
   height:520px;overflow-y:auto;padding:14px;
   display:flex;flex-direction:column;gap:11px;
-  background:var(--bg-soft);scroll-behavior:smooth;
+  background:var(--bg-soft);
 }
 .agent-start{
   margin:auto;text-align:center;max-width:430px;padding:24px 14px;

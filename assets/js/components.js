@@ -1913,7 +1913,7 @@
       }
       if (s.image) {
         html += '<figure class="agent-figure">' +
-          '<img src="../assets/img/lesson-14/' + s.image + '" alt="' + s.caption + '" width="1296" height="894" loading="lazy" decoding="async">' +
+          '<img src="../assets/img/lesson-14/' + s.image + '" alt="' + s.caption + '" width="1296" height="894" loading="eager" decoding="async">' +
           '<figcaption>' + s.caption + ' · <a href="../assets/img/lesson-14/' + s.image + '" target="_blank" rel="noopener">查看大图 ↗</a></figcaption>' +
         '</figure>';
       }
@@ -1938,7 +1938,9 @@
           if (slot) slot.scrollIntoView({ behavior: "smooth", block: "center" });
         });
       }
-      setTimeout(() => { log.scrollTop = log.scrollHeight; }, 80);
+      log.scrollTop = log.scrollHeight;
+      requestAnimationFrame(() => { log.scrollTop = log.scrollHeight; });
+      setTimeout(() => { log.scrollTop = log.scrollHeight; }, 120);
     }
 
     function foot() {
