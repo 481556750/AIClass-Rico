@@ -1446,6 +1446,714 @@
     render();
   }
 
+  /* ================= 通用：复制文本 ================= */
+  function copyText(text, okMsg) {
+    function ok() {
+      window.dispatchEvent(new CustomEvent("aic-toast", { detail: okMsg || "已复制" }));
+    }
+    function fallback() {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.left = "-9999px";
+      ta.style.top = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      ta.setSelectionRange(0, ta.value.length);
+      let done = false;
+      try { done = document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta);
+      if (done) ok();
+      else window.dispatchEvent(new CustomEvent("aic-toast", { detail: "复制失败，请手动选中文字" }));
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(ok).catch(fallback);
+    } else {
+      fallback();
+    }
+  }
+
+  /* ================= 绘画提示词生成器（第 12 课） ================= */
+  const ART_GROUPS = [
+    {
+      key: "subject", label: "1. 主体", hint: "画谁 / 画什么",
+      items: [
+        { label: "🐱 橘猫", value: "一只胖乎乎的橘猫", emoji: "🐱" },
+        { label: "🧑‍🚀 宇航员", value: "一个背着旧背包的宇航员", emoji: "🧑‍🚀" },
+        { label: "👧 小女孩", value: "一个扎着双马尾的小女孩", emoji: "👧" },
+        { label: "🤖 机器人", value: "一台圆头圆脑的小机器人", emoji: "🤖" }
+      ]
+    },
+    {
+      key: "scene", label: "2. 场景", hint: "在哪里 / 做什么",
+      items: [
+        { label: "🌕 月球钓鱼", value: "坐在月球表面钓鱼，背景是一颗蓝色地球", emoji: "🌕" },
+        { label: "🌅 海边日落", value: "站在海边礁石上，身后是落日和海浪", emoji: "🌅" },
+        { label: "🌲 森林萤火", value: "走在夜晚的森林里，周围是萤火虫", emoji: "🌲" },
+        { label: "🌃 城市天台", value: "坐在城市天台边缘，脚下是霓虹灯海", emoji: "🌃" }
+      ]
+    },
+    {
+      key: "style", label: "3. 风格", hint: "像什么画",
+      items: [
+        { label: "扁平插画", value: "扁平插画风格，线条干净", name: "扁平插画" },
+        { label: "水彩", value: "水彩风格，边缘柔和，有纸张质感", name: "水彩" },
+        { label: "像素风", value: "像素风，16-bit 游戏画面", name: "像素风" },
+        { label: "黏土 3D", value: "黏土 3D 风格，圆润可爱", name: "黏土 3D" }
+      ]
+    },
+    {
+      key: "tone", label: "4. 光线和颜色", hint: "什么气氛",
+      items: [
+        { label: "蓝紫夜晚", value: "蓝紫色夜空，冷色调，星星点点", tone: "tone-night", name: "蓝紫夜晚" },
+        { label: "暖黄夕阳", value: "暖黄色夕阳，柔和逆光", tone: "tone-sunset", name: "暖黄夕阳" },
+        { label: "清新绿", value: "清新绿色调，晨雾和露水", tone: "tone-green", name: "清新绿" },
+        { label: "霓虹高对比", value: "高对比霓虹色，赛博朋克感", tone: "tone-neon", name: "霓虹高对比" }
+      ]
+    },
+    {
+      key: "ratio", label: "5. 画面比例", hint: "用在哪里",
+      items: [
+        { label: "9:16 手机壁纸", value: "9:16 竖版手机壁纸", name: "9:16 壁纸" },
+        { label: "1:1 方形头像", value: "1:1 方形头像，主体居中", name: "1:1 头像" },
+        { label: "16:9 横版封面", value: "16:9 横版封面，留出标题空间", name: "16:9 封面" }
+      ]
+    }
+  ];
+
+  const ART_EGGS = [
+    "戴着一顶小黄帽",
+    "旁边跟着一只小鸭子",
+    "手里拿着一杯热可可",
+    "身后有一道彩虹",
+    "脚边放着一盏小灯笼"
+  ];
+
+  function initArtPrompt(el) {
+    let sel = { subject: 0, scene: 0, style: 0, tone: 0, ratio: 0 };
+    let egg = "";
+    let eggIndex = -1;
+
+    function group(key) {
+      return ART_GROUPS.find(g => g.key === key);
+    }
+
+    function fullPrompt() {
+      const p = ["subject", "scene", "style", "tone", "ratio"].map(key => group(key).items[sel[key]].value);
+      return p.join("，") + "，画面干净，细节清晰" + (egg ? "，" + egg : "");
+    }
+
+    function paint() {
+      const subject = group("subject").items[sel.subject];
+      const scene = group("scene").items[sel.scene];
+      const style = group("style").items[sel.style];
+      const tone = group("tone").items[sel.tone];
+      const ratio = group("ratio").items[sel.ratio];
+      const frame = el.querySelector(".art-frame");
+      frame.className = "art-frame " + tone.tone;
+      frame.querySelector(".af-subject").textContent = subject.emoji;
+      frame.querySelector(".af-scene").textContent = scene.emoji;
+      frame.querySelector(".af-style").textContent = style.name + " · " + ratio.name;
+      frame.setAttribute("title", "画面示意：" + fullPrompt());
+      el.querySelector(".art-prompt-text").textContent = fullPrompt();
+      el.querySelector(".art-egg-tag").hidden = !egg;
+      el.querySelector(".art-egg-tag b").textContent = egg;
+      el.querySelectorAll(".art-chip").forEach(btn => {
+        const g = btn.dataset.group;
+        btn.classList.toggle("on", parseInt(btn.dataset.i, 10) === sel[g]);
+      });
+    }
+
+    el.innerHTML =
+      '<div class="art-builder">' +
+        '<div class="guess-round-tag">绘画提示词生成器 · 选一选，拼出你的画面</div>' +
+        '<p class="train-lead">五个格子，每个选一个。旁边会实时拼成一句可以直接粘贴的提示词。</p>' +
+        '<div class="art-layout">' +
+          '<div class="art-controls">' +
+            ART_GROUPS.map(g =>
+              '<div class="art-group">' +
+                '<span class="art-label">' + g.label + ' <small>' + g.hint + '</small></span>' +
+                '<div class="art-chips">' +
+                  g.items.map((it, i) =>
+                    '<button type="button" class="art-chip' + (sel[g.key] === i ? " on" : "") + '" data-group="' + g.key + '" data-i="' + i + '">' + it.label + '</button>'
+                  ).join("") +
+                '</div>' +
+              '</div>'
+            ).join("") +
+            '<div class="art-compare">' +
+              '<span class="ac-bad">普通：画只猫</span>' +
+              '<span class="ac-arrow">→</span>' +
+              '<span class="ac-good">高手：旁边这句</span>' +
+            '</div>' +
+            '<div class="art-tipbox">' +
+              '<b>三句万能追加</b>' +
+              '<p>「背景换成夜晚」「把猫换成白色」「去掉文字，留白多一点」</p>' +
+            '</div>' +
+          '</div>' +
+          '<div class="art-preview">' +
+            '<div class="art-frame tone-night">' +
+              '<span class="af-star s1"></span><span class="af-star s2"></span><span class="af-star s3"></span>' +
+              '<span class="af-subject">🐱</span>' +
+              '<span class="af-scene">🌕</span>' +
+              '<span class="af-style">扁平插画 · 9:16 壁纸</span>' +
+              '<span class="af-label">画面示意 · 真正效果去工具里生成</span>' +
+            '</div>' +
+            '<div class="art-prompt-box">' +
+              '<div class="pl-label">复制这句，去即梦 / 豆包试试</div>' +
+              '<p class="art-prompt-text" title="点一下全选"></p>' +
+              '<p class="art-egg-tag" hidden>🎲 彩蛋：<b></b></p>' +
+            '</div>' +
+            '<div class="art-actions">' +
+              '<button type="button" class="btn btn-primary js-copy">📋 复制提示词</button>' +
+              '<button type="button" class="btn btn-ghost js-egg">🎲 加个彩蛋</button>' +
+              '<button type="button" class="btn btn-ghost js-reset">↻ 重置</button>' +
+            '</div>' +
+            '<p class="art-note">一次生成 4 张，挑一张最接近的，再用一句话改。</p>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+
+    el.querySelectorAll(".art-chip").forEach(btn => {
+      btn.addEventListener("click", () => {
+        sel[btn.dataset.group] = parseInt(btn.dataset.i, 10);
+        paint();
+      });
+    });
+
+    el.querySelector(".js-copy").addEventListener("click", () => copyText(fullPrompt(), "提示词已复制，去试试吧"));
+    el.querySelector(".js-egg").addEventListener("click", () => {
+      eggIndex = (eggIndex + 1) % ART_EGGS.length;
+      egg = ART_EGGS[eggIndex];
+      paint();
+      window.dispatchEvent(new CustomEvent("aic-toast", { detail: "加了一个彩蛋：" + egg }));
+    });
+    el.querySelector(".js-reset").addEventListener("click", () => {
+      sel = { subject: 0, scene: 0, style: 0, tone: 0, ratio: 0 };
+      egg = "";
+      eggIndex = -1;
+      paint();
+      window.dispatchEvent(new CustomEvent("aic-toast", { detail: "已回到默认组合" }));
+    });
+    el.querySelector(".art-prompt-text").addEventListener("click", function () {
+      const r = document.createRange();
+      r.selectNodeContents(this);
+      const s = window.getSelection();
+      s.removeAllRanges();
+      s.addRange(r);
+      window.dispatchEvent(new CustomEvent("aic-toast", { detail: "已全选，按 Ctrl+C / ⌘C 复制" }));
+    });
+
+    paint();
+  }
+
+  /* ================= 故事接龙机（第 13 课） ================= */
+  const STORY_PREMISE = "雨夜，末班公交车上只剩一个乘客和司机。";
+  const STORY_ROUNDS = [
+    {
+      tag: "第一幕 · 异常",
+      q: "接下来发生什么？",
+      options: [
+        { text: "乘客突然开口：「师傅，下一站能停一下吗？我还没上车。」", note: "一句话把日常拧成怪事：他明明在车上，却说自己还没上车。" },
+        { text: "司机从后视镜里看见，后排多了一个不存在的人。", note: "用司机的视角制造悬念：多出来的人是谁？" },
+        { text: "公交车自己报站：「下一站，二十年前。」", note: "直接改写规则：这辆车不只在空间里开，也在时间里开。" }
+      ]
+    },
+    {
+      tag: "第二幕 · 反应",
+      q: "车里的人怎么反应？",
+      options: [
+        { text: "司机握紧方向盘，假装没听见。", note: "不解释，反而更吓人；读者会替司机紧张。" },
+        { text: "乘客掏出手机，发现没有信号，时间停在 23:59。", note: "用一个具体细节把不安落地：23:59。" },
+        { text: "车窗外，雨停了，路灯一盏一盏熄灭。", note: "环境跟着人物一起变，气氛更冷。" }
+      ]
+    },
+    {
+      tag: "第三幕 · 收尾",
+      q: "故事停在哪里？",
+      options: [
+        { text: "两人同时开口：「你也看见了？」", note: "把两个人绑在同一条船上：不是只有我疯了。" },
+        { text: "车门开了，外面是一片没有尽头的麦田。", note: "开放式结尾：门后是什么，交给读者。" },
+        { text: "天亮了，车上只剩一张旧车票，日期是二十年前。", note: "用一个物件收束全篇，余味更长。" }
+      ]
+    }
+  ];
+
+  function initStoryChain(el) {
+    let round = 0;
+    let picks = [];
+    let picked = null;
+    let shots = false;
+
+    function chosenLines() {
+      return picks.map((i, r) => STORY_ROUNDS[r].options[i].text);
+    }
+
+    function shotsHtml() {
+      const lines = chosenLines();
+      const rows = [
+        { t: "0–3 秒 · 雨夜外景", d: "末班公交车驶过空街，雨刷来回摆。字幕：23:59。" },
+        { t: "3–7 秒 · 第一幕", d: "车内。" + lines[0] },
+        { t: "7–12 秒 · 第二幕", d: "镜头给到司机和乘客。" + lines[1] },
+        { t: "12–15 秒 · 收尾", d: lines[2] + " 定格，字幕：你看见了吗？" }
+      ];
+      return '<div class="story-shots">' +
+        '<div class="story-shots-head"><b>🎬 15 秒分镜脚本</b><span>竖屏 9:16 · 4 个镜头</span></div>' +
+        rows.map((r, i) =>
+          '<div class="shot-row">' +
+            '<span class="shot-no">' + (i + 1) + '</span>' +
+            '<div><b>' + r.t + '</b><p>' + r.d + '</p></div>' +
+          '</div>'
+        ).join("") +
+        '<p class="story-sound">🔊 声音：雨声 + 低频嗡鸣，结尾一声刹车。</p>' +
+        '<div class="story-shots-foot">' +
+          '<button type="button" class="btn btn-ghost js-copy-shots">📋 复制分镜</button>' +
+          '<span>先拍/找素材，再用剪映配字幕。</span>' +
+        '</div>' +
+      '</div>';
+    }
+
+    function render() {
+      if (round >= STORY_ROUNDS.length) return final();
+
+      const r = STORY_ROUNDS[round];
+      const lines = chosenLines();
+      el.innerHTML =
+        '<div class="story-wrap">' +
+          '<div class="guess-round-tag">故事接龙机 · 第 ' + (round + 1) + ' / ' + STORY_ROUNDS.length + ' 幕</div>' +
+          '<p class="train-lead">故事已经开头。每一幕选一个方向，看看你的选择把它带到哪里。</p>' +
+          '<div class="story-paper">' +
+            '<span class="story-kicker">开头</span>' +
+            '<p class="story-premise">' + STORY_PREMISE + '</p>' +
+            lines.map((t, i) =>
+              '<p class="story-line"><span class="sl-no">' + (i + 1) + '</span>' + t + '</p>'
+            ).join("") +
+          '</div>' +
+          '<div class="story-choices">' +
+            '<p class="story-q">' + r.tag + '：' + r.q + '</p>' +
+            '<div class="story-opts">' +
+              r.options.map((o, i) =>
+                '<button type="button" class="story-opt' + (picked === i ? " on" : "") + '" data-i="' + i + '"' + (picked !== null ? " disabled" : "") + '>' +
+                  '<span class="so-tag">' + String.fromCharCode(65 + i) + '</span>' +
+                  '<span>' + o.text + '</span>' +
+                '</button>'
+              ).join("") +
+            '</div>' +
+          '</div>' +
+          (picked !== null
+            ? '<div class="story-note show"><b>你选了 ' + String.fromCharCode(65 + picked) + '。</b>' + r.options[picked].note + '</div>' +
+              '<div class="story-next"><button type="button" class="btn btn-primary js-next">' + (round === STORY_ROUNDS.length - 1 ? "看完整故事 →" : "接下一句 →") + '</button></div>'
+            : '') +
+        '</div>';
+
+      el.querySelectorAll(".story-opt").forEach(btn => {
+        btn.addEventListener("click", () => {
+          if (picked !== null) return;
+          picked = parseInt(btn.dataset.i, 10);
+          picks[round] = picked;
+          render();
+        });
+      });
+      const next = el.querySelector(".js-next");
+      if (next) next.addEventListener("click", () => {
+        round++;
+        picked = null;
+        render();
+      });
+    }
+
+    function final() {
+      const lines = chosenLines();
+      const story = [STORY_PREMISE].concat(lines);
+      shots = false;
+      el.innerHTML =
+        '<div class="story-final">' +
+          '<div class="guess-round-tag">故事接龙完成 🎉 这是你的初稿</div>' +
+          '<div class="story-paper final">' +
+            '<span class="story-kicker">《末班车》· 你 + AI</span>' +
+            story.map((t, i) =>
+              '<p class="' + (i === 0 ? "story-premise" : "story-line") + '">' +
+                (i === 0 ? "" : '<span class="sl-no">' + i + '</span>') + t +
+              '</p>'
+            ).join("") +
+            '<p class="story-end">—— 完 ——</p>' +
+          '</div>' +
+          '<div class="train-verdict"><b>三句话，一个悬念，一个收尾。</b><br>每一个转折都是你选的。AI 只负责把可能性写出来，不负责替你拍板。</div>' +
+          '<div class="story-actions">' +
+            '<button type="button" class="btn btn-primary js-shots">🎬 把它变成 15 秒分镜</button>' +
+            '<button type="button" class="btn btn-ghost js-copy-story">📋 复制故事</button>' +
+            '<button type="button" class="btn btn-ghost js-again">重新接一次 ↻</button>' +
+          '</div>' +
+          '<div class="story-shots-wrap"></div>' +
+        '</div>';
+
+      el.querySelector(".js-shots").addEventListener("click", () => {
+        shots = true;
+        el.querySelector(".story-shots-wrap").innerHTML = shotsHtml();
+        el.querySelector(".js-shots").disabled = true;
+        el.querySelector(".js-shots").textContent = "✅ 分镜已生成";
+        el.querySelector(".js-copy-shots").addEventListener("click", () => {
+          const txt = "《末班车》15 秒分镜\n\n" + el.querySelector(".story-shots").innerText;
+          copyText(txt, "分镜脚本已复制");
+        });
+      });
+      el.querySelector(".js-copy-story").addEventListener("click", () => {
+        copyText("《末班车》\n\n" + story.join("\n\n"), "故事已复制");
+      });
+      el.querySelector(".js-again").addEventListener("click", () => {
+        round = 0; picks = []; picked = null; shots = false; render();
+      });
+    }
+
+    render();
+  }
+
+  /* ================= Agent 真实回放（第 14 课） ================= */
+  const AGENT_STEPS = [
+    {
+      type: "user", title: "你（项目经理）",
+      text: "在这个空文件夹里做一个猜数字小游戏：单文件 index.html，双击能玩，1-100，有提示和重新开始。做完自己测一遍。"
+    },
+    {
+      type: "agent", title: "OpenCode · 先看环境",
+      text: "目录基本是空的。先确认环境：Node v24 可用。计划：读目录 → 写 index.html → 用 Node 测逻辑 → 修问题 → 交付。",
+      tools: ["读取目录", "node -v"]
+    },
+    {
+      type: "agent", title: "OpenCode · 写文件",
+      text: "创建 index.html：单文件、内联 CSS/JS、手机自适应，按钮和回车都能提交。",
+      tools: ["写入 index.html"],
+      image: "opencode-start.png",
+      caption: "真实 OpenCode 会话截图：目标 + 前几步执行"
+    },
+    {
+      type: "agent", title: "OpenCode · 自测",
+      text: "用 Node 加载页面里的真实 JS，跑了 30 项断言——初始状态、非法输入、猜大/猜小、猜中、重新开始，全部通过。",
+      tools: ["运行测试脚本"]
+    },
+    {
+      type: "user", title: "你（验收）",
+      text: "我没有只看它的测试，自己打开浏览器点了一遍。结果报错：",
+      code: "TypeError: Cannot set properties of null\n  (setting 'textContent')\n  at resetGame (index.html:240:28)"
+    },
+    {
+      type: "agent", title: "OpenCode · 定位并修复",
+      text: "找到问题根源了：statusEl 通过 getElementById('status') 取元素，但页面上的「已猜 0 次」div 只写了 class=\"status\" 没有 id=\"status\"，所以取到 null。现在修复。",
+      tools: ["编辑 index.html +1 -1"],
+      image: "opencode-fix.png",
+      caption: "真实 OpenCode 会话截图：定位 bug 与修复"
+    },
+    {
+      type: "agent", title: "OpenCode · 复测",
+      text: "修复完成。所有 JS 里引用的 ID 都必须在 HTML 中存在；提交后次数会变、重新开始能清零；原有 30 项断言和结构检查全部通过。",
+      tools: ["运行验证脚本"]
+    },
+    {
+      type: "agent", title: "OpenCode · 交付",
+      text: "完成。文件：index.html，双击就能玩，不依赖网络。下面就是它做出来的成品，你可以直接试玩。",
+      demo: true
+    }
+  ];
+
+  function initAgentReplay(el) {
+    let step = -1;
+
+    function shell() {
+      el.innerHTML =
+        '<div class="agent-window">' +
+          '<div class="agent-head">' +
+            '<span class="agent-dots"><i></i><i></i><i></i></span>' +
+            '<b>OpenCode · 真实运行回放</b>' +
+            '<span class="agent-live">● 真实会话</span>' +
+          '</div>' +
+          '<div class="agent-meta">模型 Flint 40B Free · 项目 agent-demo · 2026-10-26 18:41</div>' +
+          '<div class="agent-log" aria-live="polite"></div>' +
+          '<div class="agent-demo-slot"></div>' +
+          '<div class="agent-foot"></div>' +
+        '</div>';
+      startScreen();
+    }
+
+    function startScreen() {
+      step = -1;
+      const log = el.querySelector(".agent-log");
+      const slot = el.querySelector(".agent-demo-slot");
+      if (slot) slot.innerHTML = "";
+      log.innerHTML =
+        '<div class="agent-start">' +
+          '<span class="agent-start-emoji">⌨️</span>' +
+          '<b>接下来看到的，不是示意图</b>' +
+          '<p>这是一次真实的 OpenCode 运行：从一句目标，到能玩的成品。点「开始回放」，一步一步看。</p>' +
+          '<button type="button" class="btn btn-primary js-start">▶ 开始回放</button>' +
+          '<p class="agent-disclaimer">演示在空文件夹里进行，只创建 / 修改了一个 index.html。</p>' +
+        '</div>';
+      log.querySelector(".js-start").addEventListener("click", () => {
+        log.innerHTML = "";
+        step = 0;
+        append(0);
+        foot();
+      });
+      foot();
+    }
+
+    function append(i) {
+      const s = AGENT_STEPS[i];
+      const log = el.querySelector(".agent-log");
+      const div = document.createElement("div");
+      div.className = "agent-msg " + s.type + (s.demo ? " final" : "");
+      div.dataset.step = String(i);
+      let html =
+        '<span class="agent-avatar">' + (s.type === "user" ? "你" : "OC") + '</span>' +
+        '<div class="agent-bubble">' +
+          '<div class="agent-name">' + s.title + '</div>' +
+          '<p>' + s.text + '</p>';
+      if (s.code) html += '<pre class="agent-code">' + s.code + '</pre>';
+      if (s.tools) {
+        html += '<div class="agent-tools">' + s.tools.map(t => '<span class="agent-tool">' + t + '</span>').join("") + '</div>';
+      }
+      if (s.image) {
+        html += '<figure class="agent-figure">' +
+          '<img src="../assets/img/lesson-14/' + s.image + '" alt="' + s.caption + '" width="1296" height="894" loading="lazy" decoding="async">' +
+          '<figcaption>' + s.caption + ' · <a href="../assets/img/lesson-14/' + s.image + '" target="_blank" rel="noopener">查看大图 ↗</a></figcaption>' +
+        '</figure>';
+      }
+      if (s.demo) {
+        html += '<button type="button" class="btn btn-primary js-demo-inline">🎮 去试玩成品 ↓</button>';
+      }
+      html += '</div>';
+      div.innerHTML = html;
+      log.appendChild(div);
+      if (s.demo) {
+        const slot = el.querySelector(".agent-demo-slot");
+        if (slot) {
+          slot.innerHTML =
+            '<div class="agent-demo">' +
+              '<div class="agent-demo-head"><b>🎮 成品试玩</b><a href="../assets/demo/guess-number.html" target="_blank" rel="noopener">新窗口打开 ↗</a></div>' +
+              '<iframe src="../assets/demo/guess-number.html" title="OpenCode 生成的猜数字小游戏" loading="eager"></iframe>' +
+            '</div>' +
+            '<p class="agent-disclaimer">这是 Agent 真实生成的页面，不是录屏；在 iframe 里直接玩。</p>';
+        }
+        const inline = div.querySelector(".js-demo-inline");
+        if (inline) inline.addEventListener("click", () => {
+          if (slot) slot.scrollIntoView({ behavior: "smooth", block: "center" });
+        });
+      }
+      setTimeout(() => { log.scrollTop = log.scrollHeight; }, 80);
+    }
+
+    function foot() {
+      const f = el.querySelector(".agent-foot");
+      if (step < 0) {
+        f.innerHTML = '<span class="agent-progress">共 8 步 · 约 2 分钟</span><span class="agent-foot-note">点「开始回放」</span>';
+        return;
+      }
+      const pct = Math.round((step + 1) / AGENT_STEPS.length * 100);
+      f.innerHTML =
+        '<div class="agent-progress"><span>第 ' + (step + 1) + ' / ' + AGENT_STEPS.length + ' 步</span><i><b style="width:' + pct + '%"></b></i></div>' +
+        (step < AGENT_STEPS.length - 1
+          ? '<div class="agent-foot-btns">' +
+              '<button type="button" class="btn btn-primary js-next">下一步 →</button>' +
+              '<button type="button" class="btn btn-ghost js-all">直接看成品 ⏭</button>' +
+              '<button type="button" class="btn btn-ghost js-reset">重置 ↻</button>' +
+            '</div>'
+          : '<div class="agent-foot-btns">' +
+              '<button type="button" class="btn btn-primary js-reset">再回放一次 ↻</button>' +
+            '</div>');
+      const next = f.querySelector(".js-next");
+      if (next) next.addEventListener("click", () => { step++; append(step); foot(); });
+      const all = f.querySelector(".js-all");
+      if (all) all.addEventListener("click", () => {
+        while (step < AGENT_STEPS.length - 1) { step++; append(step); }
+        foot();
+      });
+      const reset = f.querySelector(".js-reset");
+      if (reset) reset.addEventListener("click", () => {
+        const log = el.querySelector(".agent-log");
+        log.innerHTML = "";
+        startScreen();
+      });
+    }
+
+    shell();
+  }
+
+  /* ================= 作品清单生成器（第 15 课） ================= */
+  const PROJECT_TIMES = [
+    { label: "30 分钟", scope: "只做最小版本：1 页 / 1 个玩法 / 3 张图。先让它存在。" },
+    { label: "2 小时", scope: "加一点：配图、音效、第二页，或者把玩法再磨顺一点。" },
+    { label: "一个周末", scope: "做成小系列：3 页 / 3 个关卡 / 10 张图，够发一次完整作品。" }
+  ];
+
+  const PROJECT_KINDS = [
+    {
+      emoji: "🏠", name: "个人主页 / 家庭相册",
+      title: "我的第一张个人主页",
+      goal: "一页讲清：我是谁、我在做什么、怎么找到我。",
+      steps: [
+        "选 3 张照片或作品图（没有就现拍）",
+        "让 AI 写 3 版 100 字自我介绍，你挑一版",
+        "让 AI 生成一页 HTML，或套一个免费模板",
+        "发给家人看，按反馈改一版"
+      ],
+      ai: ["写 3 版自我介绍", "把长介绍改短、改口语", "生成单文件 HTML/CSS"],
+      tools: "DeepSeek / 豆包 + 任意浏览器"
+    },
+    {
+      emoji: "🎮", name: "小游戏 / 小工具",
+      title: "一个 30 秒能玩一局的小游戏",
+      goal: "猜数字、抽签、接住小猫，任选一个玩法。",
+      steps: [
+        "选一个玩法，用一句话写清规则",
+        "让 AI 生成单文件 HTML",
+        "自己玩 3 局，记下卡住的地方",
+        "把问题丢回给 AI，改到顺手"
+      ],
+      ai: ["把玩法写成规则", "生成 HTML/CSS/JS", "根据你的测试报错修复"],
+      tools: "DeepSeek / 豆包 + OpenCode（可选）"
+    },
+    {
+      emoji: "📖", name: "绘本 / 菜谱 / 表情包",
+      title: "一本 6 页的电子小书",
+      goal: "三道家常菜、一个睡前故事、一套表情包，选一个主题。",
+      steps: [
+        "定主题，列出 6 页内容",
+        "让 AI 写每页 50 字说明",
+        "用即梦 / 豆包生成 3–6 张配图",
+        "拼成一页网页或 PDF，发给家人"
+      ],
+      ai: ["列目录和每页文案", "生成配图提示词", "检查错别字和顺序"],
+      tools: "DeepSeek / 豆包 + 即梦"
+    }
+  ];
+
+  const PROJECT_AUDIENCES = [
+    { label: "家人", publish: "先发到家人群，让爸妈第一个看到。他们的反馈最直接。" },
+    { label: "朋友", publish: "发朋友圈 / 群，点名 3 个人给你反馈。别只发「求赞」。" },
+    { label: "网友", publish: "发小红书 / 视频号；网页作品可以传到 GitHub Pages，像这门课一样。" }
+  ];
+
+  const PROJECT_CHECK = [
+    "定主题，写下一句话目标",
+    "让 AI 出 2–3 个方案，选一个",
+    "做出最小版本（能打开 / 能玩 / 能看）",
+    "发给 1 个人，收 3 条反馈",
+    "改一版，再发出去"
+  ];
+
+  function initProjectGen(el) {
+    let sel = { time: 0, kind: 0, audience: 0 };
+    let result = null;
+    let checked = [];
+
+    function chips(key, items, current) {
+      return '<div class="proj-chips">' + items.map((it, i) =>
+        '<button type="button" class="proj-chip' + (current === i ? " on" : "") + '" data-group="' + key + '" data-i="' + i + '">' + (it.emoji ? it.emoji + " " : "") + (it.label || it.name) + '</button>'
+      ).join("") + '</div>';
+    }
+
+    function render() {
+      el.innerHTML =
+        '<div class="proj-builder">' +
+          '<div class="guess-round-tag">作品清单生成器 · 先选三样</div>' +
+          '<p class="train-lead">时间、兴趣、给谁看。选完点「生成我的作品」，它会给你一张能直接开做的清单。</p>' +
+          '<div class="proj-group"><span class="art-label">1. 你有多少时间？</span>' + chips("time", PROJECT_TIMES, sel.time) + '</div>' +
+          '<div class="proj-group"><span class="art-label">2. 你想做什么？</span>' + chips("kind", PROJECT_KINDS, sel.kind) + '</div>' +
+          '<div class="proj-group"><span class="art-label">3. 做给谁看？</span>' + chips("audience", PROJECT_AUDIENCES, sel.audience) + '</div>' +
+          '<div class="proj-actions">' +
+            '<button type="button" class="btn btn-primary js-generate">🎁 生成我的作品</button>' +
+            '<button type="button" class="btn btn-ghost js-random">🎲 随机给我一个</button>' +
+          '</div>' +
+          '<div class="proj-result"></div>' +
+        '</div>';
+
+      el.querySelectorAll(".proj-chip").forEach(btn => {
+        btn.addEventListener("click", () => {
+          sel[btn.dataset.group] = parseInt(btn.dataset.i, 10);
+          result = null;
+          render();
+        });
+      });
+      el.querySelector(".js-generate").addEventListener("click", () => {
+        result = { time: sel.time, kind: sel.kind, audience: sel.audience };
+        checked = PROJECT_CHECK.map(() => false);
+        showResult();
+      });
+      el.querySelector(".js-random").addEventListener("click", () => {
+        sel = {
+          time: Math.floor(Math.random() * PROJECT_TIMES.length),
+          kind: Math.floor(Math.random() * PROJECT_KINDS.length),
+          audience: Math.floor(Math.random() * PROJECT_AUDIENCES.length)
+        };
+        result = { time: sel.time, kind: sel.kind, audience: sel.audience };
+        checked = PROJECT_CHECK.map(() => false);
+        render();
+        window.dispatchEvent(new CustomEvent("aic-toast", { detail: "给你随机配了一个，不喜欢就再点一次" }));
+      });
+      if (result) showResult();
+    }
+
+    function showResult() {
+      const wrap = el.querySelector(".proj-result");
+      if (!wrap || !result) return;
+      const time = PROJECT_TIMES[result.time];
+      const kind = PROJECT_KINDS[result.kind];
+      const aud = PROJECT_AUDIENCES[result.audience];
+      wrap.innerHTML =
+        '<div class="proj-card">' +
+          '<span class="proj-badge">' + time.label + ' · 给' + aud.label + '看</span>' +
+          '<h3>' + kind.emoji + ' ' + kind.title + '</h3>' +
+          '<p class="proj-goal">🎯 ' + kind.goal + '</p>' +
+          '<div class="proj-section"><b>✂️ 最小版本</b><p>' + time.scope + '</p></div>' +
+          '<div class="proj-section"><b>🧭 4 步做完</b><ol>' + kind.steps.map(s => '<li>' + s + '</li>').join("") + '</ol></div>' +
+          '<div class="proj-section"><b>🤖 让 AI 帮你</b><ul>' + kind.ai.map(s => '<li>' + s + '</li>').join("") + '</ul></div>' +
+          '<div class="proj-section"><b>📣 发布</b><p>' + aud.publish + '</p></div>' +
+          '<div class="proj-section"><b>🧰 顺手工具</b><p>' + kind.tools + '</p></div>' +
+          '<div class="proj-check">' +
+            '<b>✅ 完成清单 <span class="proj-count">0 / ' + PROJECT_CHECK.length + '</span></b>' +
+            PROJECT_CHECK.map((t, i) =>
+              '<label><input type="checkbox" data-i="' + i + '"><span>' + t + '</span></label>'
+            ).join("") +
+            '<p class="proj-check-note">' + (result.time === 0 ? "30 分钟版：先勾前 3 项，今天就能有第一版。" : "不用等完美，先把第一版发出去。") + '</p>' +
+          '</div>' +
+          '<div class="proj-foot">' +
+            '<button type="button" class="btn btn-ghost js-copy-list">📋 复制清单</button>' +
+            '<button type="button" class="btn btn-ghost js-again">重新选 ↻</button>' +
+          '</div>' +
+          '<p class="proj-note">作品三件套：一个标题 + 一句话介绍 + 一个能打开的链接 / 文件。</p>' +
+        '</div>';
+
+      wrap.querySelectorAll(".proj-check input").forEach(cb => {
+        cb.addEventListener("change", () => {
+          checked[parseInt(cb.dataset.i, 10)] = cb.checked;
+          const n = checked.filter(Boolean).length;
+          wrap.querySelector(".proj-count").textContent = n + " / " + PROJECT_CHECK.length;
+          if (n === PROJECT_CHECK.length) {
+            window.dispatchEvent(new CustomEvent("aic-toast", { detail: "清单全勾完了，发出去吧 🎉" }));
+          }
+        });
+      });
+      wrap.querySelector(".js-copy-list").addEventListener("click", () => {
+        const txt = "【我的作品清单】\n" +
+          kind.title + "\n" +
+          "目标：" + kind.goal + "\n" +
+          "时间：" + time.label + " · 给" + aud.label + "看\n\n" +
+          "4 步做完：\n" + kind.steps.map((s, i) => (i + 1) + ". " + s).join("\n") + "\n\n" +
+          "让 AI 帮你：\n" + kind.ai.map(s => "- " + s).join("\n") + "\n\n" +
+          "发布：" + aud.publish + "\n\n" +
+          "完成清单：\n" + PROJECT_CHECK.map(s => "- [ ] " + s).join("\n");
+        copyText(txt, "作品清单已复制");
+      });
+      wrap.querySelector(".js-again").addEventListener("click", () => {
+        result = null;
+        render();
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+      wrap.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    render();
+  }
+
   /* ================= 自动挂载 ================= */
   document.addEventListener("DOMContentLoaded", function () {
     Array.from(document.querySelectorAll(".quiz")).forEach(initQuiz);
@@ -1473,5 +2181,13 @@
     if (lf) initLife(lf);
     const tp = document.getElementById("tips");
     if (tp) initTips(tp);
+    const ap = document.getElementById("art-prompt");
+    if (ap) initArtPrompt(ap);
+    const sc = document.getElementById("story-chain");
+    if (sc) initStoryChain(sc);
+    const ar = document.getElementById("agent-replay");
+    if (ar) initAgentReplay(ar);
+    const pg = document.getElementById("project-gen");
+    if (pg) initProjectGen(pg);
   });
 })();

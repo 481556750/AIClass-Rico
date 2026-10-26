@@ -37,10 +37,10 @@ const COURSE = {
     {
       id: "m3", emoji: "🎨", name: "模块三 · 玩创作（把想象力放大）",
       lessons: [
-        { id: "12", emoji: "🖼️", title: "让 AI 帮你画画", minutes: 12, desc: "头像 · 壁纸 · 绘本", ready: false },
-        { id: "13", emoji: "🎬", title: "写故事 · 做音乐 · 剪视频", minutes: 12, desc: "故事接龙机", ready: false },
-        { id: "14", emoji: "🤖", title: "AI Agent：让 AI 替你干活 ★★", minutes: 15, desc: "OpenCode 实战演示", ready: false },
-        { id: "15", emoji: "🏆", title: "创作实战：做出你的第一个作品", minutes: 15, desc: "作品清单生成器", ready: false }
+        { id: "12", file: "lessons/lesson-12.html", emoji: "🖼️", title: "让 AI 帮你画画", minutes: 12, desc: "头像 · 壁纸 · 绘本", ready: true },
+        { id: "13", file: "lessons/lesson-13.html", emoji: "🎬", title: "写故事 · 做音乐 · 剪视频", minutes: 12, desc: "故事接龙机", ready: true },
+        { id: "14", file: "lessons/lesson-14.html", emoji: "🤖", title: "AI Agent：让 AI 替你干活 ★★", minutes: 15, desc: "OpenCode 实战演示", ready: true },
+        { id: "15", file: "lessons/lesson-15.html", emoji: "🏆", title: "创作实战：做出你的第一个作品", minutes: 15, desc: "作品清单生成器", ready: true }
       ]
     },
     {

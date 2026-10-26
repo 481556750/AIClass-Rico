@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 14 课 · AI Agent：让 AI 替你干活 | 人人 AI 通识课</title>
+<link rel="stylesheet" href="../assets/css/base.css">
+</head>
+<body class="lesson" data-page="lesson" data-lesson="14">
+
+<header class="topbar">
+  <a class="brand" href="../index.html"><span class="aibot"></span><span>人人 AI 通识课</span></a>
+  <div class="tools">
+    <button class="tool-btn" id="font-toggle" title="调整字号">A</button>
+    <button class="tool-btn" id="theme-toggle" title="深色模式">🌙</button>
+  </div>
+</header>
+
+<div class="courseline">
+  <div class="progress"><i class="js-course-progress"></i></div>
+  <span class="count js-course-count">全课进度 0 / 21</span>
+</div>
+
+<main class="container lesson-wrap">
+
+  <!-- 课程头 -->
+  <header class="lesson-hero reveal">
+    <p class="chip-row">
+      <span class="chip hot">🎨 模块三 · 玩创作</span>
+      <span class="chip">⏱ 约 15 分钟</span>
+      <span class="chip">🤖 OpenCode 真实回放</span>
+      <span class="chip">🧠 1 个小测验</span>
+    </p>
+    <h1>AI Agent：<br>让 AI 替你干活 ★★</h1>
+    <p class="lesson-lead">聊天 AI 给你一段代码，你还得自己复制粘贴。Agent 不一样：它会自己建文件、运行、报错、再修好。这次，我们真的跑了一遍。</p>
+  </header>
+
+  <!-- ① 场景导入 -->
+  <section class="scene reveal">
+    <div class="robot">
+      <span class="aibot"></span>
+      <span class="robot-name">小艾</span>
+    </div>
+    <div class="bubble">
+      <p><b>阿杰：</b>我让 AI 帮我做个小网页，它给了我一大段代码，我粘了半天，还是跑不起来。</p>
+      <p><b>小艾：</b>那是「聊天」。Agent 会自己动手：建文件、运行、看报错、改到能跑。</p>
+      <p><b>阿杰：</b>真的假的？</p>
+      <p><b>小艾：</b>看屏幕。这是我在 OpenCode 里真实跑的一次，不是我画的示意图。</p>
+      <p><b>乐乐：</b>它会不会把我的文件删了？</p>
+      <p><b>小艾：</b>所以你要给它划边界，也要看着它。</p>
+    </div>
+  </section>
+
+  <!-- ② 核心讲解 -->
+  <section class="block reveal">
+    <h2 class="step"><span>01</span>核心讲解</h2>
+
+    <div class="card hl">
+      <h3>👩‍💻 聊天是「说」，Agent 是「做」</h3>
+      <p>聊天 AI 像电话那头的顾问：它告诉你怎么做，但手还是你的。Agent 像坐在你旁边的实习生：你说「把这份表整理一下」，它会打开文件、动手改、做完给你看。</p>
+      <p>这类能自己使用工具、分多步完成目标的 AI，在 AI 圈有个名字，叫 <span class="term" data-tip="<b>Agent（智能体）</b>：能自己使用工具、分多步完成目标的 AI。它不只给建议，还会动手读写文件、运行命令、看结果、再修正。">Agent（智能体）</span>。它不是一个魔法按钮，而是一个会规划、会试错的执行者。</p>
+      <p>OpenCode 就是这样一个 Agent 工具：它能在你的文件夹里读写文件、运行命令、跑测试。这次演示，我们让它在空文件夹里做一个猜数字小游戏。</p>
+    </div>
+
+    <div class="card accent">
+      <h3>🔄 它的工作循环：目标 → 拆步 → 动手 → 看结果 → 修正</h3>
+      <p>你说：「做一个猜数字游戏，能双击玩，做完自己测一遍。」它会把任务拆开：建 <code>index.html</code>、写界面、写逻辑、跑测试、发现按钮没反应、修好、再测。</p>
+      <p>这就像实习生干活：先列个计划，做一步，看一眼结果，不对就改。区别是它动作很快，而且不会嫌你改需求。</p>
+      <p>但它也会犯错。下面的真实回放里，它第一版就漏了一个 <code>id</code>，自测全过，真正在浏览器里点却报错。这个细节很重要。</p>
+    </div>
+
+    <div class="card sun">
+      <h3>🎯 你要给它三样东西：目标、边界、验收</h3>
+      <p><b>目标</b>：做什么、给谁用、什么算完成。比如「单文件、双击能玩、1–100、有提示和重新开始」。</p>
+      <p><b>边界</b>：只能改哪个文件夹、哪些文件不能动、不要联网、不要装东西。第一次合作，从空文件夹或小项目开始。</p>
+      <p><b>验收</b>：做完自己测一遍，把测试结果给我看。最好再加一句：「不确定的地方标出来，不要猜。」</p>
+      <p>三样说全，它才像「你带的实习生」，而不是「一个很会说话的搜索框」。</p>
+    </div>
+
+    <div class="card">
+      <h3>🔐 权限越大，越要盯着</h3>
+      <p>Agent 能写文件、跑命令、访问网络，这些权限用好了是效率，用不好是风险。</p>
+      <p>四条底线：重要文件先备份；看清它要执行的命令再同意；不把密码、身份证、客户资料给它；不确定的操作，先让它解释，再决定。</p>
+      <p>这不是「信不信任 AI」的问题，是「权限要匹配任务」。让它在一个小文件夹里折腾，比让它在你整个电脑上自由发挥安全得多。</p>
+    </div>
+
+    <div class="card">
+      <h3>🧪 真实回放：它也会犯错，你要验收</h3>
+      <p>这次真实运行里，OpenCode 写完第一版，用 Node 跑了 30 项断言，全过。但我没有就此打住，而是自己打开浏览器点了一遍——结果报错：找不到 <code>#status</code> 元素。</p>
+      <p>我把这句报错原样丢回同一个会话。它定位到：页面上「已猜 0 次」的 div 只写了 class，没写 id，所以脚本取到 null。改一行，复测通过。</p>
+      <p><b class="hl-text">AI 的自测，不等于你的验收。</b>它能检查逻辑，但真正的使用场景，只有你会遇到。你要亲手点一遍、走一遍，再决定收不收货。</p>
+    </div>
+
+    <div class="card">
+      <h3>✅ 它适合什么，不适合什么</h3>
+      <p>适合：目标明确、能拆步骤、结果能验证的任务。做小工具、整理文件、批量改名、写测试、做数据表、把一个想法做成能跑的页面。</p>
+      <p>不适合：目标模糊、后果不可逆、涉及隐私 / 钱 / 法律的决定。比如「帮我投资」「帮我删掉所有旧文件」「帮我处理客户的身份证照片」。</p>
+      <p>记住：你当项目经理，它当实习生。它干得越快，你越要看清它干了什么；最后的责任，永远在你这边。</p>
+    </div>
+  </section>
+
+  <!-- ③ 互动 -->
+  <section class="block reveal">
+    <h2 class="step"><span>02</span>动手玩一玩</h2>
+    <div class="game-card" id="agent-replay"></div>
+    <p class="game-tip">这是真实会话的逐步回放，包含原截图和最终成品。看到最后，你可以直接在页面里试玩它做出来的小游戏。</p>
+  </section>
+
+  <!-- ④ 小测验 -->
+  <section class="block reveal">
+    <h2 class="step"><span>03</span>小测验</h2>
+    <div class="quiz">
+      <div class="q">
+        <p class="q-text">1. Agent 和聊天 AI 最大的区别是？</p>
+        <div class="opts">
+          <button class="opt" data-correct="true">A. Agent 会自己使用工具，分多步完成任务</button>
+          <button class="opt" data-correct="false">B. Agent 说话更长</button>
+          <button class="opt" data-correct="false">C. Agent 永远不会犯错</button>
+        </div>
+        <p class="explain" hidden>解析：Agent 的关键是「动手」：读写文件、运行命令、看结果、再修正。</p>
+      </div>
+      <div class="q">
+        <p class="q-text">2. 让 Agent 干活，下面哪句最靠谱？</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 随便帮我弄个网站</button>
+          <button class="opt" data-correct="true">B. 在这个空文件夹做一个单文件猜数字游戏，能双击玩，做完自己测一遍</button>
+          <button class="opt" data-correct="false">C. 把我的电脑整理一下</button>
+        </div>
+        <p class="explain" hidden>解析：目标、边界、验收说清楚，Agent 才知道做到哪算完。</p>
+      </div>
+      <div class="q">
+        <p class="q-text">3. Agent 要执行一条你没见过的命令，你应该？</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 直接同意，它比我懂</button>
+          <button class="opt" data-correct="true">B. 先看清它要做什么，不确定就拒绝或问明白</button>
+          <button class="opt" data-correct="false">C. 马上关掉电脑</button>
+        </div>
+        <p class="explain" hidden>解析：权限越大，越要看清。看不懂就先问，别把「方便」变成「风险」。</p>
+      </div>
+      <p class="quiz-score" hidden></p>
+    </div>
+  </section>
+
+  <!-- ⑤ 金句 -->
+  <section class="block reveal">
+    <h2 class="step"><span>04</span>一句话记住这节课</h2>
+    <div class="quote-card">
+      <p>聊天是「说」，<br>Agent 是「做」。</p>
+      <p class="quote-sub">你当项目经理，它当实习生；目标、边界、验收，一个都不能少。</p>
+    </div>
+  </section>
+
+  <!-- ⑥ 今天试一件事 -->
+  <section class="block reveal">
+    <h2 class="step"><span>05</span>今天试一件事</h2>
+    <ul class="actions">
+      <li><span class="box"></span><span class="txt">建一个空文件夹，让 Agent 做一个最小网页或小工具</span></li>
+      <li><span class="box"></span><span class="txt">给它三条边界：只改这个文件夹、先备份、做完自己测</span></li>
+      <li><span class="box"></span><span class="txt">看它执行命令时，至少读懂一条再同意</span></li>
+    </ul>
+    <button id="btn-complete" class="btn btn-primary">✅ 完成本课打卡</button>
+    <p class="next-teaser">下一课：不学新工具了。用你已经会的一切，做出第一个能发出去的作品。</p>
+  </section>
+
+  <!-- ⑦ 导航 -->
+  <nav class="lesson-nav reveal" id="lesson-nav"></nav>
+
+</main>
+
+<footer class="footer">
+  <p>《人人 AI 通识课》 · 新时代的工具，动手去用</p>
+</footer>
+
+<script src="../assets/js/course-data.js"></script>
+<script src="../assets/js/components.js"></script>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

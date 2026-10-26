@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#5b4bd6" />
+  <title>猜数字小游戏</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body { height: 100%; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", sans-serif;
+      background: linear-gradient(150deg, #7f7ff7 0%, #5b4bd6 45%, #3d2fa3 100%);
+      background-attachment: fixed;
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      color: #fff;
+      -webkit-tap-highlight-color: transparent;
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(90px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::before { width: 280px; height: 280px; background: #ff6a88; opacity: 0.45; top: -70px; left: -70px; }
+    body::after  { width: 340px; height: 340px; background: #22d3ee; opacity: 0.35; bottom: -90px; right: -90px; }
+
+    .card {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 400px;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 28px;
+      padding: 26px 20px 22px;
+      text-align: center;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 24px 60px rgba(20, 10, 60, 0.45);
+    }
+
+    h1 { font-size: 30px; letter-spacing: 3px; margin-bottom: 4px; }
+    .range { font-size: 14px; opacity: 0.85; margin-bottom: 18px; }
+
+    .feedback {
+      min-height: 108px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.20);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 18px;
+      padding: 14px;
+      margin-bottom: 18px;
+    }
+    .feedback .hint { font-size: 24px; font-weight: 800; line-height: 1.35; }
+    .feedback .sub { font-size: 14px; opacity: 0.85; line-height: 1.4; }
+    .feedback .hint,
+    .feedback .sub { animation: fadeIn 0.25s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    .feedback.win { background: rgba(46, 213, 115, 0.32); border-color: rgba(120, 255, 170, 0.5); }
+    .feedback.win .hint { font-size: 28px; }
+
+    form { display: flex; gap: 10px; }
+
+    input[type="number"] {
+      flex: 1;
+      min-width: 0;
+      height: 56px;
+      font-size: 24px;
+      font-weight: 700;
+      text-align: center;
+      color: #4a3fb8;
+      background: rgba(255, 255, 255, 0.95);
+      border: 2px solid transparent;
+      border-radius: 16px;
+      outline: none;
+      -webkit-appearance: textfield;
+      appearance: textfield;
+    }
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    input[type="number"]:focus { border-color: #ffffff; box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.25); }
+    input[type="number"]:disabled { opacity: 0.5; }
+    input[type="number"].shake { animation: shake 0.35s ease; }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-7px); }
+      75% { transform: translateX(7px); }
+    }
+
+    button {
+      font-family: inherit;
+      border: none;
+      cursor: pointer;
+      height: 56px;
+      padding: 0 24px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #ff6a88, #ff9a8b);
+      color: #fff;
+      font-size: 18px;
+      font-weight: 700;
+      box-shadow: 0 8px 20px rgba(255, 106, 136, 0.45);
+      transition: transform 0.1s ease;
+    }
+    button:active { transform: scale(0.95); }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .restart {
+      width: 100%;
+      margin-top: 14px;
+      height: 48px;
+      padding: 0;
+      font-size: 16px;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      box-shadow: none;
+    }
+
+    .status { margin-top: 12px; font-size: 14px; opacity: 0.9; min-height: 20px; }
+
+    @media (max-width: 360px) {
+      .card { padding: 20px 14px 18px; border-radius: 22px; }
+      h1 { font-size: 25px; }
+      .feedback .hint { font-size: 20px; }
+      .feedback.win .hint { font-size: 24px; }
+      form { flex-direction: column; }
+      button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>🎯 猜数字</h1>
+    <p class="range">秘密数字在 1 ~ 100 之间</p>
+
+    <section class="feedback" id="feedback">
+      <div class="hint" id="hint">我在想一个 1-100 的数字…</div>
+      <div class="sub" id="sub">开始你的第一次猜测吧！</div>
+    </section>
+
+    <form id="guessForm" autocomplete="off">
+      <input id="guess" type="number" inputmode="numeric" pattern="[0-9]*" placeholder="输入 1-100" min="1" max="100" enterkeyhint="done" />
+      <button type="submit" id="submitBtn">猜！</button>
+    </form>
+
+    <div class="status" id="status">已猜 0 次</div>
+
+    <button type="button" class="restart" id="restartBtn">↻ 重新开始</button>
+  </main>
+
+  <script>
+    var MIN = 1;
+    var MAX = 100;
+
+    var form = document.getElementById('guessForm');
+    var input = document.getElementById('guess');
+    var submitBtn = document.getElementById('submitBtn');
+    var restartBtn = document.getElementById('restartBtn');
+    var feedbackEl = document.getElementById('feedback');
+    var hintEl = document.getElementById('hint');
+    var subEl = document.getElementById('sub');
+    var statusEl = document.getElementById('status');
+
+    var secret = Math.floor(Math.random() * (MAX - MIN + 1)) + MIN;
+    var guesses = 0;
+    var gameOver = false;
+
+    function showFeedback(hint, sub) {
+      hintEl.textContent = hint;
+      subEl.textContent = sub;
+      feedbackEl.classList.remove('win', 'show');
+      void feedbackEl.offsetWidth;
+      feedbackEl.classList.add('show');
+      if (hint.indexOf('猜对了') !== -1) {
+        feedbackEl.classList.add('win');
+      } else {
+        feedbackEl.classList.remove('win');
+      }
+    }
+
+    function doSubmit() {
+      if (gameOver) return;
+
+      var raw = input.value.trim();
+      var n = Number(raw);
+      if (raw === '' || !Number.isInteger(n) || n < MIN || n > MAX) {
+        input.classList.remove('shake');
+        void input.offsetWidth;
+        input.classList.add('shake');
+        input.value = '';
+        return;
+      }
+
+      guesses = guesses + 1;
+      statusEl.textContent = '已猜 ' + guesses + ' 次';
+
+      if (n === secret) {
+        gameOver = true;
+        input.disabled = true;
+        submitBtn.disabled = true;
+        showFeedback('🎉 恭喜猜对了！', '秘密数字是 ' + secret + '，总共用了 ' + guesses + ' 次');
+        return;
+      }
+
+      if (n < secret) {
+        showFeedback('太小了！', '你猜的 ' + n + ' 偏小，再大一点试试～');
+      } else {
+        showFeedback('太大了！', '你猜的 ' + n + ' 偏大，再小一点试试～');
+      }
+    }
+
+    function onSubmit(event) {
+      event.preventDefault();
+      doSubmit();
+    }
+
+    function resetGame() {
+      secret = Math.floor(Math.random() * (MAX - MIN + 1)) + MIN;
+      guesses = 0;
+      gameOver = false;
+      input.disabled = false;
+      submitBtn.disabled = false;
+      input.value = '';
+      statusEl.textContent = '已猜 0 次';
+      showFeedback('我在想一个 1-100 的数字…', '开始你的第一次猜测吧！');
+    }
+
+    form.addEventListener('submit', onSubmit);
+    restartBtn.addEventListener('click', resetGame);
+    resetGame();
+  </script>
+</body>
+</html>

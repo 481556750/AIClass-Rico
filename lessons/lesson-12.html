@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 12 课 · 让 AI 帮你画画 | 人人 AI 通识课</title>
+<link rel="stylesheet" href="../assets/css/base.css">
+</head>
+<body class="lesson" data-page="lesson" data-lesson="12">
+
+<header class="topbar">
+  <a class="brand" href="../index.html"><span class="aibot"></span><span>人人 AI 通识课</span></a>
+  <div class="tools">
+    <button class="tool-btn" id="font-toggle" title="调整字号">A</button>
+    <button class="tool-btn" id="theme-toggle" title="深色模式">🌙</button>
+  </div>
+</header>
+
+<div class="courseline">
+  <div class="progress"><i class="js-course-progress"></i></div>
+  <span class="count js-course-count">全课进度 0 / 21</span>
+</div>
+
+<main class="container lesson-wrap">
+
+  <!-- 课程头 -->
+  <header class="lesson-hero reveal">
+    <p class="chip-row">
+      <span class="chip hot">🎨 模块三 · 玩创作</span>
+      <span class="chip">⏱ 约 12 分钟</span>
+      <span class="chip">🖌️ 绘画提示词生成器</span>
+      <span class="chip">🧠 1 个小测验</span>
+    </p>
+    <h1>让 AI 帮你画画</h1>
+    <p class="lesson-lead">脑子里的画面很美，打出来的字只有「画只猫」。学会把画面翻译成 AI 听得懂的话，你就能把想象变成图。</p>
+  </header>
+
+  <!-- ① 场景导入 -->
+  <section class="scene reveal">
+    <div class="robot">
+      <span class="aibot"></span>
+      <span class="robot-name">小艾</span>
+    </div>
+    <div class="bubble">
+      <p><b>小雨：</b>我想做一张手机壁纸，输入「画一只猫」，出来一只很普通的猫，跟我想的完全不一样。</p>
+      <p><b>小艾：</b>你点菜时会只说「来份菜」吗？</p>
+      <p><b>小雨：</b>当然不会。我会说「番茄炒蛋，少放糖，不要葱」。</p>
+      <p><b>小艾：</b>画画也一样。主体、场景、风格、颜色、比例，说全了，它才画得像。</p>
+      <p><b>乐乐：</b>那我说「一只在月球上钓鱼的猫」行不行？</p>
+      <p><b>小艾：</b>行，再加点风格和光线，就更行了。</p>
+    </div>
+  </section>
+
+  <!-- ② 核心讲解 -->
+  <section class="block reveal">
+    <h2 class="step"><span>01</span>核心讲解</h2>
+
+    <div class="card hl">
+      <h3>🍽️ 它不会读心，只会「照词画画」</h3>
+      <p>AI 画画像一个手艺很好、但没看过你脑子的画师。你给的词就是菜单，它按菜单下笔。</p>
+      <p>你说「画只猫」，它只能给你一只「平均猫」；你说「一只胖橘猫坐在月球表面钓鱼，背景是一颗蓝色地球」，画面才有了主角、动作、地点和关系。</p>
+      <p>所以，别说「好看、高级、有感觉」这种它猜不透的词。说具体的名词、动作和颜色。这段话在 AI 圈有个名字，叫<span class="term" data-tip="<b>提示词（Prompt）</b>：你发给 AI 的那段画面描述。主体、场景、风格、光线、比例，说得越具体，它画得越像。">提示词</span>（prompt）——就是你给 AI 的指令。</p>
+    </div>
+
+    <div class="card accent">
+      <h3>🧩 一句话公式：主体 + 场景 + 风格 + 光线 + 比例</h3>
+      <p>把下面这句读一遍，你会发现它像在给画师交代工作：</p>
+      <p><b>「一只戴皇冠的橘猫，坐在月球表面钓鱼，背景是蓝色地球，扁平插画风格，蓝紫色夜空，9:16 手机壁纸，细节干净。」</b></p>
+      <p>主体是「戴皇冠的橘猫」，场景是「月球钓鱼」，风格是「扁平插画」，光线是「蓝紫色夜空」，比例是「9:16 手机壁纸」。五个格子填三四个，画面就已经很清楚。</p>
+      <p>比例也有讲究：做手机壁纸就写「9:16 竖版」，做头像写「1:1 方形」，做封面写「16:9 横版」。只写「壁纸」，它可能给你一个横的，主体还会被裁掉。</p>
+      <p>不知道怎么写？先让 DeepSeek 帮你把一句话扩成画面描述，再拿去即梦、豆包、通义万相生成。国外的 Midjourney、DALL·E 也可以，但先把手感练出来更重要。</p>
+    </div>
+
+    <div class="card sun">
+      <h3>🎨 风格词，是画面的快捷键</h3>
+      <p>同一只猫，换个风格就像换了一个世界：扁平插画干净，水彩柔和，像素风复古，黏土 3D 圆润，国潮有年画味，赛博朋克则是霓虹和雨夜。</p>
+      <p>把风格词想成「滤镜 + 画笔」：它能让一组图看起来像同一个系列，做头像、壁纸、绘本都很省事。</p>
+      <p>但要注意：模仿某位在世艺术家的独特风格，商用可能有版权风险；「吉卜力风」这类说法也一样。自己玩可以，真要商用，换成更通用的描述，或者用原创风格。</p>
+    </div>
+
+    <div class="card">
+      <h3>⚠️ 三个坑：手、字、细节</h3>
+      <p>AI 画手容易多一根指头，画文字容易变成乱码，复杂的小细节容易糊成一团。这不是你运气差，是它目前还不擅长的地方。</p>
+      <p>实用解法：一次生成 4 张，挑一张最接近的；图上的字，后期用美图秀秀、剪映加；重要用途（商用、肖像、商标）先确认版权和肖像权，别把 AI 图当「照片证据」。</p>
+      <p>还有一个小提醒：AI 生成的人像可能「很像某个人」，但并不是那个人。发出去之前，想一想会不会让人误会。</p>
+    </div>
+
+    <div class="card">
+      <h3>🗣️ 不满意，用嘴改</h3>
+      <p>不用推倒重来。看着图，直接追加一句：「背景改成夜晚」「猫换成白色」「去掉左上角的字」「镜头拉近一点」。</p>
+      <p>很多工具还有「局部重绘」「参考图」「垫图」：保留人物长相，只改衣服或背景。真正的高手不是一次问对，而是一边看一边改。</p>
+      <p>记住：你是导演，AI 是画师。你负责说清楚要什么，它负责画出来；不满意，就继续沟通。</p>
+    </div>
+  </section>
+
+  <!-- ③ 互动 -->
+  <section class="block reveal">
+    <h2 class="step"><span>02</span>动手玩一玩</h2>
+    <div class="game-card" id="art-prompt"></div>
+    <p class="game-tip">选五个格子，拼出一句提示词。复制它，去即梦或豆包生成 4 张，看看哪张最接近你脑子里的画面。</p>
+  </section>
+
+  <!-- ④ 小测验 -->
+  <section class="block reveal">
+    <h2 class="step"><span>03</span>小测验</h2>
+    <div class="quiz">
+      <div class="q">
+        <p class="q-text">1. 下面哪句最可能画出你想要的画面？</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 画只猫，要好看</button>
+          <button class="opt" data-correct="true">B. 一只橘猫坐在月球上钓鱼，地球在背景，扁平插画，蓝紫色调，9:16</button>
+          <button class="opt" data-correct="false">C. 画得有感觉一点</button>
+        </div>
+        <p class="explain" hidden>解析：主体、场景、风格、光线、比例越具体，AI 越不容易「自由发挥」。</p>
+      </div>
+      <div class="q">
+        <p class="q-text">2.「水彩、像素风、黏土 3D」属于提示词里的哪一部分？</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 主体</button>
+          <button class="opt" data-correct="true">B. 风格</button>
+          <button class="opt" data-correct="false">C. 比例</button>
+        </div>
+        <p class="explain" hidden>解析：风格词决定「像什么画」，能让一组图看起来像同一个系列。</p>
+      </div>
+      <div class="q">
+        <p class="q-text">3. AI 画的图上有错字、六根手指，最合理的做法是？</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 直接用，别人看不出来</button>
+          <button class="opt" data-correct="true">B. 多生成几张挑一张，文字后期加，重要用途先核实版权</button>
+          <button class="opt" data-correct="false">C. 让它解释为什么画错</button>
+        </div>
+        <p class="explain" hidden>解析：手和文字是 AI 画画的高发区。挑图、后期加字、核实版权，比反复解释有用。</p>
+      </div>
+      <p class="quiz-score" hidden></p>
+    </div>
+  </section>
+
+  <!-- ⑤ 金句 -->
+  <section class="block reveal">
+    <h2 class="step"><span>04</span>一句话记住这节课</h2>
+    <div class="quote-card">
+      <p>你描述得越具体，<br>它画得越像。</p>
+      <p class="quote-sub">脑子里的画面，要翻译成它听得懂的话。</p>
+    </div>
+  </section>
+
+  <!-- ⑥ 今天试一件事 -->
+  <section class="block reveal">
+    <h2 class="step"><span>05</span>今天试一件事</h2>
+    <ul class="actions">
+      <li><span class="box"></span><span class="txt">用五样公式写一句提示词，去即梦 / 豆包生成 4 张</span></li>
+      <li><span class="box"></span><span class="txt">挑一张，只改一个词（风格或光线），再生成一次对比</span></li>
+      <li><span class="box"></span><span class="txt">把满意的图存下来，做头像、壁纸或表情包</span></li>
+    </ul>
+    <button id="btn-complete" class="btn btn-primary">✅ 完成本课打卡</button>
+    <p class="next-teaser">下一课：画面有了，故事怎么讲？我们把一个开头，接成一条 15 秒短片。</p>
+  </section>
+
+  <!-- ⑦ 导航 -->
+  <nav class="lesson-nav reveal" id="lesson-nav"></nav>
+
+</main>
+
+<footer class="footer">
+  <p>《人人 AI 通识课》 · 新时代的工具，动手去用</p>
+</footer>
+
+<script src="../assets/js/course-data.js"></script>
+<script src="../assets/js/components.js"></script>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>
