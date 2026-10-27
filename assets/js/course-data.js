@@ -46,16 +46,16 @@ const COURSE = {
     {
       id: "m4", emoji: "🛡️", name: "模块四 · 怎么防坑（安全与防骗）",
       lessons: [
-        { id: "16", emoji: "🔍", title: "AI 说的不一定对", minutes: 12, desc: "幻觉质检员", ready: false },
-        { id: "17", emoji: "🚦", title: "这些信息别发给 AI", minutes: 12, desc: "隐私红绿灯", ready: false },
-        { id: "18", emoji: "🎭", title: "AI 骗局升级", minutes: 12, desc: "识破骗局小剧场", ready: false }
+        { id: "16", file: "lessons/lesson-16.html", emoji: "🔍", title: "AI 说的不一定对", minutes: 12, desc: "幻觉质检员 · 进阶", ready: true },
+        { id: "17", file: "lessons/lesson-17.html", emoji: "🚦", title: "这些信息别发给 AI", minutes: 12, desc: "隐私红绿灯", ready: true },
+        { id: "18", file: "lessons/lesson-18.html", emoji: "🎭", title: "AI 骗局升级", minutes: 12, desc: "识破骗局小剧场", ready: true }
       ]
     },
     {
       id: "m5", emoji: "🚴", name: "模块五 · 人和 AI",
       lessons: [
-        { id: "19", emoji: "🌡️", title: "把 AI 当实习生，而不是对手", minutes: 12, desc: "职业温度计 · 回扣工具观", ready: false },
-        { id: "20", emoji: "🎓", title: "结业课：你的 30 天 AI 行动计划", minutes: 12, desc: "打卡表 · 电子证书", ready: false }
+        { id: "19", file: "lessons/lesson-19.html", emoji: "🌡️", title: "把 AI 当实习生，而不是对手", minutes: 12, desc: "职业温度计 · 回扣工具观", ready: true },
+        { id: "20", file: "lessons/lesson-20.html", emoji: "🎓", title: "结业课：你的 30 天 AI 行动计划", minutes: 15, desc: "打卡表 · 电子证书", ready: true }
       ]
     }
   ]

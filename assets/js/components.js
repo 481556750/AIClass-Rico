@@ -461,17 +461,30 @@
         { text: "剪一段带气根的枝条插进水里，就能长出新根。", bad: false, why: "这条没问题，扦插就是这么操作的。" },
         { text: "绿萝原产南美洲亚马逊雨林，1902 年由英国植物学家引入中国。", bad: true, why: "编造。年份、人物这些细节越具体，越可能是 AI 编出来的。" }
       ]
+    },
+    battery: {
+      title: "小艾写的《手机电池保养 6 条》",
+      tip: "点你认为「有问题」的句子。注意数字、出处和绝对化说法。",
+      lines: [
+        { text: "现在的手机多用锂电池，没有记忆效应，不用每次用光再充。", bad: false, why: "这条没问题。锂电池确实没有老式镍镉电池的记忆效应。" },
+        { text: "新手机第一次充电必须充 12 小时，才能把电池「激活」。", bad: true, why: "过时说法。锂电池出厂已激活，充 12 小时没有必要，过充反而不好。" },
+        { text: "充电时玩大型游戏会让手机发热，长期高温会加速电池老化。", bad: false, why: "这条没问题。高温是锂电池老化的主要原因之一。" },
+        { text: "把手机放进冰箱冷冻 10 分钟，能快速降温并延长电池寿命。", bad: true, why: "危险。温差会产生冷凝水，可能损坏手机；降温应停止高负载使用。" },
+        { text: "根据 2023 年《自然》杂志的一项研究，电量保持在 20%–80% 最耐用。", bad: true, why: "出处可疑。具体期刊、年份说得越完整，越可能被编造；先去期刊官网核对。" },
+        { text: "充电时如果手机明显发烫，最好先停一下，等温度降下来再用。", bad: false, why: "这条没问题。发烫时暂停高负载使用，比硬扛更安全。" }
+      ]
     }
   };
 
   function initChecker(el) {
     const set = CHECK_SETS[el.dataset.set] || CHECK_SETS.plants;
+    const badTotal = set.lines.filter(l => l.bad).length;
     const marked = new Set();
     let done = false;
 
     function render() {
       el.innerHTML =
-        '<div class="guess-round-tag">找茬质检 · 这份回答里有 3 处问题</div>' +
+        '<div class="guess-round-tag">找茬质检 · 这份回答里有 ' + badTotal + ' 处问题</div>' +
         '<p class="check-title">' + set.title + '</p>' +
         '<p class="train-lead">' + set.tip + '</p>' +
         '<div class="check-lines">' +
@@ -2156,6 +2169,639 @@
     render();
   }
 
+  /* ================= 隐私红绿灯（第 17 课） ================= */
+  const PV_LEVELS = {
+    green: { emoji: "🟢", label: "绿灯", short: "可以直接发", desc: "公开信息 / 通用问题" },
+    yellow: { emoji: "🟡", label: "黄灯", short: "脱敏再发", desc: "真实信息，但先改名 / 去号码" },
+    red: { emoji: "🔴", label: "红灯", short: "绝不发", desc: "能定位到你或别人的敏感信息" }
+  };
+
+  const PRIVACY_ITEMS = [
+    {
+      text: "帮我润色这句生日祝福：祝妈妈身体健康，天天开心。",
+      level: "green",
+      why: "没有姓名、住址、电话，也不涉及别人的隐私。这种通用文字可以放心问。"
+    },
+    {
+      text: "我住在幸福小区 3 栋 502，帮我规划明天早上到公司的公交路线。",
+      level: "red",
+      why: "住址 + 通勤时间，能拼出你什么时候不在家。路线问题说到小区或地铁站就够了。",
+      safer: "从幸福小区附近到公司，早高峰怎么坐车？"
+    },
+    {
+      text: "我 12 岁，上六年级，想做一个暑假计划，每天学习 2 小时。",
+      level: "green",
+      why: "只说了年龄和年级，没有姓名、学校、住址。涉及孩子时，信息越少越安全。"
+    },
+    {
+      text: "孩子李小明在实验小学三年级二班，帮我写一张请假条。",
+      level: "red",
+      why: "姓名 + 学校 + 班级，是能直接找到孩子的组合。请假条写到「三年级学生」就够了。",
+      safer: "孩子上小学三年级，明天发烧要请假一天，帮我写一张请假条。"
+    },
+    {
+      text: "这是银行卡正面照片，帮我看看卡号有没有填错。",
+      level: "red",
+      why: "银行卡号、有效期、背面安全码都不能发给 AI；照片背景也可能带出其他信息。"
+    },
+    {
+      text: "这份合同有甲方公司名、客户电话和报价，帮我看看付款条款有没有坑。",
+      level: "yellow",
+      why: "合同可以问，但先把公司名、电话、报价换成「A 公司」「某客户」「某金额」。",
+      safer: "这份合同我隐去了公司名和电话，帮我看看付款条款有哪些风险。"
+    },
+    {
+      text: "把这张旅游照片配一句文案，照片里有我和朋友的正脸。",
+      level: "yellow",
+      why: "发图前先征求朋友同意；不想露脸就裁掉或打码。写文案并不需要 AI 看清正脸。"
+    },
+    {
+      text: "我们公司下月要裁 10 人，这是名单，帮我写通知。",
+      level: "red",
+      why: "他人姓名 + 裁员计划，既是个人隐私，也是公司机密。这类内容不要上传到外部工具。"
+    },
+    {
+      text: "帮我列一份《夏洛的网》读书笔记提纲，给五年级学生用。",
+      level: "green",
+      why: "公开书名 + 通用年级，没有个人信息。问公开知识、写作方法，通常是绿灯。"
+    }
+  ];
+
+  function initPrivacy(el) {
+    let index = 0, score = 0, picked = null;
+
+    function render() {
+      if (index >= PRIVACY_ITEMS.length) return final();
+      const item = PRIVACY_ITEMS[index];
+      const isAnswered = picked !== null;
+      el.innerHTML =
+        '<div class="pv-wrap">' +
+          '<div class="pv-top">' +
+            '<span class="guess-round-tag">隐私红绿灯 · 第 ' + (index + 1) + ' / ' + PRIVACY_ITEMS.length + ' 题</span>' +
+            '<span class="pv-score">答对 ' + score + ' 题</span>' +
+          '</div>' +
+          '<div class="pv-legend">' +
+            '<span class="pv-pill green">🟢 绿灯 · 可以发</span>' +
+            '<span class="pv-pill yellow">🟡 黄灯 · 脱敏再发</span>' +
+            '<span class="pv-pill red">🔴 红灯 · 绝不发</span>' +
+          '</div>' +
+          '<p class="train-lead">假设你要把下面这句话发给 AI。先停一秒，选一盏灯。</p>' +
+          '<div class="pv-card">' +
+            '<span class="pv-emoji">💬</span>' +
+            '<p class="pv-text">' + item.text + '</p>' +
+            '<span class="pv-source">你准备发给 AI 的话</span>' +
+          '</div>' +
+          '<div class="pv-choices">' +
+            ['green', 'yellow', 'red'].map(level =>
+              '<button type="button" class="pv-btn ' + level + (picked === level ? " picked" : "") + '" data-level="' + level + '"' + (isAnswered ? " disabled" : "") + '>' +
+                '<span class="pv-emoji">' + PV_LEVELS[level].emoji + '</span>' +
+                '<b>' + PV_LEVELS[level].label + '</b>' +
+                '<small>' + PV_LEVELS[level].short + '</small>' +
+              '</button>'
+            ).join("") +
+          '</div>' +
+          (isAnswered ? feedback(item) : '') +
+        '</div>';
+
+      if (!isAnswered) {
+        el.querySelectorAll(".pv-btn").forEach(btn => {
+          btn.addEventListener("click", () => {
+            picked = btn.dataset.level;
+            if (picked === item.level) score++;
+            render();
+          });
+        });
+      } else {
+        const next = el.querySelector(".js-pv-next");
+        if (next) next.addEventListener("click", () => {
+          index++;
+          picked = null;
+          render();
+        });
+      }
+    }
+
+    function feedback(item) {
+      const ok = picked === item.level;
+      const right = PV_LEVELS[item.level];
+      return '<div class="pv-fb ' + (ok ? "ok" : "bad") + '">' +
+        '<div class="pv-fb-head">' + (ok ? "✅ 判断正确" : "👀 再看一眼") + ' · 这题是 ' + right.emoji + ' ' + right.label + '</div>' +
+        '<p>' + item.why + '</p>' +
+        (item.safer ? '<p class="pv-safer"><b>更安全的说法：</b>' + item.safer + '</p>' : '') +
+        '<div class="pv-next"><button type="button" class="btn btn-primary js-pv-next">' +
+          (index === PRIVACY_ITEMS.length - 1 ? "看我的隐私成绩 →" : "下一题 →") +
+        '</button></div>' +
+      '</div>';
+    }
+
+    function final() {
+      const pct = Math.round(score / PRIVACY_ITEMS.length * 100);
+      const verdict = score === PRIVACY_ITEMS.length
+        ? "满灯通过！你已经有了「发之前先停一秒」的肌肉记忆。"
+        : score >= 7
+          ? "很稳了。剩下几题，多半是「真实信息能不能脱敏」的边界。"
+          : "别急，关键不是背答案，而是记住：能定位到人、能造成损失的信息，先不发。";
+      el.innerHTML =
+        '<div class="pv-final">' +
+          '<div class="pv-score-big">' + score + ' <small>/ ' + PRIVACY_ITEMS.length + '</small></div>' +
+          '<h3>隐私红绿灯 · 本轮完成</h3>' +
+          '<p>' + verdict + '</p>' +
+          '<div class="pv-final-bar"><i style="width:' + pct + '%"></i></div>' +
+          '<div class="pv-final-rules">' +
+            '<span>🟢 公开信息、通用问题：可以发</span>' +
+            '<span>🟡 真实信息：先改名、去号码、换金额</span>' +
+            '<span>🔴 身份证 / 银行卡 / 验证码 / 孩子学校住址：不发</span>' +
+          '</div>' +
+          '<button type="button" class="btn btn-ghost js-pv-again">再玩一次 ↻</button>' +
+        '</div>';
+      el.querySelector(".js-pv-again").addEventListener("click", () => {
+        index = 0; score = 0; picked = null; render();
+      });
+    }
+
+    render();
+  }
+
+  /* ================= 识破骗局小剧场（第 18 课） ================= */
+  const SCAM_SCENES = [
+    {
+      tag: "第一幕 · 视频里的女儿",
+      kind: "video",
+      head: "视频通话 · 女儿",
+      meta: "来电显示：女儿 · 00:12 · 画面有点卡",
+      lines: [
+        { who: "女儿", tone: "them", text: "妈，我手机摔坏了，借同学的手机打给你。我骑车撞了人，对方要 5 万私了……" },
+        { who: "女儿", tone: "them", text: "千万别告诉我爸，也别报警，我现在好怕。你快转到这个账户，晚了对方就要报警了。" }
+      ],
+      q: "视频里的脸和声音都很像女儿。你会怎么做？",
+      options: [
+        { text: "孩子出事要紧，先转 5 万，别耽误。", good: false, outcome: "转账后，对方立刻拉黑。视频是骗子用几秒素材合成的。", why: "越急越要慢。骗子最怕你挂断电话去核实。" },
+        { text: "先挂断，用通讯录里女儿的号码回拨，再打给学校。", good: true, outcome: "女儿正在上课，根本没出事。你保住了 5 万。", why: "用你自己存的号码回拨，才不会被骗子牵着走。" },
+        { text: "在视频里问她：你是不是我女儿？", good: false, outcome: "对方哭着说「妈你不认识我了吗」，你更慌了。", why: "骗子早准备好了台词。视频里问，还是在骗子的舞台上。" }
+      ],
+      trap: "骗子的下一步：继续哭、继续催，让你没时间挂断。"
+    },
+    {
+      tag: "第二幕 · 新号码里的「领导」",
+      kind: "chat",
+      head: "新好友 · 王总",
+      meta: "对方通过手机号搜索添加 · 头像和领导一样",
+      lines: [
+        { who: "王总", tone: "them", text: "小林，我在开会不方便接电话。合作方那边急着要 2 万保证金，你先垫一下，明天回公司报销。" },
+        { who: "王总", tone: "them", text: "别在群里说，影响不好。转完把截图发我。" }
+      ],
+      q: "「领导」用新号加你，催你垫钱。你会怎么做？",
+      options: [
+        { text: "领导不能得罪，先转，明天再说。", good: false, outcome: "「王总」收钱后消失。真正的王总根本没加过你。", why: "头像、语气都能复制，只有你主动核实才可靠。" },
+        { text: "用公司通讯录里的号码打给王总本人，或当面确认。", good: true, outcome: "王总说没这回事。你把新号拉黑，顺手提醒了同事。", why: "换一条你自己知道的渠道核实，不走骗子给的新号码。" },
+        { text: "发微信问一句：王总，是您本人吗？", good: false, outcome: "对方秒回「当然是我」，还发来一张模糊的身份证照片。", why: "同一个聊天窗口里的「本人」，证明不了任何事。" }
+      ],
+      trap: "骗子的下一步：用「领导」身份压你，再用「别声张」堵住你核实的路。"
+    },
+    {
+      tag: "第三幕 · 客服的「安全操作」",
+      kind: "call",
+      head: "来电 · 某平台客服",
+      meta: "来电显示可伪造 · 对方称你的账户误开通会员",
+      lines: [
+        { who: "客服", tone: "them", text: "您的账户误开通了年度会员，今晚 12 点前不关闭，每月扣 800。现在按我说的做，我帮您取消。" },
+        { who: "客服", tone: "them", text: "先下载这个屏幕共享 App，再把收到的验证码报给我。放心，这是安全账户，不会动您的钱。" }
+      ],
+      q: "对方要你共享屏幕、报验证码。你会怎么做？",
+      options: [
+        { text: "客服也不容易，按他说的做，赶紧关掉扣费。", good: false, outcome: "共享屏幕后，对方看到了你的验证码，转走了卡里的钱。", why: "验证码和屏幕共享，等于把家门钥匙交给对方。" },
+        { text: "挂断，打开官方 App 或打官方客服电话核实。", good: true, outcome: "官方客服说没有这回事。你没有下载任何 App。", why: "涉及钱和账号，只走官方入口，不用对方给的链接或电话。" },
+        { text: "先加对方微信，把身份证发过去证明身份。", good: false, outcome: "对方拿到你的姓名、身份证号，开始申请网贷。", why: "越是催你「证明身份」的，越可能是在收集你的信息。" }
+      ],
+      trap: "骗子的下一步：用「今晚就扣费」制造倒计时，再用「安全账户」让你放松警惕。"
+    }
+  ];
+
+  function initScamTheater(el) {
+    let stage = -1, score = 0, picked = null;
+
+    function start() {
+      stage = -1; score = 0; picked = null;
+      el.innerHTML =
+        '<div class="scam-start">' +
+          '<span class="scam-start-emoji">🎭</span>' +
+          '<h3>识破骗局小剧场</h3>' +
+          '<p>三段模拟来电，台词做了简化。<b>不是真实来电</b>，但套路是真的：催你、让你保密、让你转账。</p>' +
+          '<p class="scam-warn">你的任务：每一幕选一个动作，看看骗子下一步会怎么走。</p>' +
+          '<button type="button" class="btn btn-primary js-scam-start">▶ 进入第一幕</button>' +
+        '</div>';
+      el.querySelector(".js-scam-start").addEventListener("click", () => {
+        stage = 0; picked = null; render();
+      });
+    }
+
+    function render() {
+      if (stage >= SCAM_SCENES.length) return final();
+      const s = SCAM_SCENES[stage];
+      const answered = picked !== null;
+      el.innerHTML =
+        '<div class="scam-wrap">' +
+          '<div class="scam-top">' +
+            '<span class="guess-round-tag">' + s.tag + ' · 第 ' + (stage + 1) + ' / ' + SCAM_SCENES.length + ' 幕</span>' +
+            '<span class="scam-score">识破 ' + score + ' 幕</span>' +
+          '</div>' +
+          '<div class="scam-phone">' +
+            '<div class="scam-phone-head">' +
+              '<span class="scam-dots"><i></i><i></i><i></i></span>' +
+              '<b>' + s.head + '</b>' +
+              '<span class="scam-fake">模拟</span>' +
+            '</div>' +
+            '<div class="scam-meta">' + s.meta + '</div>' +
+            '<div class="scam-screen">' +
+              '<div class="scam-caller"><span>' + (s.kind === "video" ? "📹" : s.kind === "chat" ? "💬" : "📞") + '</span><b>' + s.head + '</b><small>对方正在说话</small></div>' +
+              s.lines.map(l =>
+                '<div class="scam-bubble ' + l.tone + '"><span class="scam-who">' + l.who + '</span><p>' + l.text + '</p></div>'
+              ).join("") +
+            '</div>' +
+          '</div>' +
+          '<p class="scam-q">' + s.q + '</p>' +
+          '<div class="scam-options">' +
+            s.options.map((o, i) => {
+              let cls = "scam-opt";
+              if (answered) {
+                if (o.good) cls += " ok";
+                if (picked === i && !o.good) cls += " bad";
+                if (picked === i && o.good) cls += " picked";
+              }
+              return '<button type="button" class="' + cls + '" data-i="' + i + '"' + (answered ? " disabled" : "") + '>' +
+                '<span class="scam-letter">' + String.fromCharCode(65 + i) + '</span>' +
+                '<span>' + o.text + '</span>' +
+              '</button>';
+            }).join("") +
+          '</div>' +
+          (answered ? outcome(s) : '') +
+        '</div>';
+
+      if (!answered) {
+        el.querySelectorAll(".scam-opt").forEach(btn => {
+          btn.addEventListener("click", () => {
+            picked = parseInt(btn.dataset.i, 10);
+            if (s.options[picked].good) score++;
+            render();
+          });
+        });
+      } else {
+        el.querySelector(".js-scam-next").addEventListener("click", () => {
+          stage++;
+          picked = null;
+          render();
+        });
+      }
+    }
+
+    function outcome(s) {
+      const o = s.options[picked];
+      return '<div class="scam-outcome ' + (o.good ? "ok" : "bad") + '">' +
+        '<div class="scam-outcome-head">' + (o.good ? "✅ 这一步走对了" : "❌ 这一步被带走了") + '</div>' +
+        '<p class="scam-result">' + o.outcome + '</p>' +
+        '<p class="scam-why"><b>为什么：</b>' + o.why + '</p>' +
+        '<p class="scam-trap">' + s.trap + '</p>' +
+        '<div class="scam-next"><button type="button" class="btn btn-primary js-scam-next">' +
+          (stage === SCAM_SCENES.length - 1 ? "看我的反诈成绩 →" : "进入下一幕 →") +
+        '</button></div>' +
+      '</div>';
+    }
+
+    function final() {
+      const verdict = score === SCAM_SCENES.length
+        ? "三幕全识破。你已经把「停、核、问、报」练成了条件反射。"
+        : score === 2
+          ? "差一点全对。记住：只要对方催你转账，先挂断，再换一条渠道核实。"
+          : "别灰心，骗子的剧本就是为「来不及想」设计的。慢下来，你就赢了一半。";
+      el.innerHTML =
+        '<div class="scam-final">' +
+          '<div class="scam-score-big">' + score + ' <small>/ ' + SCAM_SCENES.length + '</small></div>' +
+          '<h3>反诈小剧场 · 本轮结束</h3>' +
+          '<p>' + verdict + '</p>' +
+          '<div class="scam-rules">' +
+            '<span><b>停</b> 挂断 / 退出，不按对方节奏走</span>' +
+            '<span><b>核</b> 用自己存的号码 / 官方 App / 当面</span>' +
+            '<span><b>问</b> 问只有家人知道的暗号</span>' +
+            '<span><b>报</b> 110 / 96110，联系银行，保存证据</span>' +
+          '</div>' +
+          '<div class="scam-actions">' +
+            '<button type="button" class="btn btn-primary js-copy-pact">📋 复制家庭防骗约定</button>' +
+            '<button type="button" class="btn btn-ghost js-scam-again">再演一次 ↻</button>' +
+          '</div>' +
+          '<p class="scam-foot-note">被骗不是丢人。越早说出来、越早报警，越可能减少损失。</p>' +
+        '</div>';
+      el.querySelector(".js-copy-pact").addEventListener("click", () => {
+        copyText(
+          "【家庭防骗约定】\n" +
+          "1. 任何人在电话 / 视频里催转账，先挂断。\n" +
+          "2. 用自己手机里存的号码回拨核实，不用对方给的号码。\n" +
+          "3. 不报验证码、不共享屏幕、不装陌生 App、不转「安全账户」。\n" +
+          "4. 大额转账必须当面或电话确认，家里设一个只有家人知道的暗号。\n" +
+          "5. 被骗不丢人：立刻打 110 / 96110，联系银行，保存记录。",
+          "家庭防骗约定已复制，发给家人吧"
+        );
+      });
+      el.querySelector(".js-scam-again").addEventListener("click", start);
+    }
+
+    start();
+  }
+
+  /* ================= 职业温度计（第 19 课） ================= */
+  const CAREERS = [
+    {
+      emoji: "📊", name: "数据录入 / 初级会计", heat: 82, tag: "规则重复多",
+      tasks: ["发票录入、对账", "生成固定格式报表", "查找政策条文"],
+      human: ["异常和假账判断", "和客户 / 税务沟通", "对报表签字负责"],
+      tip: "先让 AI 做第一遍，你专盯异常和沟通。",
+      learn: "学一个表格 / 财务 AI 工具，练「异常排查」和「把话说清楚」。"
+    },
+    {
+      emoji: "🎧", name: "客服 / 呼叫中心", heat: 72, tag: "标准问答多",
+      tasks: ["常见问题回复", "工单分类和摘要", "整理客户反馈"],
+      human: ["安抚情绪", "处理投诉和例外", "复杂协商"],
+      tip: "把重复问答交给 AI，把时间留给真正生气的人。",
+      learn: "练情绪劳动、产品知识和临场判断，别只背话术。"
+    },
+    {
+      emoji: "🎨", name: "平面设计 / 美工", heat: 58, tag: "出图快，判断难",
+      tasks: ["找参考、出草图", "抠图、批量改尺寸", "生成配图初稿"],
+      human: ["访谈需求", "品牌策略和审美取舍", "对成品负责"],
+      tip: "让 AI 先出 10 版，你负责挑和改。",
+      learn: "把 AI 当草图机，练「说清需求」和「一眼挑出好图」。"
+    },
+    {
+      emoji: "💻", name: "程序员", heat: 52, tag: "样板代码多",
+      tasks: ["样板代码", "查报错、写测试", "生成文档和注释"],
+      human: ["定义问题和架构", "代码评审", "上线后果负责"],
+      tip: "让 AI 写第一版和测试，你做评审和拍板。",
+      learn: "练拆问题、读代码、写测试，别把「会生成」当「会负责」。"
+    },
+    {
+      emoji: "🤝", name: "销售 / 客户经理", heat: 45, tag: "资料活可外包",
+      tasks: ["整理客户资料", "写话术初稿", "做方案框架"],
+      human: ["建立信任", "谈判和现场反应", "长期关系"],
+      tip: "让 AI 做功课，你去见人、听需求。",
+      learn: "用 AI 准备客户背景和方案，把省下的时间用来跟人聊。"
+    },
+    {
+      emoji: "👩‍🏫", name: "小学老师", heat: 35, tag: "育人部分难替代",
+      tasks: ["备课素材", "分层出题", "批改客观题"],
+      human: ["课堂管理", "观察和鼓励孩子", "家校沟通"],
+      tip: "把出题和资料整理交出去，把眼睛留给孩子。",
+      learn: "学用 AI 出分层题、做课件，但别把育人也外包。"
+    },
+    {
+      emoji: "🩺", name: "护士 / 照护者", heat: 28, tag: "手上和床边是核心",
+      tasks: ["护理记录", "知识查询", "排班和提醒"],
+      human: ["床边观察", "实际操作", "安慰和陪伴"],
+      tip: "让 AI 少写一点文书，你多留一点时间在床边。",
+      learn: "学用 AI 查指南、写记录，核心还是手上的功夫和判断。"
+    },
+    {
+      emoji: "🍳", name: "厨师 / 手艺人", heat: 25, tag: "现场和手感值钱",
+      tasks: ["菜单灵感", "成本表", "写菜品介绍"],
+      human: ["火候和味道", "现场出品", "根据客人调整"],
+      tip: "让 AI 算成本、写菜单，锅铲还是你拿。",
+      learn: "用 AI 做菜单和成本，把时间花在试菜和出品上。"
+    }
+  ];
+
+  function initCareer(el) {
+    let sel = 2;
+
+    function heatLabel(h) {
+      return h >= 70 ? "偏高" : h >= 45 ? "中等" : "偏低";
+    }
+
+    function render() {
+      const c = CAREERS[sel];
+      el.innerHTML =
+        '<div class="career-wrap">' +
+          '<div class="guess-round-tag">职业温度计 · 点一个职业，拆开看任务</div>' +
+          '<p class="train-lead">指数越高，说明这份工作里「重复、规则型」的任务越多，越适合先交给 AI。<b>它不是「你被替代的概率」。</b></p>' +
+          '<div class="career-chips">' +
+            CAREERS.map((it, i) =>
+              '<button type="button" class="career-chip' + (i === sel ? " on" : "") + '" data-i="' + i + '">' +
+                it.emoji + ' ' + it.name + '</button>'
+            ).join("") +
+          '</div>' +
+          '<div class="career-panel">' +
+            '<div class="career-title">' +
+              '<div><span class="career-emoji">' + c.emoji + '</span><b>' + c.name + '</b><small>' + c.tag + '</small></div>' +
+              '<span class="career-badge">' + heatLabel(c.heat) + '</span>' +
+            '</div>' +
+            '<div class="career-meter-head"><b>AI 可接手任务指数</b><span>' + c.heat + ' / 100 · 示意</span></div>' +
+            '<div class="career-bar"><i style="width:' + c.heat + '%"></i></div>' +
+            '<p class="career-meter-note">不同公司、不同地区差别很大。这张表只帮你拆任务，不是职业判决书。</p>' +
+            '<div class="career-cols">' +
+              '<div class="career-col"><b>🤖 可以交给 AI</b><ul>' + c.tasks.map(t => '<li>' + t + '</li>').join("") + '</ul></div>' +
+              '<div class="career-col human"><b>🧑 更像人的部分</b><ul>' + c.human.map(t => '<li>' + t + '</li>').join("") + '</ul></div>' +
+            '</div>' +
+            '<div class="career-tip"><b>把 AI 当实习生，怎么带？</b><p>' + c.tip + '</p></div>' +
+            '<div class="career-learn"><b>增强建议：</b>' + c.learn + '</div>' +
+          '</div>' +
+          '<p class="career-foot-note">真正的安全感，不是「AI 不会」，而是「我会用它，也会做它做不了的事」。</p>' +
+        '</div>';
+
+      el.querySelectorAll(".career-chip").forEach(btn => {
+        btn.addEventListener("click", () => {
+          sel = parseInt(btn.dataset.i, 10);
+          render();
+        });
+      });
+    }
+
+    render();
+  }
+
+  /* ================= 30 天行动计划（第 20 课） ================= */
+  const FINAL_TIMES = [
+    { label: "10 分钟", note: "每天只做周计划里的第一步，做完就停。", short: "轻量" },
+    { label: "20 分钟", note: "做一步 + 用 5 分钟检查结果。", short: "标准" },
+    { label: "30 分钟", note: "做一步 + 一个进阶动作（改一版 / 发给别人看）。", short: "进阶" }
+  ];
+
+  const FINAL_GOALS = {
+    work: {
+      emoji: "💼", label: "工作提效", intro: "把最烦的重复活交出去，把时间留给判断和沟通。",
+      weeks: [
+        { title: "第 1 周 · 用起来", tasks: ["打开 DeepSeek，问一个今天真实的工作问题", "让它把 3 条会议记录整理成待办", "让它把一封邮件改短 30%", "记下最顺手的 1 个用法"] },
+        { title: "第 2 周 · 解决一个真问题", tasks: ["选一个每周都烦你的任务：周报 / 表格 / 客户回复", "把背景、标准、一个样例写给它", "让它出 2 版，你挑一版改", "记录这次省下的时间"] },
+        { title: "第 3 周 · 做出一个小作品", tasks: ["把重复流程整理成一页 SOP", "让 AI 生成模板和检查清单", "发给同事试用，收 3 条反馈", "改一版，存进团队文档"] },
+        { title: "第 4 周 · 教一个人 + 复盘", tasks: ["教同事 / 家人一个用法", "让对方自己操作一遍", "记下 3 个最容易卡住的点", "写下下个 30 天想试的 1 件事"] }
+      ]
+    },
+    study: {
+      emoji: "📚", label: "学习成长", intro: "不只用它写作业，用它讲懂、考你、找薄弱点。",
+      weeks: [
+        { title: "第 1 周 · 变成学习搭子", tasks: ["让它用 3 种说法解释今天最难的 1 个概念", "让它出 5 道题，做完再要解析", "把错题发给它，问错在哪一步", "让它把本章整理成 5 张复习卡"] },
+        { title: "第 2 周 · 攻一个薄弱点", tasks: ["选最没底的一章 / 一个技能", "让它按你的水平出 10 道题", "只研究错得最多的 2 道", "合上书，自己讲一遍"] },
+        { title: "第 3 周 · 做一份学习作品", tasks: ["做一页复习卡 / 思维导图 / 口语录音", "让 AI 当听众，提 3 个问题", "按问题补一遍", "发给同学 / 家人看"] },
+        { title: "第 4 周 · 教一个人 + 复盘", tasks: ["把今天学到的讲给一个人听", "让对方问你 3 个问题", "记下答不上来的地方", "下周只补这 3 个点"] }
+      ]
+    },
+    life: {
+      emoji: "🍜", label: "生活助手", intro: "菜谱、报修、行程、家庭计划——从一件小事开始省心。",
+      weeks: [
+        { title: "第 1 周 · 接手生活杂事", tasks: ["问一次菜谱：按冰箱现有食材、人数、时间", "让它写一条报修 / 投诉信息", "让它排一个半日行程：预算、同行人、交通", "记下哪一句最省事"] },
+        { title: "第 2 周 · 解决一个真麻烦", tasks: ["选一件拖了很久的小事：报销 / 修东西 / 家庭计划", "把事实、时间、诉求告诉 AI", "让它出 2 个方案，你选一个", "真的去办，回来记结果"] },
+        { title: "第 3 周 · 做一份家庭作品", tasks: ["做一本 3 道菜的家庭菜谱", "或做一份周末半日游计划", "让 AI 配文案 / 配图提示词", "发到家人群，收 3 条反馈"] },
+        { title: "第 4 周 · 教一个人 + 复盘", tasks: ["教爸妈 / 邻居一个用法", "让对方自己问一次", "记下他们最担心的问题", "把安全提醒再说一遍"] }
+      ]
+    },
+    create: {
+      emoji: "🎨", label: "创作作品", intro: "把想象力变成一张图、一个故事、一件能发出去的小作品。",
+      weeks: [
+        { title: "第 1 周 · 每天一个小创作", tasks: ["写一句画面提示词，生成 1 张图", "给这张图配 3 句故事开头", "选一个开头，接 3 句", "存进一个「灵感」文件夹"] },
+        { title: "第 2 周 · 定一个主题", tasks: ["选一个你真正想做的主题：猫 / 家常菜 / 家乡", "让 AI 出 3 个作品方向", "选一个，列出 5 个画面 / 5 段文字", "做第一版，不追求完美"] },
+        { title: "第 3 周 · 做出完整作品", tasks: ["做 6 页绘本 / 1 套表情包 / 1 个 15 秒短片", "让 AI 帮你补文案、改分镜", "发给 3 个人看，收反馈", "改一版，发出去"] },
+        { title: "第 4 周 · 教一个人 + 复盘", tasks: ["教朋友一个提示词技巧", "一起做一张图 / 一段故事", "记下对方最惊讶的地方", "写下下一个作品想做什么"] }
+      ]
+    }
+  };
+
+  function initFinalPlan(el) {
+    const LS_KEY = "aic-30day";
+    let sel = { goal: "work", time: 1 };
+    let checked = Array(30).fill(false);
+    let result = false;
+
+    try {
+      const saved = JSON.parse(localStorage.getItem(LS_KEY));
+      if (saved && FINAL_GOALS[saved.goal] && typeof saved.time === "number" && saved.time >= 0 && saved.time < FINAL_TIMES.length) {
+        sel = { goal: saved.goal, time: saved.time };
+        if (Array.isArray(saved.checked) && saved.checked.length === 30) {
+          checked = saved.checked.map(Boolean);
+        }
+        result = true;
+      }
+    } catch (e) {}
+
+    function save() {
+      try { localStorage.setItem(LS_KEY, JSON.stringify({ goal: sel.goal, time: sel.time, checked: checked })); } catch (e) {}
+    }
+
+    function countDone() {
+      return checked.filter(Boolean).length;
+    }
+
+    function chips(items, key, current, kind) {
+      return '<div class="plan-chips">' + items.map((it, i) => {
+        const label = kind === "goal" ? it.emoji + " " + it.label : it.label;
+        return '<button type="button" class="plan-chip' + (current === i ? " on" : "") + '" data-key="' + key + '" data-i="' + i + '">' + label + '</button>';
+      }).join("") + '</div>';
+    }
+
+    function render() {
+      el.innerHTML =
+        '<div class="plan-builder">' +
+          '<div class="guess-round-tag">30 天 AI 行动计划 · 先选一个目标</div>' +
+          '<p class="train-lead">别贪多。选一个你真正想解决的问题，每天 10 分钟也算数。</p>' +
+          '<div class="plan-group"><span class="art-label">1. 你最想先用 AI 做什么？</span>' +
+            chips(Object.keys(FINAL_GOALS).map(k => FINAL_GOALS[k]), "goal", Object.keys(FINAL_GOALS).indexOf(sel.goal), "goal") +
+          '</div>' +
+          '<div class="plan-group"><span class="art-label">2. 每天能拿出多少时间？</span>' +
+            chips(FINAL_TIMES, "time", sel.time, "time") +
+          '</div>' +
+          '<div class="plan-actions">' +
+            '<button type="button" class="btn btn-primary js-plan-gen">🎯 生成我的 30 天计划</button>' +
+            '<button type="button" class="btn btn-ghost js-plan-clear">清空打卡 ↻</button>' +
+          '</div>' +
+          '<div class="plan-result"></div>' +
+        '</div>';
+
+      el.querySelectorAll(".plan-chip").forEach(btn => {
+        btn.addEventListener("click", () => {
+          if (btn.dataset.key === "goal") sel.goal = Object.keys(FINAL_GOALS)[parseInt(btn.dataset.i, 10)];
+          else sel.time = parseInt(btn.dataset.i, 10);
+          result = false;
+          save();
+          render();
+        });
+      });
+      el.querySelector(".js-plan-gen").addEventListener("click", () => {
+        result = true;
+        save();
+        render();
+        const box = el.querySelector(".plan-summary");
+        if (box) box.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+      el.querySelector(".js-plan-clear").addEventListener("click", () => {
+        checked = Array(30).fill(false);
+        save();
+        render();
+        window.dispatchEvent(new CustomEvent("aic-toast", { detail: "打卡已清空，明天从第 1 天重新开始" }));
+      });
+      if (result) showResult();
+    }
+
+    function showResult() {
+      const wrap = el.querySelector(".plan-result");
+      if (!wrap) return;
+      const goal = FINAL_GOALS[sel.goal];
+      const time = FINAL_TIMES[sel.time];
+      const done = countDone();
+      wrap.innerHTML =
+        '<div class="plan-summary">' +
+          '<div class="plan-summary-head">' +
+            '<div><span class="proj-badge">' + goal.emoji + " " + goal.label + " · 每天 " + time.label + '</span><h3>你的 30 天 AI 行动计划</h3></div>' +
+            '<span class="plan-done-count">' + done + ' / 30 天</span>' +
+          '</div>' +
+          '<p class="plan-intro">' + goal.intro + '</p>' +
+          '<div class="plan-time-note">⏱ ' + time.note + '</div>' +
+          '<div class="plan-weeks">' +
+            goal.weeks.map(w =>
+              '<div class="plan-week">' +
+                '<h4>' + w.title + '</h4>' +
+                '<ol>' + w.tasks.map(t => '<li>' + t + '</li>').join("") + '</ol>' +
+              '</div>'
+            ).join("") +
+          '</div>' +
+          '<div class="plan-calendar">' +
+            '<div class="plan-calendar-head"><b>✅ 30 天打卡表</b><span class="tiny">点一下就算今天做到</span></div>' +
+            '<div class="plan-days">' +
+              checked.map((on, i) =>
+                '<button type="button" class="plan-day' + (on ? " done" : "") + '" data-day="' + i + '" aria-pressed="' + on + '">' + (on ? "✓" : (i + 1)) + '</button>'
+              ).join("") +
+            '</div>' +
+            '<p class="plan-progress-line">已完成 <b class="js-plan-count">' + done + '</b> / 30 天 · 打卡只保存在这台设备</p>' +
+          '</div>' +
+          '<div class="plan-foot">' +
+            '<button type="button" class="btn btn-ghost js-plan-copy">📋 复制计划</button>' +
+            '<a class="btn btn-ghost" href="../certificate.html">🎓 去领结业证书</a>' +
+          '</div>' +
+          '<p class="plan-note">断了一天不算失败，别连着断两天。明天继续，计划就还在。</p>' +
+        '</div>';
+
+      wrap.querySelectorAll(".plan-day").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const i = parseInt(btn.dataset.day, 10);
+          checked[i] = !checked[i];
+          btn.classList.toggle("done", checked[i]);
+          btn.setAttribute("aria-pressed", checked[i] ? "true" : "false");
+          btn.textContent = checked[i] ? "✓" : String(i + 1);
+          const n = countDone();
+          wrap.querySelector(".plan-done-count").textContent = n + " / 30 天";
+          wrap.querySelector(".js-plan-count").textContent = n;
+          save();
+          if (n === 30) window.dispatchEvent(new CustomEvent("aic-toast", { detail: "30 天全部打卡，你真的做到了 🎉" }));
+        });
+      });
+      wrap.querySelector(".js-plan-copy").addEventListener("click", () => {
+        const txt = "【我的 30 天 AI 行动计划】\n" +
+          goal.emoji + " " + goal.label + " · 每天 " + time.label + "\n" +
+          goal.intro + "\n\n" +
+          goal.weeks.map(w => w.title + "\n" + w.tasks.map((t, i) => (i + 1) + ". " + t).join("\n")).join("\n\n") +
+          "\n\n打卡：" + countDone() + " / 30 天\n\n" +
+          "断了一天不算失败，别连着断两天。";
+        copyText(txt, "30 天计划已复制");
+      });
+    }
+
+    render();
+  }
+
   /* ================= 自动挂载 ================= */
   document.addEventListener("DOMContentLoaded", function () {
     Array.from(document.querySelectorAll(".quiz")).forEach(initQuiz);
@@ -2191,5 +2837,13 @@
     if (ar) initAgentReplay(ar);
     const pg = document.getElementById("project-gen");
     if (pg) initProjectGen(pg);
+    const pv = document.getElementById("privacy");
+    if (pv) initPrivacy(pv);
+    const st = document.getElementById("scam-theater");
+    if (st) initScamTheater(st);
+    const cr = document.getElementById("career");
+    if (cr) initCareer(cr);
+    const fp = document.getElementById("final-plan");
+    if (fp) initFinalPlan(fp);
   });
 })();

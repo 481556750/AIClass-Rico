@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 16 课 · AI 说的不一定对 | 人人 AI 通识课</title>
+<link rel="stylesheet" href="../assets/css/base.css">
+</head>
+<body class="lesson" data-page="lesson" data-lesson="16">
+
+<header class="topbar">
+  <a class="brand" href="../index.html"><span class="aibot"></span><span>人人 AI 通识课</span></a>
+  <div class="tools">
+    <button class="tool-btn" id="font-toggle" title="调整字号">A</button>
+    <button class="tool-btn" id="theme-toggle" title="深色模式">🌙</button>
+  </div>
+</header>
+
+<div class="courseline">
+  <div class="progress"><i class="js-course-progress"></i></div>
+  <span class="count js-course-count">全课进度 0 / 21</span>
+</div>
+
+<main class="container lesson-wrap">
+
+  <!-- 课程头 -->
+  <header class="lesson-hero reveal">
+    <p class="chip-row">
+      <span class="chip hot">🛡️ 模块四 · 怎么防坑</span>
+      <span class="chip">⏱ 约 12 分钟</span>
+      <span class="chip">🔍 幻觉质检员 · 进阶</span>
+      <span class="chip">🧠 3 个小测验</span>
+    </p>
+    <h1>AI 说得很像，<br>不一定真</h1>
+    <p class="lesson-lead">第 4 课我们知道了它为什么会编。这一课练一件事：看到一段很像真的回答，怎么在 3 分钟内判断该不该信。</p>
+  </header>
+
+  <!-- ① 场景导入 -->
+  <section class="scene reveal">
+    <div class="robot">
+      <span class="aibot"></span>
+      <span class="robot-name">小艾</span>
+    </div>
+    <div class="bubble">
+      <p><b>王阿姨：</b>我问 AI 高血压能不能喝咖啡，它说可以，每天三杯还能降血压，还引用了《新英格兰医学杂志》。</p>
+      <p><b>小雨：</b>听起来很专业啊。</p>
+      <p><b>王阿姨：</b>我差点转到家人群。后来让女儿查，根本找不到它说的那篇文章。</p>
+      <p><b>小艾：</b>AI 最会补细节。日期、期刊、作者，越完整，越像真的。</p>
+      <p><b>阿杰：</b>那我以后每句都去查？也太累了。</p>
+      <p><b>小艾：</b>不用每句都查。今天学一套「重要回答过安检」的办法。</p>
+    </div>
+  </section>
+
+  <!-- ② 核心讲解 -->
+  <section class="block reveal">
+    <h2 class="step"><span>01</span>核心讲解</h2>
+
+    <div class="card hl">
+      <h3>🎭 它是在「接话」，不是在「查证」</h3>
+      <p>你可以把它想成一个特别会接话的考生：题目没背过，它也会顺着题型，写一个最像标准答案的答案。</p>
+      <p>它不是在翻资料，而是在预测「下一句怎么写最顺」。所以它能同时做到两件事：语气很确定，内容却可能错。</p>
+      <p>第 4 课我们叫它<span class="term" data-tip="<b>幻觉（Hallucination）</b>：AI 一本正经地生成不存在或错误的信息，比如编书名、编论文、编年份。它通常不是故意骗人，而是不知道自己在编。">幻觉</span>。这一课不重复「为什么」，只练「怎么办」。</p>
+    </div>
+
+    <div class="card accent">
+      <h3>🚨 三类高发错误，看到就减速</h3>
+      <p><b>① 精确的数字和日期：</b>「每天 3 杯」「便宜 40%」「2023 年 5 月发布」。数字越具体，越容易让人放下戒心，也越容易被编出来。</p>
+      <p><b>② 出处和人名：</b>论文、法条、书名、专家、产品型号。它可能给你一个格式完美、点开却不存在的链接。找不到原文，就先当成「没有」。</p>
+      <p><b>③ 绝对化的结论：</b>「一定」「都能」「彻底」「100%」「不用问医生」。真实世界大多有条件，绝对化的句子往往漏掉了条件。</p>
+    </div>
+
+    <div class="card sun">
+      <h3>🛂 三查一停：给重要回答过安检</h3>
+      <p><b>查来源：</b>要原始链接、书名、文号或官方页面。不是它说「有研究」，而是你能打开那份研究。</p>
+      <p><b>查日期：</b>政策、价格、软件版本、医学指南都会更新。问一句「这是什么时候的信息」，能挡掉很多过时答案。</p>
+      <p><b>查反常识：</b>太顺、太绝对、太正好符合你想要的答案，先停一下。让你舒服的答案，也值得核一核。</p>
+      <p><b>一停：</b>涉及健康、法律、钱、安全，先停下来，找官网、官方电话或专业的人。AI 可以帮你列问题，但不能替你签字。</p>
+    </div>
+
+    <div class="card">
+      <h3>🔄 让 AI 当反方，但别让它当法官</h3>
+      <p>你可以追加一句：「请列出这段回答最可能错的 3 个点，并告诉我分别怎么核实。不要重复原答案。」</p>
+      <p>它常常能帮你发现漏洞。但注意：它也可能用另一段很像真的话，来「证明」上一段。交叉验证要换来源，不是只换一个 AI。</p>
+      <p>最稳的顺序是：AI 给线索 → 你去官方来源核对 → 再决定信不信。它是助手，不是裁判。</p>
+    </div>
+
+    <div class="card">
+      <h3>⏱️ 核实的成本，比信错的成本低</h3>
+      <p>转发一条假养生知识，可能让家人停药；抄一个不存在的法条，可能让合同出问题；用错一个数据，可能让整份汇报失去信任。</p>
+      <p>而核实通常只要几分钟：搜一下原文、打开官网、打一个电话。你不需要变成侦探，只需要在「要转发、要签字、要花钱」之前，多走一步。</p>
+      <p>记住：<b>AI 给的是初稿，你给的是判断。</b>你愿意为结果负责，才配得上「我知道」这三个字。</p>
+    </div>
+  </section>
+
+  <!-- ③ 互动 -->
+  <section class="block reveal">
+    <h2 class="step"><span>02</span>动手玩一玩</h2>
+    <div class="game-card" id="checker" data-set="battery"></div>
+    <p class="game-tip">点你认为有问题的句子，再提交质检报告。注意：数字、出处、绝对化说法，是三盏最常亮的红灯。</p>
+  </section>
+
+  <!-- ④ 小测验 -->
+  <section class="block reveal">
+    <h2 class="step"><span>03</span>小测验</h2>
+    <div class="quiz">
+      <div class="q">
+        <p class="q-text">1. AI 说：「《2023 年中国居民膳食指南》第 47 页写了……」你最先应该做什么？</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 页码都这么具体，直接转发</button>
+          <button class="opt" data-correct="true">B. 找官方版本或原文，核对页码和内容</button>
+          <button class="opt" data-correct="false">C. 再问同一个 AI 一遍，看它说不说一样</button>
+        </div>
+        <p class="explain" hidden>解析：具体页码会增加可信感，但不等于真实。先找原始来源；同一个 AI 重复回答，也可能重复同一个错误。</p>
+      </div>
+      <div class="q">
+        <p class="q-text">2. 下面哪类内容，最需要停下来核实？</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 让它给一只猫起昵称</button>
+          <button class="opt" data-correct="true">B. 药量、法条、投资收益率</button>
+          <button class="opt" data-correct="false">C. 把「晚上好」改成「夜里好」</button>
+        </div>
+        <p class="explain" hidden>解析：涉及健康、法律、钱和安全的内容，错了代价高。起昵称、改措辞这类低风险任务，不必每次都查。</p>
+      </div>
+      <div class="q">
+        <p class="q-text">3. AI 说：「喝某种茶能 100% 降血糖，可以不用吃药。」最危险的地方是？</p>
+        <div class="opts">
+          <button class="opt" data-correct="false">A. 它没有说茶的品牌</button>
+          <button class="opt" data-correct="true">B. 可能让人耽误正规治疗</button>
+          <button class="opt" data-correct="false">C. 句子太短了</button>
+        </div>
+        <p class="explain" hidden>解析：「100%」「不用吃药」是典型的绝对化危险信号。健康问题要听医生的，AI 只能帮你整理问题。</p>
+      </div>
+      <p class="quiz-score" hidden></p>
+    </div>
+  </section>
+
+  <!-- ⑤ 金句 -->
+  <section class="block reveal">
+    <h2 class="step"><span>04</span>一句话记住这节课</h2>
+    <div class="quote-card">
+      <p>它负责说得像，<br>你负责查得清。</p>
+      <p class="quote-sub">核实不是找茬，是给自己上保险。</p>
+    </div>
+  </section>
+
+  <!-- ⑥ 今天试一件事 -->
+  <section class="block reveal">
+    <h2 class="step"><span>05</span>今天试一件事</h2>
+    <ul class="actions">
+      <li><span class="box"></span><span class="txt">翻出最近一条 AI 回答，挑一个数字或出处，去官方来源核实</span></li>
+      <li><span class="box"></span><span class="txt">让它列「这段回答最可能错的 3 个点」，再自己查其中 1 个</span></li>
+      <li><span class="box"></span><span class="txt">把「健康 / 法律 / 钱 / 安全，先找真人」写进手机备忘录</span></li>
+    </ul>
+    <button id="btn-complete" class="btn btn-primary">✅ 完成本课打卡</button>
+    <p class="next-teaser">会核实，还要会保护。下一课：有些话，连输入框都不该发。</p>
+  </section>
+
+  <!-- ⑦ 导航 -->
+  <nav class="lesson-nav reveal" id="lesson-nav"></nav>
+
+</main>
+
+<footer class="footer">
+  <p>《人人 AI 通识课》 · 新时代的工具，动手去用</p>
+</footer>
+
+<script src="../assets/js/course-data.js"></script>
+<script src="../assets/js/components.js"></script>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

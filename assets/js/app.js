@@ -194,8 +194,8 @@
       btn.href = next.file;
       btn.textContent = "▶ 继续学习 · 第 " + Number(next.id) + " 课";
     } else if (readyLessons().every(l => isDone(l.id))) {
-      btn.href = "#map";
-      btn.textContent = "🎉 已上线的课全部通关！更多课程制作中";
+      btn.href = "certificate.html";
+      btn.textContent = "🎓 全部通关！去领结业证书";
     } else {
       btn.href = "lessons/lesson-00.html";
     }
@@ -250,6 +250,7 @@
       btn.textContent = "✅ 本课已完成打卡";
       updateProgressUI();
       renderBadges();
+      window.dispatchEvent(new CustomEvent("aic-progress-change"));
       const got = BADGES.filter(b => after[b.id] && !before[b.id]);
       if (got.length) {
         toast("🏅 解锁徽章：" + got[0].emoji + " " + got[0].name + "！");
